@@ -42,4 +42,4 @@ def test_check_title_on_main_page(browser, url):
     """
     page = BasePage(browser, url)
     page.open_url()
-    page.is_title_correct("Yourstore")
+    page.is_title_correct("Your Store")
