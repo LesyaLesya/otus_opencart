@@ -14,24 +14,24 @@ pipeline {
                 sh '''
                    if [ "$TESTS" == "ALL_TESTS" ]
                    then
-                   /usr/local/bin/docker run --name my_container tests --url ${URL} --browser-name ${BROWSER_NAME} --browser-version ${BROWSER_VERSION} --executor ${EXECUTOR} -n ${NODES}
+                   /usr/local/bin/docker run --name my_container tests --url http://${URL}/ --browser-name ${BROWSER_NAME} --browser-version ${BROWSER_VERSION} --executor ${EXECUTOR} -n ${NODES}
                    elif [ "$TESTS" == "MAIN_PAGE" ]
                    then
-                   /usr/local/bin/docker run --name my_container tests/test_main_page.py --url ${URL} --browser-name ${BROWSER_NAME} --browser-version ${BROWSER_VERSION} --executor ${EXECUTOR} -n ${NODES}
+                   /usr/local/bin/docker run --name my_container tests/test_main_page.py --url http://${URL}/ --browser-name ${BROWSER_NAME} --browser-version ${BROWSER_VERSION} --executor ${EXECUTOR} -n ${NODES}
                    elif [ "$TESTS" == "ADMIN_PAGE" ]
                    then
-                   /usr/local/bin/docker run --name my_container tests/test_admin_page.py --url ${URL} --browser-name ${BROWSER_NAME} --browser-version ${BROWSER_VERSION} --executor ${EXECUTOR} -n ${NODES}
+                   /usr/local/bin/docker run --name my_container tests/test_admin_page.py --url http://${URL}/ --browser-name ${BROWSER_NAME} --browser-version ${BROWSER_VERSION} --executor ${EXECUTOR} -n ${NODES}
                    elif [ "TESTS" == "CATALOGUE_PAGE" ]
                    then
-                   /usr/local/bin/docker run --name my_container tests/test_catalogue_page.py --url ${URL} --browser-name ${BROWSER_NAME} --browser-version ${BROWSER_VERSION} --executor ${EXECUTOR} -n ${NODES}
+                   /usr/local/bin/docker run --name my_container tests/test_catalogue_page.py --url http://${URL}/ --browser-name ${BROWSER_NAME} --browser-version ${BROWSER_VERSION} --executor ${EXECUTOR} -n ${NODES}
                    elif [ "TESTS" == "HEADER_PAGE" ]
                    then
-                   /usr/local/bin/docker run --name my_container tests/test_header_page.py --url ${URL} --browser-name ${BROWSER_NAME} --browser-version ${BROWSER_VERSION} --executor ${EXECUTOR} -n ${NODES}
+                   /usr/local/bin/docker run --name my_container tests/test_header_page.py --url http://${URL}/ --browser-name ${BROWSER_NAME} --browser-version ${BROWSER_VERSION} --executor ${EXECUTOR} -n ${NODES}
                    elif [ "TESTS" == "LOGIN_PAGE" ]
                    then
-                   /usr/local/bin/docker run --name my_container tests/test_login_page.py --url ${URL} --browser-name ${BROWSER_NAME} --browser-version ${BROWSER_VERSION} --executor ${EXECUTOR} -n ${NODES}
+                   /usr/local/bin/docker run --name my_container tests/test_login_page.py --url http://${URL}/ --browser-name ${BROWSER_NAME} --browser-version ${BROWSER_VERSION} --executor ${EXECUTOR} -n ${NODES}
                    else
-                   /usr/local/bin/docker run --name my_container tests/test_product_page.py --login ${LOGIN} --passw ${PASSW} -n ${NODES}  -m ${MARKER}
+                   /usr/local/bin/docker run --name my_container tests/test_product_page.py --url http://${URL}/ --browser-name ${BROWSER_NAME} --browser-version ${BROWSER_VERSION} --executor ${EXECUTOR} -n ${NODES}
                    fi
                 '''
             }

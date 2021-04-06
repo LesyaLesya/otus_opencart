@@ -6,7 +6,7 @@ docker build -t tests .
 
 # Запускаем контейнер под именем my_container из image tests
 # В параметрах передаем логин, пароль, количество потоков для запуска и маркер
-docker run --name my_container tests --url $1 --browser-name $2 --browser-version $3 --executor $4 -n 2
+docker run --name my_container tests --url http://$1/  --browser-name $2 --browser-version $3 --executor $4 -n 2
 
 # Копируем из контейнера созданный allure-report
 docker cp my_container:/otus_opencart/allure-results .
