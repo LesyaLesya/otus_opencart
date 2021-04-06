@@ -204,15 +204,6 @@ git clone repository_url
   + BROWSER_VERSION (в какой версии браузера запускать)
   + EXECUTOR (хост selenoid-а)
   + NODES - значение по-умолчанию 1 (количество потоков)
-  + TESTS - список с выбором значений:
-    + ALL_TESTS
-    + MAIN_PAGE
-    + ADMIN_PAGE
-    + CATALOGUE_PAGE
-    + HEADER_PAGE
-    + LOGIN_PAGE
-    + PRODUCT_PAGE
-  
   
 - Выбрать Pipeline script from SCM
 
