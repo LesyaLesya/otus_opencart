@@ -5,14 +5,14 @@ pipeline {
         stage('DockerBuild') {
             steps {
                 echo 'Building docker image with tag tests'
-                sh '/usr/local/bin/docker build -t tests .'
+                sh '${DOCKER_PATH} build -t tests .'
             }
         }
         stage('TestRun') {
             steps {
                 echo 'Running tests in container'
                 sh '''
-                   /usr/local/bin/docker run --name my_container tests --url http://${URL}/ --browser-name ${BROWSER_NAME} --browser-version ${BROWSER_VERSION} --executor ${EXECUTOR} -n ${NODES}
+                   ${DOCKER_PATH} run --name my_container tests --url http://${URL}/ --browser-name ${BROWSER_NAME} --browser-version ${BROWSER_VERSION} --executor ${EXECUTOR} -n ${NODES}
 
                 '''
             }
@@ -23,7 +23,7 @@ pipeline {
 
         always {
             echo 'Copying allure report from container'
-            sh '/usr/local/bin/docker cp my_container:/otus_opencart/allure-results .'
+            sh '${DOCKER_PATH} cp my_container:/otus_opencart/allure-results .'
 
             script {
                 allure([
@@ -35,8 +35,8 @@ pipeline {
                 ])
             }
             echo 'Deleting container and image'
-            sh '/usr/local/bin/docker system prune -f'
-            sh '/usr/local/bin/docker image rm tests'
+            sh '${DOCKER_PATH} system prune -f'
+            sh '${DOCKER_PATH} image rm tests'
 
 
             cleanWs()
