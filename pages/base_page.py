@@ -67,7 +67,7 @@ class BasePage:
 
         try:
             element = self.is_element_visible(locator, el_path)
-            element.click()
+            return element.click()
         except TimeoutException:
             allure_helper.attach(self.browser)
             raise AssertionError(f'Нет элемента с локатором {locator} по пути {el_path}')
@@ -82,10 +82,10 @@ class BasePage:
 
         try:
             element = self.is_element_visible(locator, el_path)
+            return element.text
         except TimeoutException:
             allure_helper.attach(self.browser)
             raise AssertionError(f'Нет элемента с локатором {locator} по пути {el_path}')
-        return element.text
 
     @allure.step("Найти выпадающий список с локатором {locator} по пути {el_path}")
     def select_products(self, locator, el_path):
@@ -97,10 +97,10 @@ class BasePage:
 
         try:
             self.is_element_visible(locator, el_path)
+            return Select(self.browser.find_element(locator, el_path))
         except TimeoutException:
             allure_helper.attach(self.browser)
             raise AssertionError(f'Нет элемента с локатором {locator} по пути {el_path}')
-        return Select(self.browser.find_element(locator, el_path))
 
     @allure.step("Получить атрибут {attr} у элемента с локатором {locator} по пути {el_path}")
     def getting_attr(self, attr, locator, el_path):
@@ -113,10 +113,10 @@ class BasePage:
 
         try:
             element = self.is_element_visible(locator, el_path)
+            return element.get_attribute(attr)
         except TimeoutException:
             allure_helper.attach(self.browser)
             raise AssertionError(f'Нет элемента с локатором {locator} по пути {el_path}')
-        return element.get_attribute(attr)
 
     @allure.step("Ввести текст {value} в инпут {el_path}")
     def input_text(self, locator, el_path, value):
@@ -130,7 +130,7 @@ class BasePage:
         try:
             element = self.is_element_visible(locator, el_path)
             element.clear()
-            element.send_keys(value)
+            return element.send_keys(value)
         except TimeoutException:
             allure_helper.attach(self.browser)
             raise AssertionError(f'Нет элемента с локатором {locator} по пути {el_path}')

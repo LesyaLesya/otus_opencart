@@ -13,13 +13,13 @@ class CataloguePage(BasePage):
         """Добавление товара в сравнение."""
 
         self.is_element_visible(*CataloguePageLocators.FIRST_PRODUCT)
-        return self.click_on_element(*CataloguePageLocators.COMPARE_BUTTON)
+        self.click_on_element(*CataloguePageLocators.COMPARE_BUTTON)
 
     @allure.step("Проверить отображение алерта")
     def should_be_successful_alert(self):
         """Проверка отображения алерта после добавления товара в сравнение."""
 
-        return self.is_element_visible(*CataloguePageLocators.ALERT_SUCCESS)
+        self.is_element_visible(*CataloguePageLocators.ALERT_SUCCESS)
 
     @allure.step("Проверить, что товар добавился к сравнению - значение в ссылке увеличилось на 1")
     def should_be_adding_in_compare_link(self, txt):

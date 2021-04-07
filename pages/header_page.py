@@ -16,10 +16,10 @@ class HeaderPage(BasePage):
         :param txt: искомое значение
         """
 
-        return self.input_text(*HeaderPageLocators.SEARCH_INPUT, txt)
+        self.input_text(*HeaderPageLocators.SEARCH_INPUT, txt)
 
     @allure.step("Нажать на кнопку поиска")
     def start_search(self):
         """Нажатие на кнопку запуска поиска."""
 
-        return self.click_on_element(*HeaderPageLocators.SEARCH_BUTTON)
+        self.click_on_element(*HeaderPageLocators.SEARCH_BUTTON)

@@ -13,13 +13,13 @@ class ProductPage(BasePage):
     def click_main_product_image(self):
         """Клик по главной фото товара."""
 
-        return self.click_on_element(*ProductPageLocators.MAIN_PRODUCT_IMAGE)
+        self.click_on_element(*ProductPageLocators.MAIN_PRODUCT_IMAGE)
 
     @allure.step("Проверить, что фото открылось во всплывающем окне")
     def get_main_image_in_window(self):
         """Проверка, что картинка открывается в окне по клику."""
 
-        return self.is_element_visible(*ProductPageLocators.PRODUCT_IMAGE_IN_WINDOW)
+        self.is_element_visible(*ProductPageLocators.PRODUCT_IMAGE_IN_WINDOW)
 
     @allure.step("Перейти на таб Specification")
     def click_on_tab_specification(self):

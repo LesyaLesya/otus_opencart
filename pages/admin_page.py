@@ -16,7 +16,7 @@ class AdminPage(BasePage):
         :param name: имя пользователя
         """
 
-        return self.input_text(*AdminPageLocators.USERNAME_INPUT, name)
+        self.input_text(*AdminPageLocators.USERNAME_INPUT, name)
 
     @allure.step("Ввести пароль {passw}")
     def set_password(self, passw):
@@ -25,25 +25,25 @@ class AdminPage(BasePage):
         :param passw: пароль пользователя
         """
 
-        return self.input_text(*AdminPageLocators.PASSWORD_INPUT, passw)
+        self.input_text(*AdminPageLocators.PASSWORD_INPUT, passw)
 
     @allure.step("Залогиниться")
     def login_button_click(self):
         """Клик на кнопку логина."""
 
-        return self.click_on_element(*AdminPageLocators.LOGIN_BUTTON)
+        self.click_on_element(*AdminPageLocators.LOGIN_BUTTON)
 
     @allure.step("Нажать на кнопку разлогина")
     def logout(self):
         """Нахождение кнопки разлогина и нажатие на нее."""
 
-        return self.click_on_element(*AdminPageLocators.LOGOUT_BUTTON)
+        self.click_on_element(*AdminPageLocators.LOGOUT_BUTTON)
 
     @allure.step("Проверить, что осуществлен выход из админки")
     def should_be_successful_logout_text(self):
         """Проверка видимости элемента после разлогина."""
 
-        return self.is_element_visible(*AdminPageLocators.NEED_LOGIN_TEXT)
+        self.is_element_visible(*AdminPageLocators.NEED_LOGIN_TEXT)
 
     @allure.step("Перейти к таблице с товарами")
     def get_product_table(self):
@@ -58,4 +58,4 @@ class AdminPage(BasePage):
     def should_be_table(self):
         """Проверка видимости таблицы."""
 
-        return self.is_element_visible(*AdminPageLocators.CATEGORIES_TABLE)
+        self.is_element_visible(*AdminPageLocators.CATEGORIES_TABLE)
