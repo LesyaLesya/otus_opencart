@@ -5,12 +5,12 @@
 
 + В директории tests/ находятся файлы с тестами для отдельных страниц.
   
-  - tests/test_admin_page.py - тесты на страницу Админки
-  - tests/test_catalogue_page.py - тесты на страницу Каталога
-  - tests/test_header_page.py - тесты на Шапку сайта
-  - tests/test_login_page.py - тесты на страницу Авторизации пользователя
-  - tests/test_main_page.py - тесты на Главную страницу
-  - tests/test_product_page.py - тесты на страницу Товара
+  - tests/test_admin_page.py - несколько тестов на страницу Админки
+  - tests/test_catalogue_page.py - несколько тестов на страницу Каталога
+  - tests/test_header_page.py - несколько тестов на Шапку сайта
+  - tests/test_login_page.py - несколько тестов на страницу Авторизации пользователя
+  - tests/test_main_page.py - несколько тестов на Главную страницу
+  - tests/test_product_page.py - несколько тестов на страницу Товара
 
 + В директории pages/ находятся файлы с вспомогательными методами по каждой странице.
 

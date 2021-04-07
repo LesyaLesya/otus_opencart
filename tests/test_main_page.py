@@ -4,6 +4,7 @@ import pytest
 import allure
 from otus_opencart.pages.locators import MainPageLocators
 from otus_opencart.pages.base_page import BasePage
+from otus_opencart.pages.main_page import MainPage
 
 
 @allure.feature("Главная страница")
@@ -43,3 +44,19 @@ def test_check_title_on_main_page(browser, url):
     page = BasePage(browser, url)
     page.open_url()
     page.is_title_correct("Your Store")
+
+
+@allure.feature("Главная страница")
+@allure.story("Проверка смены баннеров по клику на стрелки")
+@allure.link("#", name="User story")
+def test_banners_rotation(browser, url):
+    """Тестовая функция для проверки смены баннеров
+    по клику на кнопки под баннером.
+
+    :param browser: фикстура для запуска драйвера
+    :param url: фикстура с урлом тестируемого ресурса
+    """
+    page = MainPage(browser, url)
+    page.open_url()
+    page.click_banner_bullet_active()
+    page.click_banner_bullet_inactive()
