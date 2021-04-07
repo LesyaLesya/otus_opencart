@@ -199,10 +199,10 @@ git clone repository_url
 - В Jenkins создать PipeLine
 
 - Добавить в сборку параметры:
-  + URL (для хоста с opencart)
-  + BROWSER_NAME  (в каком браузере запускать)
-  + BROWSER_VERSION (в какой версии браузера запускать)
-  + EXECUTOR (хост selenoid-а)
+  + URL - хост с opencart
+  + BROWSER_NAME  - в каком браузере запускать
+  + BROWSER_VERSION - в какой версии браузера запускать
+  + EXECUTOR - хост selenoid-а
   + NODES - значение по-умолчанию 1 (количество потоков)
   + DOCKER_PATH - путь до исполняемого файла Docker на машине
   
