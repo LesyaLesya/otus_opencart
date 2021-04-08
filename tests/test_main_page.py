@@ -3,9 +3,7 @@
 import pytest
 import allure
 from otus_opencart.pages.locators import MainPageLocators
-from otus_opencart.pages.base_page import BasePage
 from otus_opencart.pages.main_page import MainPage
-from otus_opencart.pages.product_page import ProductPage
 
 
 @allure.feature("Главная страница")
@@ -27,7 +25,7 @@ def test_presence_of_elements_on_main_page(browser, url, locator):
     :param url: фикстура с урлом тестируемого ресурса
     :param locator: путь до элемента
     """
-    page = BasePage(browser, url)
+    page = MainPage(browser, url)
     page.open_url()
     page.is_element_visible(*locator)
 
@@ -42,7 +40,7 @@ def test_check_title_on_main_page(browser, url):
     :param browser: фикстура для запуска драйвера
     :param url: фикстура с урлом тестируемого ресурса
     """
-    page = BasePage(browser, url)
+    page = MainPage(browser, url)
     page.open_url()
     page.is_title_correct("Your Store")
 

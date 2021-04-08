@@ -8,6 +8,11 @@ class HeaderPageLocators:
 
     SEARCH_INPUT = (By.NAME, "search")
     SEARCH_BUTTON = (By.CSS_SELECTOR, ".btn.btn-default.btn-lg")
+    LOGO = (By.ID, "logo")
+    MENU = (By.CSS_SELECTOR, ".navbar-collapse")
+    CART_BUTTON = (By.ID, "cart")
+    TOP_LINKS = (By.ID, "top-links")
+    SEARCH_FIELD = (By.ID, "search")
 
 
 class MainPageLocators:
