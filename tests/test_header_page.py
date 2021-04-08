@@ -1,6 +1,5 @@
 """Модуль с тестами для Шапки сайта."""
 
-
 import pytest
 import allure
 from otus_opencart.pages.header_page import HeaderPage
@@ -34,7 +33,7 @@ def test_presence_of_elements_on_header_page(browser, url, locator):
 @allure.story("Переход на другие страницы")
 @allure.title("Переход на страницу Логина")
 @allure.link("#", name="User story")
-def test_search_result_title(browser, url):
+def test_go_to_login_page(browser, url):
     """Тестовая функция для проверки перехода на другие
     страницы из шапки сайта.
 
@@ -63,4 +62,3 @@ def test_search_result_title(browser, url, value):
     page.set_search_text(value)
     page.start_search()
     page.is_title_correct(f"Search - {value}")
-
