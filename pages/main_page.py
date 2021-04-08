@@ -11,6 +11,7 @@ class MainPage(BasePage):
     @allure.step("Кликнуть по выбранной кнопке под баннером")
     def click_banner_bullet_active(self):
         """Клик по выбранной кнопке переключения баннера."""
+
         if self.is_element_visible(*MainPageLocators.BANNER_IPHONE):
             if self.getting_attr("class", *MainPageLocators.BANNER_BULLET, 0) == \
                     "swiper-pagination-bullet swiper-pagination-bullet-active":
@@ -31,6 +32,7 @@ class MainPage(BasePage):
     @allure.step("Кликнуть по невыбранной кнопке под баннером")
     def click_banner_bullet_inactive(self):
         """Клик по невыбранной кнопке переключения баннера."""
+
         if self.is_element_visible(*MainPageLocators.BANNER_IPHONE):
             if self.getting_attr("class", *MainPageLocators.BANNER_BULLET, 0) == \
                     "swiper-pagination-bullet swiper-pagination-bullet-active":
@@ -47,3 +49,20 @@ class MainPage(BasePage):
             else:
                 raise AssertionError(
                     f'Класс элемента {self.getting_attr("class", *MainPageLocators.BANNER_BULLET, 1)}')
+
+    @allure.step("Перейти на страницу товара с индексом {index}")
+    def go_to_product_from_featured(self, index):
+        """Проверка перехода на страницу товара по клику из
+        блока FEATURED.
+
+        :param index: порядковый индекс элемента
+        """
+        with allure.step(f"Проверить видимость товара с индексом {index}"):
+            self.is_element_visible(*MainPageLocators.FEATURED_PRODUCT_LINK, index)
+        with allure.step(f"Получить название товара с индексом {index}"):
+            name = self.get_text_of_element(*MainPageLocators.FEATURED_PRODUCT_NAME, index)
+        with allure.step(f"Кликнуть по превью товара с индексом {index}"):
+            self.click_on_element(*MainPageLocators.FEATURED_PRODUCT_LINK, index)
+        title = self.get_title()
+        with allure.step(f"Сравнить заголовок страницы {title} и название товара {name}"):
+            assert name == title, f"Name - {name}, title - {title}"

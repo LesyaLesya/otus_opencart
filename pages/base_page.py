@@ -104,6 +104,16 @@ class BasePage:
             allure_helper.attach(self.browser)
             raise AssertionError(f'Нет элемента с локатором {locator} по пути {el_path}')
 
+    @allure.step("Получить title страницы")
+    def get_title(self):
+        """Возвращает title страницы."""
+
+        try:
+            return self.browser.title
+        except TimeoutException:
+            allure_helper.attach(self.browser)
+            raise AssertionError(f'Title - {self.browser.title}')
+
     @allure.step("Найти выпадающий список с локатором {locator} по пути {el_path}")
     def select_products(self, locator, el_path, index=0):
         """Возвращает найденный выпадающий список.

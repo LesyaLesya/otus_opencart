@@ -23,6 +23,8 @@ class MainPageLocators:
     BANNER_MACBOOK = (By.XPATH, "//div[contains(@class, 'swiper-slide-active')]/img[@alt='MacBookAir']")
     BANNER_IPHONE = (By.XPATH, "//div[contains(@class, 'swiper-slide-active')]/a/img[@alt='iPhone 6']")
     BANNER_BULLET = (By.CSS_SELECTOR, "div.slideshow0 > span.swiper-pagination-bullet")
+    FEATURED_PRODUCT_LINK = (By.CSS_SELECTOR, 'h3 + div.row > div > div > div.image > a')
+    FEATURED_PRODUCT_NAME = (By.CSS_SELECTOR, 'h3 + div.row > div > div > div.image +  div.caption > h4 > a')
 
 
 class ProductPageLocators:

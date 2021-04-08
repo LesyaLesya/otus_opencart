@@ -5,6 +5,7 @@ import allure
 from otus_opencart.pages.locators import MainPageLocators
 from otus_opencart.pages.base_page import BasePage
 from otus_opencart.pages.main_page import MainPage
+from otus_opencart.pages.product_page import ProductPage
 
 
 @allure.feature("Главная страница")
@@ -60,3 +61,23 @@ def test_banners_rotation(browser, url):
     page.open_url()
     page.click_banner_bullet_active()
     page.click_banner_bullet_inactive()
+
+
+@allure.feature("Главная страница")
+@allure.story("Проверка перехода в карточку товара из Featured")
+@allure.link("#", name="User story")
+@pytest.mark.parametrize("idx", [0, 1])
+def test_go_to_product_from_featured(browser, url, idx):
+    """Тестовая функция для проверки перехода
+    в карточку товара по клику из блока Featured.
+
+    :param browser: фикстура для запуска драйвера
+    :param url: фикстура с урлом тестируемого ресурса
+    :param idx: порядковый индекс элемента
+    """
+    page = MainPage(browser, url)
+    page.open_url()
+    page.go_to_product_from_featured(idx)
+
+
+
