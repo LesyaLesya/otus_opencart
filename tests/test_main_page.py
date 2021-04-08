@@ -8,6 +8,7 @@ from otus_opencart.pages.main_page import MainPage
 
 @allure.feature("Главная страница")
 @allure.story("Проверка присутствия элементов на Главной странице")
+@allure.title("Поиск элемента {locator}")
 @allure.link("#", name="User story")
 @pytest.mark.parametrize("locator",
                          [MainPageLocators.BANNER,
@@ -31,7 +32,7 @@ def test_presence_of_elements_on_main_page(browser, url, locator):
 
 
 @allure.feature("Главная страница")
-@allure.story("Проверка заголовка Главной страницы")
+@allure.title("Проверка заголовка Главной страницы")
 @allure.link("#", name="User story")
 def test_check_title_on_main_page(browser, url):
     """Тестовая функция для проверки корректности заголовка
@@ -46,7 +47,7 @@ def test_check_title_on_main_page(browser, url):
 
 
 @allure.feature("Главная страница")
-@allure.story("Проверка смены баннеров по клику на буллеты")
+@allure.title("Проверка смены баннеров по клику на буллеты")
 @allure.link("#", name="User story")
 def test_banners_rotation(browser, url):
     """Тестовая функция для проверки смены баннеров
@@ -63,6 +64,7 @@ def test_banners_rotation(browser, url):
 
 @allure.feature("Главная страница")
 @allure.story("Проверка перехода в карточку товара из Featured")
+@allure.title("Переход к товару с индексом {idx}")
 @allure.link("#", name="User story")
 @pytest.mark.parametrize("idx", [0, 1])
 def test_go_to_product_from_featured(browser, url, idx):

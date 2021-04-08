@@ -9,6 +9,7 @@ from otus_opencart.pages.product_page import ProductPage
 
 @allure.feature("Страница Товара")
 @allure.story("Проверка присутствия элементов на странице Товара")
+@allure.title("Поиск элемента {locator}")
 @allure.link("#", name="User story")
 @pytest.mark.parametrize("locator",
                          [ProductPageLocators.PRODUCT_HEADER,
@@ -33,7 +34,7 @@ def test_presence_of_elements_on_product_page(browser, url, locator):
 
 
 @allure.feature("Страница Товара")
-@allure.story("Открытие фото товара по клику")
+@allure.title("Открытие фото товара по клику")
 @allure.link("#", name="User story")
 def test_open_image_in_window_by_click(browser, url):
     """Тестовая функция для проверки открытия фото товара
@@ -50,7 +51,7 @@ def test_open_image_in_window_by_click(browser, url):
 
 
 @allure.feature("Страница Товара")
-@allure.story("Переход по табам")
+@allure.title("Переход по табам")
 @allure.link("#", name="User story")
 def test_click_on_tabs(browser, url):
     """Тестовая функция для проверки перехода по

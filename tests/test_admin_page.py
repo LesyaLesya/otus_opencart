@@ -9,6 +9,7 @@ from otus_opencart.pages.locators import AdminPageLocators
 
 @allure.feature("Административная страница")
 @allure.story("Проверка присутствия элементов на Административной странице")
+@allure.title("Поиск элемента {locator}")
 @allure.link("#", name="User story")
 @pytest.mark.parametrize("locator",
                          [AdminPageLocators.PANEL_HEADING,
@@ -52,7 +53,7 @@ def test_login_valid(browser, url):
 
 
 @allure.feature("Административная страница")
-@allure.story("Выход из админки")
+@allure.title("Выход из админки")
 @allure.link("#", name="User story")
 @allure.description(" Проверка разлогина из админки")
 def test_logout(browser, url):

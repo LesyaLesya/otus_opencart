@@ -8,6 +8,7 @@ from otus_opencart.pages.locators import HeaderPageLocators
 
 @allure.feature("Шапка сайта")
 @allure.story("Проверка присутствия элементов в Шапке сайта")
+@allure.title("Поиск элемента {locator}")
 @allure.link("#", name="User story")
 @pytest.mark.parametrize("locator",
                          [HeaderPageLocators.LOGO,

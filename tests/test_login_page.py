@@ -9,6 +9,7 @@ from otus_opencart.pages.base_page import BasePage
 
 @allure.feature("Страница логина")
 @allure.story("Проверка присутствия элементов на странице Логина")
+@allure.title("Поиск элемента {locator}")
 @allure.link("#", name="User story")
 @pytest.mark.parametrize("locator",
                          [LoginPageLocators.NEW_CUSTOMER_FORM,

@@ -5,7 +5,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import Select
 from selenium.common.exceptions import TimeoutException
-from otus_opencart.helpers import allure_helper, waits
+from otus_opencart.helpers import allure_helper
 
 
 class BasePage:
@@ -40,8 +40,11 @@ class BasePage:
                 """
         try:
             if all:
-                return self.wait.until(waits.Elements(locator, el_path))
-            return self.wait.until(waits.Element(locator, el_path, index))
+                return self.browser.find_elements(locator, el_path)
+            return self.browser.find_elements(locator, el_path)[index]
+
+            #     return self.wait.until(waits.Elements(locator, el_path))
+            # return self.wait.until(waits.Element(locator, el_path, index))
         except TimeoutException:
             raise AssertionError(f'Нет элемента с локатором {locator} по пути {el_path}')
 
@@ -59,19 +62,6 @@ class BasePage:
         except TimeoutException:
             allure_helper.attach(self.browser)
             raise AssertionError(f'Нет элемента с локатором {locator} по пути {el_path}')
-
-    @allure.step("Проверить корректность заголовка {title}")
-    def is_title_correct(self, title):
-        """Возвращает результат проверки корректности заголовка страницы.
-
-        :param title: заголовок страницы
-        """
-
-        try:
-            return self.wait.until(EC.title_is(title))
-        except TimeoutException:
-            allure_helper.attach(self.browser)
-            raise AssertionError(f"Заголовок - {title}")
 
     @allure.step("Кликнуть по элементу с локатором {locator} по пути {el_path}")
     def click_on_element(self, locator, el_path, index=0):
@@ -97,12 +87,21 @@ class BasePage:
         :param index: порядковый индекс элемента
         """
 
-        element = self._element(locator, el_path, index)
+        element = self.is_element_visible(locator, el_path, index)
         try:
             return element.text
         except TimeoutException:
             allure_helper.attach(self.browser)
             raise AssertionError(f'Нет элемента с локатором {locator} по пути {el_path}')
+
+    @allure.step("Проверяем корректность заголовка {title}")
+    def is_title_correct(self, title):
+        """Проверка тайтла страницы."""
+        try:
+            return self.wait.until(EC.title_is(title))
+        except TimeoutException:
+            allure_helper.attach(self.browser)
+            raise AssertionError("Заголовок не совпал")
 
     @allure.step("Получить title страницы")
     def get_title(self):
@@ -140,7 +139,7 @@ class BasePage:
         :param index: порядковый индекс элемента
         """
 
-        element = self._element(locator, el_path, index)
+        element = self.is_element_visible(locator, el_path, index)
         try:
             return element.get_attribute(attr)
         except TimeoutException:
@@ -157,7 +156,7 @@ class BasePage:
         :param index: порядковый индекс элемента
         """
 
-        element = self._element(locator, el_path, index)
+        element = self.is_element_visible(locator, el_path, index)
         try:
             element.clear()
             return element.send_keys(value)

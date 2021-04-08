@@ -9,6 +9,7 @@ from otus_opencart.pages.catalogue_page import CataloguePage
 
 @allure.feature("Страница Каталога")
 @allure.story("Проверка присутствия элементов на странице Каталога")
+@allure.title("Поиск элемента {locator}")
 @allure.link("#", name="User story")
 @pytest.mark.parametrize("locator",
                          [CataloguePageLocators.BREADCRUMB,
@@ -33,7 +34,7 @@ def test_presence_of_elements_on_catalogue_page(browser, url, locator):
 
 
 @allure.feature("Страница Каталога")
-@allure.story("Добавление товара к сравнению")
+@allure.title("Добавление товара к сравнению")
 @allure.link("#", name="User story")
 def test_add_to_compare(browser, url):
     """Тестовая функция для проверки добавление товара к сравнению
