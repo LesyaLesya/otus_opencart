@@ -23,3 +23,14 @@ class HeaderPage(BasePage):
         """Нажатие на кнопку запуска поиска."""
 
         self.click_on_element(*HeaderPageLocators.SEARCH_BUTTON)
+
+    def go_to_login_page(self):
+        """Проверка перехода на страницу Логина"""
+
+        with allure.step("Кликнуть на кнопку MY_ACCOUNT"):
+            self.click_on_element(*HeaderPageLocators.MY_ACCOUNT_LINK)
+        with allure.step("Кликнуть на кнопку Login"):
+            self.click_on_element(*HeaderPageLocators.LOGIN_LINK)
+        title = self.get_title()
+        with allure.step(f"Проверить, что заголовок {title} = Account Login"):
+            assert title == "Account Login", f"Заголовок страницы - {title}"

@@ -13,6 +13,8 @@ class HeaderPageLocators:
     CART_BUTTON = (By.ID, "cart")
     TOP_LINKS = (By.ID, "top-links")
     SEARCH_FIELD = (By.ID, "search")
+    MY_ACCOUNT_LINK = (By.XPATH, '//a[@title = "My Account"]')
+    LOGIN_LINK = (By.XPATH, '//a[text() = "Login"]')
 
 
 class MainPageLocators:

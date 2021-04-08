@@ -31,10 +31,25 @@ def test_presence_of_elements_on_header_page(browser, url, locator):
 
 
 @allure.feature("Шапка сайта")
+@allure.story("Переход на другие страницы")
+@allure.title("Переход на страницу Логина")
+@allure.link("#", name="User story")
+def test_search_result_title(browser, url):
+    """Тестовая функция для проверки перехода на другие
+    страницы из шапки сайта.
+
+    :param browser: фикстура для запуска драйвера
+    :param url: фикстура с урлом тестируемого ресурса
+    """
+    page = HeaderPage(browser, url)
+    page.open_url()
+    page.go_to_login_page()
+
+
+@allure.feature("Шапка сайта")
 @allure.story("Поиск по сайту")
 @allure.title("Проверка открытия страницы с результатом поиска")
 @allure.link("#", name="User story")
-@allure.description("Проверка тайтла страницы с результатами поиска")
 @pytest.mark.parametrize("value", ["phone", "laptop", "HP"], ids=["phone", "laptop", "HP"])
 def test_search_result_title(browser, url, value):
     """Тестовая функция для проверки тайтла страницы с результатами поиска.
