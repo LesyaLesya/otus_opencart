@@ -47,7 +47,7 @@ def test_check_title_on_main_page(browser, url):
 
 
 @allure.feature("Главная страница")
-@allure.story("Проверка смены баннеров по клику на стрелки")
+@allure.story("Проверка смены баннеров по клику на буллеты")
 @allure.link("#", name="User story")
 def test_banners_rotation(browser, url):
     """Тестовая функция для проверки смены баннеров

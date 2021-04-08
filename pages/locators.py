@@ -22,9 +22,7 @@ class MainPageLocators:
                                    ".swiper-pagination.carousel0.swiper-pagination-clickable.swiper-pagination-bullets")
     BANNER_MACBOOK = (By.XPATH, "//div[contains(@class, 'swiper-slide-active')]/img[@alt='MacBookAir']")
     BANNER_IPHONE = (By.XPATH, "//div[contains(@class, 'swiper-slide-active')]/a/img[@alt='iPhone 6']")
-    BANNER_BULLET_1 = (By.CSS_SELECTOR, "div.slideshow0 > span.swiper-pagination-bullet:nth-child(1)")
-    BANNER_BULLET_2 = (By.CSS_SELECTOR, "div.slideshow0 > span.swiper-pagination-bullet:nth-child(2)")
-
+    BANNER_BULLET = (By.CSS_SELECTOR, "div.slideshow0 > span.swiper-pagination-bullet")
 
 
 class ProductPageLocators:
@@ -37,9 +35,7 @@ class ProductPageLocators:
     PRODUCT_DESCRIPTION = (By.CSS_SELECTOR, "#tab-description > p")
     MAIN_PRODUCT_IMAGE = (By.XPATH, '//ul[@class="thumbnails"]/li[1]')
     PRODUCT_IMAGE_IN_WINDOW = (By.CSS_SELECTOR, ".mfp-figure")
-    TAB_DESCRIPTION_CLASS = (By.XPATH, '//ul[@class="nav nav-tabs"]/li[1]')
-    TAB_SPECIFICATION_CLASS = (By.XPATH, '//ul[@class="nav nav-tabs"]/li[2]')
-    TAB_REVIEWS_CLASS = (By.XPATH, '//ul[@class="nav nav-tabs"]/li[3]')
+    TAB_CLASS = (By.XPATH, '//ul[@class="nav nav-tabs"]/li')
     TAB_DESCRIPTION_LINK = (By.XPATH, '//a[@href="#tab-description"]')
     TAB_SPECIFICATION_LINK = (By.XPATH, '//a[@href="#tab-specification"]')
     TAB_REVIEWS_LINK = (By.XPATH, '//a[@href="#tab-review"]')

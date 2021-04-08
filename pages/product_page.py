@@ -29,7 +29,7 @@ class ProductPage(BasePage):
             self.click_on_element(*ProductPageLocators.TAB_SPECIFICATION_LINK)
         with allure.step("Проверить, что таб Specification активирован"):
             assert self.getting_attr("class",
-                                     *ProductPageLocators.TAB_SPECIFICATION_CLASS) == "active",\
+                                     *ProductPageLocators.TAB_CLASS, 1) == "active",\
                 "Таб Specification не активирован"
 
     @allure.step("Перейти на таб Reviews")
@@ -39,7 +39,7 @@ class ProductPage(BasePage):
         with allure.step("Кликнуть по табу Reviews"):
             self.click_on_element(*ProductPageLocators.TAB_REVIEWS_LINK)
         with allure.step("Проверить, что таб Reviews активирован"):
-            assert self.getting_attr("class", *ProductPageLocators.TAB_REVIEWS_CLASS) == "active",\
+            assert self.getting_attr("class", *ProductPageLocators.TAB_CLASS, 2) == "active",\
                 "Таб Reviews не активирован"
 
     @allure.step("Перейти на таб Description")
@@ -50,5 +50,5 @@ class ProductPage(BasePage):
             self.click_on_element(*ProductPageLocators.TAB_DESCRIPTION_LINK)
         with allure.step("Проверить, что таб Description активирован"):
             assert self.getting_attr("class",
-                                     *ProductPageLocators.TAB_DESCRIPTION_CLASS) == "active",\
+                                     *ProductPageLocators.TAB_CLASS, 0) == "active",\
                 "Таб Description не активирован"
