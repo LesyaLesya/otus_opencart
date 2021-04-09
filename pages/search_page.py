@@ -42,4 +42,12 @@ class SearchPage(BasePage):
         assert result == "There is no product that matches the search criteria.", \
             "Найдены товары"
 
+    @allure.step("Выбрать категорию {value}")
+    def select_category(self, value):
+        """Выбрать категорию для поиска.
 
+        :param value: значения в выпадающем списке
+        """
+
+        element = self.select_products(*SearchPageLocators.SELECT_CATEGORY)
+        return element.select_by_visible_text(value)
