@@ -1,10 +1,9 @@
-"""Модуль c вспомогательными методами ожиданий."""
+"""Модуль с вспомогательными классами для поиска элементов."""
 
 from selenium.common.exceptions import NoSuchElementException, TimeoutException
 
 
 class Element:
-    """Класс с методами ожидания одного элемента."""
 
     def __init__(self, locator, el_path, index=0):
         self.locator = locator
@@ -19,7 +18,6 @@ class Element:
 
 
 class Elements:
-    """Класс с методами ожидания группы элементов."""
 
     def __init__(self, locator, el_path):
         self.locator = locator
@@ -30,3 +28,12 @@ class Elements:
             return browser.find_elements(self.locator, self.el_path)
         except (IndexError, NoSuchElementException, TimeoutException):
             return False
+
+
+class Clickable:
+
+    def __init__(self, element):
+        self.element = element
+
+    def __call__(self, browser):
+        return self.element.is_enabled() and self.element.is_displayed()

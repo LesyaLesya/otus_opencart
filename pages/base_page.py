@@ -4,15 +4,15 @@ import allure
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import Select
-from selenium.common.exceptions import TimeoutException
-from otus_opencart.helpers import allure_helper
-
+from selenium.common.exceptions import TimeoutException, NoSuchElementException
+from otus_opencart.helpers import allure_helper, waits
+from otus_opencart.helpers.waits import Element, Elements, Clickable
 
 class BasePage:
     """Класс, описывающий базовую страницу."""
 
     @allure.step("Открыть {url}")
-    def __init__(self, browser, url, wait=5):
+    def __init__(self, browser, url, wait=10):
         """Конструктор класса.
 
         :param browser: фикстура для запуска драйвера
@@ -40,15 +40,12 @@ class BasePage:
                 """
         try:
             if all:
-                return self.browser.find_elements(locator, el_path)
-            return self.browser.find_elements(locator, el_path)[index]
-
-            #     return self.wait.until(waits.Elements(locator, el_path))
-            # return self.wait.until(waits.Element(locator, el_path, index))
+                return self.wait.until(Elements(locator, el_path))
+            return self.wait.until(Element(locator, el_path, index))
         except TimeoutException:
             raise AssertionError(f'Нет элемента с локатором {locator} по пути {el_path}')
 
-    @allure.step("Проверить видимость элемента с локатором {locator} по пути {el_path}")
+    @allure.step("Проверить видимость элемента с локатором {locator} по пути {el_path} с индексом {index}")
     def is_element_visible(self, locator, el_path, index=0):
         """Возвращает результат ожидания видимости элемента.
 
@@ -71,8 +68,9 @@ class BasePage:
         :param el_path: путь до элемента
         :param index: порядковый индекс элемента
         """
-        element = self.is_element_visible(locator, el_path, index)
+        element = self._element(locator, el_path, index)
         try:
+            self.wait.until(Clickable(element))
             return element.click()
         except TimeoutException:
             allure_helper.attach(self.browser)
@@ -86,8 +84,7 @@ class BasePage:
         :param el_path: путь до элемента
         :param index: порядковый индекс элемента
         """
-
-        element = self.is_element_visible(locator, el_path, index)
+        element = self._element(locator, el_path, index)
         try:
             return element.text
         except TimeoutException:
@@ -109,9 +106,9 @@ class BasePage:
 
         try:
             return self.browser.title
-        except TimeoutException:
+        except Exception as e:
             allure_helper.attach(self.browser)
-            raise AssertionError(f'Title - {self.browser.title}')
+            raise AssertionError(f"Ошибка {e}")
 
     @allure.step("Найти выпадающий список с локатором {locator} по пути {el_path}")
     def select_products(self, locator, el_path, index=0):
@@ -123,8 +120,7 @@ class BasePage:
         """
 
         try:
-            self.is_element_visible(locator, el_path, index)
-            return Select(self.browser.find_element(locator, el_path))
+            return Select(self._element(locator, el_path, index))
         except TimeoutException:
             allure_helper.attach(self.browser)
             raise AssertionError(f'Нет элемента с локатором {locator} по пути {el_path}')
@@ -138,8 +134,7 @@ class BasePage:
         :param attr: атрибут элемента
         :param index: порядковый индекс элемента
         """
-
-        element = self.is_element_visible(locator, el_path, index)
+        element = self._element(locator, el_path, index)
         try:
             return element.get_attribute(attr)
         except TimeoutException:
@@ -155,8 +150,7 @@ class BasePage:
         :param value: вводимое значение в инпут
         :param index: порядковый индекс элемента
         """
-
-        element = self.is_element_visible(locator, el_path, index)
+        element = self._element(locator, el_path, index)
         try:
             element.clear()
             return element.send_keys(value)
