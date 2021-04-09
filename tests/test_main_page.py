@@ -78,12 +78,6 @@ def test_go_to_product_from_featured(browser, url, idx):
     """
     page = MainPage(browser, url)
     page.open_url()
-    name_on_featured = page.go_to_product_from_featured(idx)
+    name = page.go_to_product_from_featured(idx)
     product_page = ProductPage(browser, browser.current_url)
-    name_on_product_page = product_page.get_item_title()
-    assert name_on_featured == name_on_product_page, \
-        f"Название на главной - {name_on_featured}, в карточке товара - {name_on_product_page}"
-
-
-
-
+    product_page.compare_item_title_on_pages(name)
