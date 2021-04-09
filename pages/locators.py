@@ -48,6 +48,7 @@ class ProductPageLocators:
     TAB_DESCRIPTION_LINK = (By.XPATH, '//a[@href="#tab-description"]')
     TAB_SPECIFICATION_LINK = (By.XPATH, '//a[@href="#tab-specification"]')
     TAB_REVIEWS_LINK = (By.XPATH, '//a[@href="#tab-review"]')
+    ITEM_TITLE = (By.CSS_SELECTOR, ".col-sm-4 > .btn-group + h1")
 
 
 class CataloguePageLocators:

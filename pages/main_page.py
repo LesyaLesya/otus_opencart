@@ -51,8 +51,8 @@ class MainPage(BasePage):
                     f'Класс элемента {self.getting_attr("class", *MainPageLocators.BANNER_BULLET, 1)}')
 
     def go_to_product_from_featured(self, index):
-        """Проверка перехода на страницу товара по клику из
-        блока FEATURED.
+        """Клик по товару из блока FEATURED.
+        Возвращает название товара.
 
         :param index: порядковый индекс элемента
         """
@@ -63,6 +63,4 @@ class MainPage(BasePage):
             name = self.get_text_of_element(*MainPageLocators.FEATURED_PRODUCT_NAME, index)
         with allure.step(f"Кликнуть по превью товара с индексом {index}"):
             self.click_on_element(*MainPageLocators.FEATURED_PRODUCT_LINK, index)
-        title = self.get_title()
-        with allure.step(f"Сравнить заголовок страницы {title} и название товара {name}"):
-            assert name == title, f"Name - {name}, title - {title}"
+        return name

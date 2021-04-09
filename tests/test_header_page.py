@@ -3,6 +3,8 @@
 import pytest
 import allure
 from otus_opencart.pages.header_page import HeaderPage
+from otus_opencart.pages.search_page import SearchPage
+from otus_opencart.pages.login_page import LoginPage
 from otus_opencart.pages.locators import HeaderPageLocators
 
 
@@ -44,6 +46,8 @@ def test_go_to_login_page(browser, url):
     page = HeaderPage(browser, url)
     page.open_url()
     page.go_to_login_page()
+    login_page = LoginPage(browser, browser.current_url)
+    login_page.is_title_correct("Account Login")
 
 
 @allure.feature("Шапка сайта")
@@ -62,4 +66,5 @@ def test_search_result_title(browser, url, value):
     page.open_url()
     page.set_search_text(value)
     page.start_search()
-    page.is_title_correct(f"Search - {value}")
+    search_page = SearchPage(browser, browser.current_url)
+    search_page.is_title_correct(f"Search - {value}")

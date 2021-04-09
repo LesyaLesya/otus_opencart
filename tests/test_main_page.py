@@ -4,6 +4,7 @@ import pytest
 import allure
 from otus_opencart.pages.locators import MainPageLocators
 from otus_opencart.pages.main_page import MainPage
+from otus_opencart.pages.product_page import ProductPage
 
 
 @allure.feature("Главная страница")
@@ -77,7 +78,12 @@ def test_go_to_product_from_featured(browser, url, idx):
     """
     page = MainPage(browser, url)
     page.open_url()
-    page.go_to_product_from_featured(idx)
+    name_on_featured = page.go_to_product_from_featured(idx)
+    product_page = ProductPage(browser, browser.current_url)
+    name_on_product_page = product_page.get_item_title()
+    assert name_on_featured == name_on_product_page, \
+        f"Название на главной - {name_on_featured}, в карточке товара - {name_on_product_page}"
+
 
 
 

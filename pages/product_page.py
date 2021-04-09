@@ -52,3 +52,10 @@ class ProductPage(BasePage):
             assert self.getting_attr("class",
                                      *ProductPageLocators.TAB_CLASS, 0) == "active",\
                 "Таб Description не активирован"
+
+    @allure.step("Проверить заголовок товара")
+    def get_item_title(self):
+        """Возвращает название товара полученное по переданному селектору."""
+
+        name = self.get_text_of_element(*ProductPageLocators.ITEM_TITLE)
+        return name
