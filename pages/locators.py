@@ -92,3 +92,13 @@ class AdminPageLocators:
     LEFT_MENU_CATALOGUE = (By.CSS_SELECTOR, "#menu-catalog > a")
     LEFT_MENU_CATEGORIES = (By.CSS_SELECTOR, "#collapse1 > li:nth-child(1) > a")
     CATEGORIES_TABLE = (By.CSS_SELECTOR, ".table-responsive")
+
+
+class SearchPageLocators:
+    """Локаторы для страницы Поиска."""
+
+    SEARCH_INPUT = (By.ID, "input-search")
+    SEARCH_BUTTON = (By.ID, "button-search")
+    SELECT_CATEGORY = (By.CSS_SELECTOR, "select.form-control")
+    CHECKBOX_CATEGORY = (By.XPATH, "//input[@name='sub_category']")
+    CHECKBOX_DESCRIPTION = (By.ID, "description")
