@@ -102,3 +102,5 @@ class SearchPageLocators:
     SELECT_CATEGORY = (By.CSS_SELECTOR, "select.form-control")
     CHECKBOX_CATEGORY = (By.XPATH, "//input[@name='sub_category']")
     CHECKBOX_DESCRIPTION = (By.ID, "description")
+    PRODUCT_NAME = (By.CSS_SELECTOR, ".product-thumb > .image + div > .caption > h4 > a")
+    EMPTY_RESULT = (By.CSS_SELECTOR, "h2 + p")
