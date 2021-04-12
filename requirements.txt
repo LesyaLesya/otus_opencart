@@ -3,3 +3,4 @@ selenium==3.141.0
 pytest-xdist==2.1.0
 allure-pytest==2.8.22
 requests==2.24.0
+mysql-connector-python==8.0.22

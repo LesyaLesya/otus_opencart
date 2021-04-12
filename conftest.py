@@ -6,6 +6,8 @@ import json
 import pytest
 import requests
 import allure
+import mysql.connector
+from types import SimpleNamespace
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options as ChOp
 from selenium.webdriver.firefox.options import Options as FFOp
@@ -75,7 +77,7 @@ def url(request):
 
 
 @pytest.fixture()
-def browser(request):
+def browser(request, db_connection):
     """Фикстура для запуска драйвера в зависимости от параметров."""
     browser_name = request.config.getoption("--browser-name")
     browser_version = request.config.getoption("--browser-version")
@@ -113,6 +115,7 @@ def browser(request):
         allure_helper.add_allure_env(browser_name, browser_version, local)
         request.addfinalizer(driver.quit)
         driver.maximize_window()
+        driver.db = db_connection
         return driver
     else:
         driver = webdriver.Remote(command_executor=f"http://{executor}:4444/wd/hub",
@@ -138,4 +141,26 @@ def browser(request):
 
         request.addfinalizer(finalizer)
         driver.maximize_window()
+        driver.db = db_connection
         return driver
+
+
+@pytest.fixture
+def db_connection(request):
+    db_host = request.config.getoption("--executor")
+    config = SimpleNamespace(
+        DB_NAME='bitnami_opencart',
+        HOST=db_host,
+        PORT='3306',
+        USER='bn_opencart',
+        PASSWORD=''
+    )
+    connection = mysql.connector.connect(
+        user=config.USER,
+        password=config.PASSWORD,
+        host=config.HOST,
+        port=config.PORT,
+        database=config.DB_NAME
+    )
+    request.addfinalizer(connection.close)
+    return connection

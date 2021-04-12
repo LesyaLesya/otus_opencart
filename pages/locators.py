@@ -78,6 +78,10 @@ class LoginPageLocators:
     RIGHT_LIST_MENU = (By.CLASS_NAME, "list-group")
     BUTTON_FOR_NEW_CUSTOMER = (By.CSS_SELECTOR, "a.btn.btn-primary")
     BUTTON_FOR_OLD_CUSTOMER = (By.CSS_SELECTOR, "input.btn.btn-primary")
+    EMAIL_INPUT = (By.ID, "input-email")
+    PASSWORD_INPUT = (By.ID, "input-password")
+    LOGIN_BUTTON = (By.XPATH, '//input[@value="Login"]')
+    FAIL_LOGIN_ALERT = (By.CSS_SELECTOR, "i.fa-exclamation-circle")
 
 
 class AdminPageLocators:
