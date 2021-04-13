@@ -5,6 +5,7 @@ import pytest
 import allure
 from otus_opencart.pages.locators import CataloguePageLocators
 from otus_opencart.pages.catalogue_page import CataloguePage
+from otus_opencart.pages.product_page import ProductPage
 
 
 @allure.feature("Страница Каталога")
@@ -85,3 +86,24 @@ def test_sort_by_price_low_to_high(browser, url):
     page.open_url()
     page.select_by_text("Price (Low > High)")
     page.check_sort_by_price_low_high()
+
+
+@allure.feature("Страница Каталога")
+@allure.story("Переход на страницу товара")
+@allure.title("Переход в карточку товара по клику на товар")
+@allure.link("#", name="User story")
+@pytest.mark.parametrize("idx", [0, 1])
+def test_go_to_product_from_catalogue(browser, url, idx):
+    """Тестовая функция для проверки перехода
+    в карточку товара по клику из каталога товаров.
+
+    :param browser: фикстура для запуска драйвера
+    :param url: фикстура с урлом тестируемого ресурса
+    :param idx: порядковый индекс элемента
+    """
+    url = f'{url}index.php?route=product/category&path=18'
+    page = CataloguePage(browser, url)
+    page.open_url()
+    name = page.go_to_product_from_catalogue(idx)
+    product_page = ProductPage(browser, browser.current_url)
+    product_page.compare_item_title_on_pages(name)

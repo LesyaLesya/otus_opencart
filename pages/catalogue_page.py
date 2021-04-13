@@ -63,3 +63,16 @@ class CataloguePage(BasePage):
         prices_in_float = [float(i.replace(',', '').replace('$', '')) for i in prices_without_tax]
         assert all(prices_in_float[i] <= prices_in_float[i+1] for i in range(len(prices_in_float)-1)), \
             f"Порядок цен - {prices_in_float}"
+
+    def go_to_product_from_catalogue(self, index):
+        """Клик по товару из каталога.
+        Возвращает название товара.
+
+        :param index: порядковый индекс элемента
+        """
+
+        with allure.step(f"Получить название товара с индексом {index}"):
+            name = self.get_text_of_element(*CataloguePageLocators.ITEM_NAME, index)
+        with allure.step(f"Кликнуть по превью товара с индексом {index}"):
+            self.click_on_element(*CataloguePageLocators.ITEM_NAME, index)
+        return name

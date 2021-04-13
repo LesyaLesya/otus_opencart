@@ -54,10 +54,10 @@ class ProductPage(BasePage):
                 "Таб Description не активирован"
 
     @allure.step("Проверить заголовок товара")
-    def compare_item_title_on_pages(self, name_on_main):
+    def compare_item_title_on_pages(self, name):
         """Получам название товара полученное по переданному селектору и
         сравниваем название товара на страницах."""
 
         name_on_product_page = self.get_text_of_element(*ProductPageLocators.ITEM_TITLE)
-        assert name_on_main == name_on_product_page,  \
-            f"Название на главной - {name_on_main}, в карточке товара - {name_on_product_page}"
+        assert name == name_on_product_page,  \
+            f"Название - {name}, в карточке товара - {name_on_product_page}"
