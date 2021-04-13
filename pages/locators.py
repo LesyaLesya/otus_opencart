@@ -64,8 +64,8 @@ class CataloguePageLocators:
     ALERT_SUCCESS = (By.CSS_SELECTOR, ".alert-success")
     COMPARE_LINK = (By.ID, "compare-total")
     SELECT_SORT = (By.ID, "input-sort")
-    FIRST_PRODUCT = (By.XPATH, '//div[@id="content"]/div[4]/div[1]/div/div/div/h4/a')
-    LAST_PRODUCT = (By.XPATH, '//div[@id="content"]/div[4]/div[last()]/div/div/div/h4/a')
+    ITEM_NAME = (By.CSS_SELECTOR, '.caption > h4 > a')
+    ITEM_PRICE = (By.CSS_SELECTOR, '.caption > h4 + p + p.price')
 
 
 class LoginPageLocators:

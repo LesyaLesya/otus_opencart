@@ -12,7 +12,6 @@ class CataloguePage(BasePage):
     def click_to_compare(self):
         """Добавление товара в сравнение."""
 
-        self.is_element_visible(*CataloguePageLocators.FIRST_PRODUCT)
         self.click_on_element(*CataloguePageLocators.COMPARE_BUTTON)
 
     @allure.step("Проверить отображение алерта")
@@ -44,22 +43,23 @@ class CataloguePage(BasePage):
         element = self.select_products(*CataloguePageLocators.SELECT_SORT)
         return element.select_by_visible_text(txt)
 
-    def check_names_after_sort_by_name_a_z(self):
-        """Проверка сортировки сравнением первой буквы первого и последнего товара в списке."""
+    @allure.step("Проверить, что товары отсортированы от A до Z")
+    def check_sort_by_name_a_z(self):
+        """Получение всех названий товаров после сортировки и проверка
+        заданной сортировки."""
 
-        first_product, last_product = self.__get_first_last_names()
-        with allure.step(f"Сравнить названия первого товара {first_product} "
-                         f"и последнего товара {last_product}."
-                         " Проверить, что товары отсортированы от A до Z"):
-            assert last_product > first_product, \
-                f"Название первого товара {first_product}," \
-                f"Название последнего товара {last_product}"
+        elements = self._element(*CataloguePageLocators.ITEM_NAME, all=True)
+        names = [i.text for i in elements]
+        assert all(names[i] < names[i+1] for i in range(len(names)-1)), f"Порядок названий - {names}"
 
-    def __get_first_last_names(self):
-        """Возвращает названия первого и последнего элементов в списке товаров."""
+    @allure.step("Проверить, что товары отсортированы по возрастанию цены")
+    def check_sort_by_price_low_high(self):
+        """Получение всех цен товаров после сортировки и проверка
+        заданной сортировки."""
 
-        with allure.step("Получить название первого товара"):
-            first_product = self.get_text_of_element(*CataloguePageLocators.FIRST_PRODUCT)
-        with allure.step("Получить название последнего товара"):
-            last_product = self.get_text_of_element(*CataloguePageLocators.LAST_PRODUCT)
-        return first_product, last_product
+        elements = self._element(*CataloguePageLocators.ITEM_PRICE, all=True)
+        prices_with_tax = [i.text for i in elements]
+        prices_without_tax = [i.split('\nEx')[0] for i in prices_with_tax]
+        prices_in_float = [float(i.replace(',', '').replace('$', '')) for i in prices_without_tax]
+        assert all(prices_in_float[i] <= prices_in_float[i+1] for i in range(len(prices_in_float)-1)), \
+            f"Порядок цен - {prices_in_float}"

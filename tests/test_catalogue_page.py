@@ -66,4 +66,22 @@ def test_sort_by_name_a_z(browser, url):
     page = CataloguePage(browser, url)
     page.open_url()
     page.select_by_text("Name (A - Z)")
-    page.check_names_after_sort_by_name_a_z()
+    page.check_sort_by_name_a_z()
+
+
+@allure.feature("Страница Каталога")
+@allure.story("Сортировка товаров")
+@allure.title("Сортировка по цене Low > High")
+@allure.link("#", name="User story")
+def test_sort_by_price_low_to_high(browser, url):
+    """Тестовая функция для проверки сортировки товаров по
+    возрастанию цены.
+
+    :param browser: фикстура для запуска драйвера
+    :param url: фикстура с урлом тестируемого ресурса
+    """
+    url = f'{url}index.php?route=product/category&path=18'
+    page = CataloguePage(browser, url)
+    page.open_url()
+    page.select_by_text("Price (Low > High)")
+    page.check_sort_by_price_low_high()
