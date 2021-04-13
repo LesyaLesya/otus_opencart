@@ -17,12 +17,14 @@ class SearchPage(BasePage):
         """
 
         self.input_text(*SearchPageLocators.SEARCH_INPUT, txt)
+        return self
 
     @allure.step("Нажать на кнопку поиска")
     def start_search(self):
         """Нажатие на кнопку запуска поиска."""
 
         self.click_on_element(*SearchPageLocators.SEARCH_BUTTON)
+        return self
 
     @allure.step("Проверить искомое значение {value} в названиях товаров")
     def get_item_from_search_result(self, value):

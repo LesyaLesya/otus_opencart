@@ -57,8 +57,6 @@ class MainPage(BasePage):
         :param index: порядковый индекс элемента
         """
 
-        with allure.step(f"Проверить видимость товара с индексом {index}"):
-            self.is_element_visible(*MainPageLocators.FEATURED_PRODUCT_LINK, index)
         with allure.step(f"Получить название товара с индексом {index}"):
             name = self.get_text_of_element(*MainPageLocators.FEATURED_PRODUCT_NAME, index)
         with allure.step(f"Кликнуть по превью товара с индексом {index}"):

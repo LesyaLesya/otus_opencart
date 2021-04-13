@@ -6,6 +6,8 @@ import allure
 from otus_opencart.pages.locators import CataloguePageLocators
 from otus_opencart.pages.catalogue_page import CataloguePage
 from otus_opencart.pages.product_page import ProductPage
+from otus_opencart.pages.login_page import LoginPage
+from otus_opencart.pages.account_page import AccountPage
 
 
 @allure.feature("Страница Каталога")
@@ -107,3 +109,28 @@ def test_go_to_product_from_catalogue(browser, url, idx):
     name = page.go_to_product_from_catalogue(idx)
     product_page = ProductPage(browser, browser.current_url)
     product_page.compare_item_title_on_pages(name)
+
+
+@allure.feature("Страница Каталога")
+@allure.story("Добавление товара в Виш-лист")
+@allure.title("Добавление товара в Виш-лист из каталога")
+@allure.link("#", name="User story")
+@pytest.mark.parametrize("idx", [0, 1])
+def test_adding_to_wish_list_from_catalogue(browser, url, idx):
+    """Тестовая функция для проверки перехода
+    в карточку товара по клику из каталога товаров.
+
+    :param browser: фикстура для запуска драйвера
+    :param url: фикстура с урлом тестируемого ресурса
+    :param idx: порядковый индекс элемента
+    """
+    url = f'{url}index.php?route=product/category&path=18'
+    page = CataloguePage(browser, url)
+    page.open_url()
+    name = page.add_to_wishlist(idx)
+    page.click_login_from_alert()
+    login_page = LoginPage(browser, browser.current_url)
+    login_page.login_user()
+    account_page = AccountPage(browser, browser.current_url)
+    account_page.open_wishlist()
+    account_page.check_item_in_wish_list(name)

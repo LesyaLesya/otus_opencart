@@ -13,12 +13,14 @@ class CataloguePage(BasePage):
         """Добавление товара в сравнение."""
 
         self.click_on_element(*CataloguePageLocators.COMPARE_BUTTON)
+        return self
 
     @allure.step("Проверить отображение алерта")
     def should_be_successful_alert(self):
         """Проверка отображения алерта после добавления товара в сравнение."""
 
         self.is_element_visible(*CataloguePageLocators.ALERT_SUCCESS)
+        return self
 
     @allure.step("Проверить, что товар добавился к сравнению - значение в ссылке увеличилось на 1")
     def should_be_adding_in_compare_link(self, txt):
@@ -76,3 +78,20 @@ class CataloguePage(BasePage):
         with allure.step(f"Кликнуть по превью товара с индексом {index}"):
             self.click_on_element(*CataloguePageLocators.ITEM_NAME, index)
         return name
+
+    def add_to_wishlist(self, index):
+        """Добавление товара в вишлист. Возвращает название
+        добавленного товара.
+        """
+
+        with allure.step(f"Получить название товара с индексом {index}"):
+            name = self.get_text_of_element(*CataloguePageLocators.ITEM_NAME, index)
+        with allure.step(f"Кликнуть на кнопку добавления в Виш-лист с индексом {index}"):
+            self.click_on_element(*CataloguePageLocators.WISH_LIST_BUTTON, index)
+        return name
+
+    @allure.step("Кликнуть на кнопку Логина в алерте")
+    def click_login_from_alert(self):
+        """Клик по кнопке Логина в алерте."""
+
+        return self.click_on_element(*CataloguePageLocators.LOGIN_LINK_IN_ALERT)

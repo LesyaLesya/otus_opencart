@@ -17,12 +17,14 @@ class HeaderPage(BasePage):
         """
 
         self.input_text(*HeaderPageLocators.SEARCH_INPUT, txt)
+        return self
 
     @allure.step("Нажать на кнопку поиска")
     def start_search(self):
         """Нажатие на кнопку запуска поиска."""
 
         self.click_on_element(*HeaderPageLocators.SEARCH_BUTTON)
+        return self
 
     def go_to_login_page(self):
         """Проверка перехода на страницу Логина"""
@@ -31,3 +33,4 @@ class HeaderPage(BasePage):
             self.click_on_element(*HeaderPageLocators.MY_ACCOUNT_LINK)
         with allure.step("Кликнуть на кнопку Login"):
             self.click_on_element(*HeaderPageLocators.LOGIN_LINK)
+        return self

@@ -66,6 +66,8 @@ class CataloguePageLocators:
     SELECT_SORT = (By.ID, "input-sort")
     ITEM_NAME = (By.CSS_SELECTOR, '.caption > h4 > a')
     ITEM_PRICE = (By.CSS_SELECTOR, '.caption > h4 + p + p.price')
+    LOGIN_LINK_IN_ALERT = (By.CSS_SELECTOR, 'div.alert-success > i + a')
+    WISH_LIST_BUTTON = (By.XPATH, '//button[@data-original-title="Add to Wish List"]')
 
 
 class LoginPageLocators:
@@ -109,3 +111,9 @@ class SearchPageLocators:
     CHECKBOX_DESCRIPTION = (By.ID, "description")
     PRODUCT_NAME = (By.CSS_SELECTOR, ".product-thumb > .image + div > .caption > h4 > a")
     EMPTY_RESULT = (By.CSS_SELECTOR, "h2 + p")
+
+
+class AccountPageLocators:
+    """Локаторы для страницы аккаунта пользователя."""
+    WISH_LIST_LINK = (By.XPATH, '//div[@id="content"]/ul[1]/li[4]/a')
+    ITEM_NAME_IN_WISH_LIST = (By.CSS_SELECTOR, '#content > div > table > tbody > tr >td.text-left > a')
