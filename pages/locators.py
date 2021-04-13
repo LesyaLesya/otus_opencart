@@ -52,7 +52,6 @@ class ProductPageLocators:
     LOGIN_LINK_IN_ALERT = (By.CSS_SELECTOR, 'div.alert-success > i + a')
     WISH_LIST_BUTTON = (By.XPATH, '//button[@data-original-title="Add to Wish List"]')
     COMPARE_BUTTON = (By.XPATH, '//div[@class="btn-group"]/button[@data-original-title="Compare this Product"]')
-    ALERT_SUCCESS_COMPARE = (By.CSS_SELECTOR, 'div.alert-success')
     LINK_COMPARE = (By.CSS_SELECTOR, 'div.alert-success > a + a')
 
 
@@ -65,7 +64,7 @@ class CataloguePageLocators:
     LEFT_MENU = (By.ID, "column-left")
     BANNER_UNDER_LEFT_MENU = (By.ID, "banner0")
     COMPARE_BUTTON = (By.XPATH,
-                      '//button[@data-original-title="Compare this Product" and contains(@onclick, "47")]')
+                      '//button[@data-original-title="Compare this Product"]')
     ALERT_SUCCESS_COMPARE = (By.CSS_SELECTOR, ".alert-success")
     COMPARE_LINK = (By.ID, "compare-total")
     SELECT_SORT = (By.ID, "input-sort")

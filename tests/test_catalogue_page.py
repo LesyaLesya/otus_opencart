@@ -8,6 +8,7 @@ from otus_opencart.pages.catalogue_page import CataloguePage
 from otus_opencart.pages.product_page import ProductPage
 from otus_opencart.pages.login_page import LoginPage
 from otus_opencart.pages.account_page import AccountPage
+from otus_opencart.pages.comparison_page import ComparisonPage
 
 
 @allure.feature("Страница Каталога")
@@ -34,24 +35,6 @@ def test_presence_of_elements_on_catalogue_page(browser, url, locator):
     page = CataloguePage(browser, url)
     page.open_url()
     page.is_element_visible(*locator)
-
-
-@allure.feature("Страница Каталога")
-@allure.title("Добавление товара к сравнению")
-@allure.link("#", name="User story")
-def test_add_to_compare(browser, url):
-    """Тестовая функция для проверки добавление товара к сравнению
-    со страницы каталога.
-
-    :param browser: фикстура для запуска драйвера
-    :param url: фикстура с урлом тестируемого ресурса
-    """
-    url = f'{url}index.php?route=product/category&path=18'
-    page = CataloguePage(browser, url)
-    page.open_url()
-    page.click_to_compare()
-    page.should_be_successful_alert()
-    page.should_be_adding_in_compare_link("Product Compare (1)")
 
 
 @allure.feature("Страница Каталога")
@@ -134,3 +117,26 @@ def test_adding_to_wish_list_from_catalogue(browser, url, idx):
     account_page = AccountPage(browser, browser.current_url)
     account_page.open_wishlist()
     account_page.check_item_in_wish_list(name)
+
+
+@allure.feature("Страница Товара")
+@allure.story("Добавление товара в сравнение")
+@allure.title("Добавление товара в сравнение из каталога")
+@allure.link("#", name="User story")
+@pytest.mark.parametrize("idx", [0, 1])
+def test_adding_to_compare_from_catalogue(browser, url, idx):
+    """Тестовая функция для проверки добавление товара к сравнению
+    со страницы каталога.
+
+    :param browser: фикстура для запуска драйвера
+    :param url: фикстура с урлом тестируемого ресурса
+    :param idx: порядковый индекс элемента
+    """
+    url = f'{url}index.php?route=product/category&path=18'
+    page = CataloguePage(browser, url)
+    page.open_url()
+    name = page.add_to_compare(idx)
+    page.should_be_adding_in_compare_link("1")
+    page.go_to_compare_page()
+    compare_page = ComparisonPage(browser, browser.current_url)
+    compare_page.check_item_in_comparison(name)

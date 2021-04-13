@@ -8,19 +8,22 @@ from otus_opencart.pages.locators import CataloguePageLocators
 class CataloguePage(BasePage):
     """Класс с методами для страницы Каталога."""
 
-    @allure.step("Добавить товар к сравнению кликом на кнопку")
-    def click_to_compare(self):
-        """Добавление товара в сравнение."""
+    def add_to_compare(self, idx):
+        """Добавление товара в сравнение. Возвращает название
+        добавленного товара.
+        """
 
-        self.click_on_element(*CataloguePageLocators.COMPARE_BUTTON)
-        return self
+        with allure.step(f"Получить название товара"):
+            name = self.get_text_of_element(*CataloguePageLocators.ITEM_NAME, idx)
+        with allure.step(f"Кликнуть на кнопку добавления в сравнение"):
+            self.click_on_element(*CataloguePageLocators.COMPARE_BUTTON, idx)
+        return name
 
-    @allure.step("Проверить отображение алерта")
-    def should_be_successful_alert(self):
-        """Проверка отображения алерта после добавления товара в сравнение."""
+    @allure.step("Кликнуть на кнопку Сравнения в алерте")
+    def go_to_compare_page(self):
+        """Клик по ссылке Сравнения."""
 
-        self.is_element_visible(*CataloguePageLocators.ALERT_SUCCESS_COMPARE)
-        return self
+        return self.click_on_element(*CataloguePageLocators.COMPARE_LINK)
 
     @allure.step("Проверить, что товар добавился к сравнению - значение в ссылке увеличилось на 1")
     def should_be_adding_in_compare_link(self, txt):
@@ -33,7 +36,7 @@ class CataloguePage(BasePage):
         with allure.step("Получить текст из строки сравнения"):
             link_txt = self.get_text_of_element(*CataloguePageLocators.COMPARE_LINK)
         with allure.step("Сравнить тексты"):
-            assert link_txt == txt, f"Текст - {link_txt}"
+            assert link_txt == f'Product Compare ({txt})', f"Текст - {link_txt}"
 
     @allure.step("Сортировать товары по {txt}")
     def select_by_text(self, txt):
