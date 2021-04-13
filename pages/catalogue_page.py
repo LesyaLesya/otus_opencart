@@ -19,7 +19,7 @@ class CataloguePage(BasePage):
     def should_be_successful_alert(self):
         """Проверка отображения алерта после добавления товара в сравнение."""
 
-        self.is_element_visible(*CataloguePageLocators.ALERT_SUCCESS)
+        self.is_element_visible(*CataloguePageLocators.ALERT_SUCCESS_COMPARE)
         return self
 
     @allure.step("Проверить, что товар добавился к сравнению - значение в ссылке увеличилось на 1")

@@ -117,8 +117,8 @@ def test_go_to_product_from_catalogue(browser, url, idx):
 @allure.link("#", name="User story")
 @pytest.mark.parametrize("idx", [0, 1])
 def test_adding_to_wish_list_from_catalogue(browser, url, idx):
-    """Тестовая функция для проверки перехода
-    в карточку товара по клику из каталога товаров.
+    """Тестовая функция для проверки добавления продукта
+    в виш-лист из каталога.
 
     :param browser: фикстура для запуска драйвера
     :param url: фикстура с урлом тестируемого ресурса

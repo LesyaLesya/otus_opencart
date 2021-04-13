@@ -63,3 +63,37 @@ class ProductPage(BasePage):
         name_on_product_page = self.get_text_of_element(*ProductPageLocators.ITEM_TITLE)
         assert name == name_on_product_page,  \
             f"Название - {name}, в карточке товара - {name_on_product_page}"
+
+    def add_to_wishlist(self):
+        """Добавление товара в вишлист. Возвращает название
+        добавленного товара.
+        """
+
+        with allure.step(f"Получить название товара"):
+            name = self.get_text_of_element(*ProductPageLocators.ITEM_TITLE)
+        with allure.step(f"Кликнуть на кнопку добавления в Виш-лист"):
+            self.click_on_element(*ProductPageLocators.WISH_LIST_BUTTON)
+        return name
+
+    @allure.step("Кликнуть на кнопку Логина в алерте")
+    def click_login_from_alert(self):
+        """Клик по кнопке Логина в алерте."""
+
+        return self.click_on_element(*ProductPageLocators.LOGIN_LINK_IN_ALERT)
+
+    def add_to_compare(self):
+        """Добавление товара в сравнение. Возвращает название
+        добавленного товара.
+        """
+
+        with allure.step(f"Получить название товара"):
+            name = self.get_text_of_element(*ProductPageLocators.ITEM_TITLE)
+        with allure.step(f"Кликнуть на кнопку добавления в сравнение"):
+            self.click_on_element(*ProductPageLocators.COMPARE_BUTTON)
+        return name
+
+    @allure.step("Кликнуть на кнопку Сравнения в алерте")
+    def click_compare_from_alert(self):
+        """Клик по кнопке Сравнения в алерте."""
+
+        return self.click_on_element(*ProductPageLocators.LINK_COMPARE)

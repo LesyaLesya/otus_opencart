@@ -49,6 +49,11 @@ class ProductPageLocators:
     TAB_SPECIFICATION_LINK = (By.XPATH, '//a[@href="#tab-specification"]')
     TAB_REVIEWS_LINK = (By.XPATH, '//a[@href="#tab-review"]')
     ITEM_TITLE = (By.CSS_SELECTOR, ".col-sm-4 > .btn-group + h1")
+    LOGIN_LINK_IN_ALERT = (By.CSS_SELECTOR, 'div.alert-success > i + a')
+    WISH_LIST_BUTTON = (By.XPATH, '//button[@data-original-title="Add to Wish List"]')
+    COMPARE_BUTTON = (By.XPATH, '//div[@class="btn-group"]/button[@data-original-title="Compare this Product"]')
+    ALERT_SUCCESS_COMPARE = (By.CSS_SELECTOR, 'div.alert-success')
+    LINK_COMPARE = (By.CSS_SELECTOR, 'div.alert-success > a + a')
 
 
 class CataloguePageLocators:
@@ -61,7 +66,7 @@ class CataloguePageLocators:
     BANNER_UNDER_LEFT_MENU = (By.ID, "banner0")
     COMPARE_BUTTON = (By.XPATH,
                       '//button[@data-original-title="Compare this Product" and contains(@onclick, "47")]')
-    ALERT_SUCCESS = (By.CSS_SELECTOR, ".alert-success")
+    ALERT_SUCCESS_COMPARE = (By.CSS_SELECTOR, ".alert-success")
     COMPARE_LINK = (By.ID, "compare-total")
     SELECT_SORT = (By.ID, "input-sort")
     ITEM_NAME = (By.CSS_SELECTOR, '.caption > h4 > a')
@@ -115,5 +120,12 @@ class SearchPageLocators:
 
 class AccountPageLocators:
     """Локаторы для страницы аккаунта пользователя."""
+
     WISH_LIST_LINK = (By.XPATH, '//div[@id="content"]/ul[1]/li[4]/a')
     ITEM_NAME_IN_WISH_LIST = (By.CSS_SELECTOR, '#content > div > table > tbody > tr >td.text-left > a')
+
+
+class ComparePageLocators:
+    """Локаторы для страницы сравнения."""
+
+    ITEM_NAMES = (By.CSS_SELECTOR, 'h1 + table > tbody > tr > td > a > strong')
