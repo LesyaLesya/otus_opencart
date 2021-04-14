@@ -137,3 +137,7 @@ class CartPageLocators:
     ITEM_NAMES = (By.CSS_SELECTOR, 'form > div.table-responsive > table > tbody > tr >td.text-left > a')
     REMOVE_BUTTONS = (By.XPATH, '//button[@data-original-title="Remove"]')
     TEXT_EMPTY_CART = (By.CSS_SELECTOR, 'h1 + p')
+    QUANTITY_INPUT = (By.CSS_SELECTOR, 'div.btn-block > input.form-control')
+    QUANTITY_REFRESH_BUTTON = (By.XPATH, '//button[@data-original-title="Update"]')
+    UNIT_PRICE = (By.CSS_SELECTOR, 'form > div.table-responsive > table > tbody > tr > td:nth-child(5)')
+    TOTAL_PRICE = (By.CSS_SELECTOR, 'form > div.table-responsive > table > tbody > tr > td:nth-child(6)')

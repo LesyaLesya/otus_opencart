@@ -28,3 +28,28 @@ class CartPage(BasePage):
 
         text = self.get_text_of_element(*CartPageLocators.TEXT_EMPTY_CART)
         assert text == 'Your shopping cart is empty!', f'Текст - {text}'
+
+    @allure.step("Ввести в инпут значение {value}")
+    def _set_quantity(self, value):
+        """Ввод значения в инпут. Возвращает введенное значение."""
+
+        self.input_text(*CartPageLocators.QUANTITY_INPUT, value)
+        return value
+
+    @allure.step("Нажать на кнопку обновления цены")
+    def _refresh_price(self):
+        """Возвращает клик по кнопке."""
+
+        return self.click_on_element(*CartPageLocators.QUANTITY_REFRESH_BUTTON)
+
+    @allure.step("Нажать на кнопку обновления цены")
+    def updating_price(self, val):
+        """Возвращает клик по кнопке."""
+        value = self._set_quantity(val)
+        self._refresh_price()
+        unit_price = self.get_text_of_element(*CartPageLocators.UNIT_PRICE)
+        unit_price_in_float = float(unit_price.replace(',', '').replace('$', ''))
+        total_price = self.get_text_of_element(*CartPageLocators.TOTAL_PRICE)
+        total_price_in_float = float(total_price.replace(',', '').replace('$', ''))
+        assert total_price_in_float == unit_price_in_float * value, \
+            f'Общая цена - {total_price_in_float}, цена за единицу {unit_price_in_float}'
