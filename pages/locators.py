@@ -135,3 +135,5 @@ class CartPageLocators:
     """Локаторы для страницы корзины."""
 
     ITEM_NAMES = (By.CSS_SELECTOR, 'form > div.table-responsive > table > tbody > tr >td.text-left > a')
+    REMOVE_BUTTONS = (By.XPATH, '//button[@data-original-title="Remove"]')
+    TEXT_EMPTY_CART = (By.CSS_SELECTOR, 'h1 + p')
