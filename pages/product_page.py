@@ -79,7 +79,7 @@ class ProductPage(BasePage):
     def click_login_from_alert(self):
         """Клик по кнопке Логина в алерте."""
 
-        return self.click_on_element(*ProductPageLocators.LOGIN_LINK_IN_ALERT)
+        return self.click_on_element(*ProductPageLocators.LINK_LOGIN_ALERT)
 
     def add_to_compare(self):
         """Добавление товара в сравнение. Возвращает название
@@ -96,4 +96,21 @@ class ProductPage(BasePage):
     def click_compare_from_alert(self):
         """Клик по кнопке Сравнения в алерте."""
 
-        return self.click_on_element(*ProductPageLocators.LINK_COMPARE)
+        return self.click_on_element(*ProductPageLocators.LINK_COMPARE_ALERT)
+
+    def add_to_cart(self):
+        """Добавление товара в корзину. Возвращает название
+        добавленного товара.
+        """
+
+        with allure.step(f"Получить название товара"):
+            name = self.get_text_of_element(*ProductPageLocators.ITEM_TITLE)
+        with allure.step(f"Кликнуть на кнопку добавления в корзину"):
+            self.click_on_element(*ProductPageLocators.BUTTON_CART)
+        return name
+
+    @allure.step("Кликнуть на кнопку Корзины в алерте")
+    def click_cart_from_alert(self):
+        """Клик по кнопке Корзины в алерте."""
+
+        return self.click_on_element(*ProductPageLocators.LINK_CART_ALERT)

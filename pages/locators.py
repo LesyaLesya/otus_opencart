@@ -38,7 +38,7 @@ class ProductPageLocators:
     """Локаторы для страницы Товара."""
 
     PRODUCT_HEADER = (By.CSS_SELECTOR, ".btn-group + h1")
-    BUTTON_CART = (By.ID, "button-cart")
+    BUTTON_CART = (By.CSS_SELECTOR, "#product > div > #button-cart")
     IMAGES_BLOCK = (By.CLASS_NAME, "thumbnails")
     RATING_BLOCK = (By.CLASS_NAME, "rating")
     PRODUCT_DESCRIPTION = (By.CSS_SELECTOR, "#tab-description > p")
@@ -49,10 +49,11 @@ class ProductPageLocators:
     TAB_SPECIFICATION_LINK = (By.XPATH, '//a[@href="#tab-specification"]')
     TAB_REVIEWS_LINK = (By.XPATH, '//a[@href="#tab-review"]')
     ITEM_TITLE = (By.CSS_SELECTOR, ".col-sm-4 > .btn-group + h1")
-    LOGIN_LINK_IN_ALERT = (By.CSS_SELECTOR, 'div.alert-success > i + a')
+    LINK_LOGIN_ALERT = (By.CSS_SELECTOR, 'div.alert-success > i + a')
     WISH_LIST_BUTTON = (By.XPATH, '//button[@data-original-title="Add to Wish List"]')
     COMPARE_BUTTON = (By.XPATH, '//div[@class="btn-group"]/button[@data-original-title="Compare this Product"]')
-    LINK_COMPARE = (By.CSS_SELECTOR, 'div.alert-success > a + a')
+    LINK_COMPARE_ALERT = (By.CSS_SELECTOR, 'div.alert-success > a + a')
+    LINK_CART_ALERT = (By.CSS_SELECTOR, 'div.alert-success > a + a')
 
 
 class CataloguePageLocators:
@@ -128,3 +129,9 @@ class ComparePageLocators:
     """Локаторы для страницы сравнения."""
 
     ITEM_NAMES = (By.CSS_SELECTOR, 'h1 + table > tbody > tr > td > a > strong')
+
+
+class CartPageLocators:
+    """Локаторы для страницы корзины."""
+
+    ITEM_NAMES = (By.CSS_SELECTOR, 'form > div.table-responsive > table > tbody > tr >td.text-left > a')

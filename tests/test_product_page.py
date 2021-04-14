@@ -8,6 +8,7 @@ from otus_opencart.pages.product_page import ProductPage
 from otus_opencart.pages.login_page import LoginPage
 from otus_opencart.pages.account_page import AccountPage
 from otus_opencart.pages.comparison_page import ComparisonPage
+from otus_opencart.pages.cart_page import CartPage
 
 
 @allure.feature("Страница Товара")
@@ -112,3 +113,23 @@ def test_adding_to_compare_from_product(browser, url):
     page.click_compare_from_alert()
     compare_page = ComparisonPage(browser, browser.current_url)
     compare_page.check_item_in_comparison(name)
+
+
+@allure.feature("Страница Товара")
+@allure.story("Добавление товара в корзину")
+@allure.title("Добавление товара в корзину из карточки товара")
+@allure.link("#", name="User story")
+def test_adding_to_cart_from_product(browser, url):
+    """Тестовая функция для проверки добавления продукта
+    в корзину из карточки товара.
+
+    :param browser: фикстура для запуска драйвера
+    :param url: фикстура с урлом тестируемого ресурса
+    """
+    url = f'{url}index.php?route=product/product&path=18&product_id=47'
+    page = ProductPage(browser, url)
+    page.open_url()
+    name = page.add_to_cart()
+    page.click_cart_from_alert()
+    cart_page = CartPage(browser, browser.current_url)
+    cart_page.check_item_in_cart(name)
