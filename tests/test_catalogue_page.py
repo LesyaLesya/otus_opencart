@@ -98,7 +98,7 @@ def test_go_to_product_from_catalogue(browser, url, idx):
 @allure.story("Добавление товара в Виш-лист")
 @allure.title("Добавление товара в Виш-лист из каталога")
 @allure.link("#", name="User story")
-@pytest.mark.parametrize("idx", [0, 1])
+@pytest.mark.parametrize("idx", [0])
 def test_adding_to_wish_list_from_catalogue(browser, url, idx):
     """Тестовая функция для проверки добавления продукта
     в виш-лист из каталога.
@@ -123,7 +123,7 @@ def test_adding_to_wish_list_from_catalogue(browser, url, idx):
 @allure.story("Добавление товара в сравнение")
 @allure.title("Добавление товара в сравнение из каталога")
 @allure.link("#", name="User story")
-@pytest.mark.parametrize("idx", [0, 1])
+@pytest.mark.parametrize("idx", [1])
 def test_adding_to_compare_from_catalogue(browser, url, idx):
     """Тестовая функция для проверки добавление товара к сравнению
     со страницы каталога.

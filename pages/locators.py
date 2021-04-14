@@ -122,7 +122,7 @@ class AccountPageLocators:
     """Локаторы для страницы аккаунта пользователя."""
 
     WISH_LIST_LINK = (By.XPATH, '//div[@id="content"]/ul[1]/li[4]/a')
-    ITEM_NAME_IN_WISH_LIST = (By.CSS_SELECTOR, '#content > div > table > tbody > tr >td.text-left > a')
+    ITEM_NAMES = (By.CSS_SELECTOR, '#content > div > table > tbody > tr >td.text-left > a')
 
 
 class ComparePageLocators:

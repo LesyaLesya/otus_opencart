@@ -19,6 +19,6 @@ class AccountPage(BasePage):
     def check_item_in_wish_list(self, name):
         """Проверка видимости товара в вишлисте."""
 
-        name_in_wishlist = self.get_text_of_element(*AccountPageLocators.ITEM_NAME_IN_WISH_LIST)
-        assert name == name_in_wishlist, \
-            f"Название {name}, название в вишлисте {name_in_wishlist}"
+        elements = self._element(*AccountPageLocators.ITEM_NAMES, all=True)
+        product_names = [i.text for i in elements]
+        assert name in product_names, f"Название {name}, названия в вишлисте {product_names}"
