@@ -57,12 +57,12 @@ class AdminPage(BasePage):
         with allure.step("Кликнуть по Catalog в левом меню"):
             self.click_on_element(*AdminPageLocators.LEFT_MENU_CATALOGUE)
         with allure.step("Кликнуть по Categories в левом меню"):
-            self.click_on_element(*AdminPageLocators.LEFT_MENU_CATEGORIES)
+            self.click_on_element(*AdminPageLocators.LEFT_MENU_PRODUCTS)
         return self
 
     @allure.step("Проверить, что таблица отображается")
     def should_be_table(self):
         """Проверка видимости таблицы."""
 
-        self.is_element_visible(*AdminPageLocators.CATEGORIES_TABLE)
+        self.is_element_visible(*AdminPageLocators.PRODUCTS_TABLE)
         return self

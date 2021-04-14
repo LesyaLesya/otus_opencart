@@ -102,8 +102,8 @@ class AdminPageLocators:
     NEED_LOGIN_TEXT = (By.XPATH, "//h1[contains(text(), 'enter your login')]")
     LOGOUT_BUTTON = (By.CSS_SELECTOR, ".nav > li:nth-child(2) > a")
     LEFT_MENU_CATALOGUE = (By.CSS_SELECTOR, "#menu-catalog > a")
-    LEFT_MENU_CATEGORIES = (By.CSS_SELECTOR, "#collapse1 > li:nth-child(1) > a")
-    CATEGORIES_TABLE = (By.CSS_SELECTOR, ".table-responsive")
+    LEFT_MENU_PRODUCTS = (By.CSS_SELECTOR, "#collapse1 > li:nth-child(2) > a")
+    PRODUCTS_TABLE = (By.CSS_SELECTOR, ".table-responsive")
 
 
 class SearchPageLocators:
