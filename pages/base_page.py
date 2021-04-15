@@ -1,6 +1,7 @@
 """Модуль c общими методами для всех страниц."""
 
 import allure
+import os
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import Select
@@ -157,3 +158,12 @@ class BasePage:
         except TimeoutException:
             allure_helper.attach(self.browser)
             raise AssertionError(f'Нет элемента с локатором {locator} по пути {el_path}')
+
+    @allure.step("Проскроллить до элемента {el}")
+    def scroll_to_element(self, el):
+        """Возвращает скролл до элемента."""
+
+        try:
+            return self.browser.execute_script("return arguments[0].scrollIntoView(true);", el)
+        except Exception as e:
+            raise AssertionError(f'Ошибка {e}')

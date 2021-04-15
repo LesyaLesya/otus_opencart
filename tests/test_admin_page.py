@@ -5,6 +5,7 @@ import pytest
 import allure
 from otus_opencart.pages.admin_page import AdminPage
 from otus_opencart.pages.locators import AdminPageLocators
+from otus_opencart.pages.catalogue_page import CataloguePage
 
 
 @allure.feature("Административная страница")
@@ -89,4 +90,4 @@ def test_get_products_table(browser, url):
     page.set_password("bitnami")
     page.login_button_click()
     page.get_product_table()
-    page.should_be_table()
+    page.should_be_products_table()

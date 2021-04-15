@@ -2,6 +2,7 @@
 
 
 import allure
+import time
 from otus_opencart.pages.base_page import BasePage
 from otus_opencart.pages.locators import AdminPageLocators
 
@@ -56,12 +57,12 @@ class AdminPage(BasePage):
 
         with allure.step("Кликнуть по Catalog в левом меню"):
             self.click_on_element(*AdminPageLocators.LEFT_MENU_CATALOGUE)
-        with allure.step("Кликнуть по Categories в левом меню"):
+        with allure.step("Кликнуть по Products в левом меню"):
             self.click_on_element(*AdminPageLocators.LEFT_MENU_PRODUCTS)
         return self
 
     @allure.step("Проверить, что таблица отображается")
-    def should_be_table(self):
+    def should_be_products_table(self):
         """Проверка видимости таблицы."""
 
         self.is_element_visible(*AdminPageLocators.PRODUCTS_TABLE)
