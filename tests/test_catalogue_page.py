@@ -119,7 +119,7 @@ def test_adding_to_wish_list_from_catalogue(browser, url, idx):
     account_page.check_item_in_wish_list(name)
 
 
-@allure.feature("Страница Товара")
+@allure.feature("Страница Каталога")
 @allure.story("Добавление товара в сравнение")
 @allure.title("Добавление товара в сравнение из каталога")
 @allure.link("#", name="User story")
