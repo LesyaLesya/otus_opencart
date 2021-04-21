@@ -2,9 +2,8 @@
 
 
 import allure
-import time
-from otus_opencart.pages.base_page import BasePage
-from otus_opencart.pages.locators import AdminPageLocators
+from pages.base_page import BasePage
+from pages.locators import AdminPageLocators
 
 
 class AdminPage(BasePage):
@@ -66,4 +65,11 @@ class AdminPage(BasePage):
         """Проверка видимости таблицы."""
 
         self.is_element_visible(*AdminPageLocators.PRODUCTS_TABLE)
+        return self
+
+    @allure.step("Проверить, что выведен алерт с ошибкой авторизации")
+    def should_be_fail_login_alert(self):
+        """Проверка видимости алерта."""
+
+        self.is_element_visible(*AdminPageLocators.FAIL_LOGIN_ALERT)
         return self

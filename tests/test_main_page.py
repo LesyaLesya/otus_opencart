@@ -2,9 +2,9 @@
 
 import pytest
 import allure
-from otus_opencart.pages.locators import MainPageLocators
-from otus_opencart.pages.main_page import MainPage
-from otus_opencart.pages.product_page import ProductPage
+from pages.locators import MainPageLocators
+from pages.main_page import MainPage
+from pages.product_page import ProductPage
 
 
 @allure.feature("Главная страница")

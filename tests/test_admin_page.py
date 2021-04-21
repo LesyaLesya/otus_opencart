@@ -3,9 +3,8 @@
 
 import pytest
 import allure
-from otus_opencart.pages.admin_page import AdminPage
-from otus_opencart.pages.locators import AdminPageLocators
-from otus_opencart.pages.catalogue_page import CataloguePage
+from pages.admin_page import AdminPage
+from pages.locators import AdminPageLocators
 
 
 @allure.feature("Административная страница")
@@ -51,6 +50,27 @@ def test_login_valid(browser, url):
     page.set_password("bitnami")
     page.login_button_click()
     page.is_title_correct("Dashboard")
+
+
+@allure.feature("Административная страница")
+@allure.story("Авторизация в админке")
+@allure.title("Невалидные креденшелы")
+@allure.link("#", name="User story")
+@pytest.mark.parametrize("login, passw", [("test", "test"),
+                                          ("123", "")])
+def test_login_failed(browser, url, login, passw):
+    """Тестовая функция для проверки логина в админку с невалидными креденшелами.
+
+    :param browser: фикстура для запуска драйвера
+    :param url: фикстура с урлом тестируемого ресурса
+    """
+    url = f'{url}admin/'
+    page = AdminPage(browser, url)
+    page.open_url()
+    page.set_username(login)
+    page.set_password(passw)
+    page.login_button_click()
+    page.should_be_fail_login_alert()
 
 
 @allure.feature("Административная страница")

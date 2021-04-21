@@ -11,7 +11,7 @@ from types import SimpleNamespace
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options as ChOp
 from selenium.webdriver.firefox.options import Options as FFOp
-from otus_opencart.helpers import allure_helper
+from helpers import allure_helper
 
 
 @pytest.hookimpl(tryfirst=True, hookwrapper=True)

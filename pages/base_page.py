@@ -1,13 +1,13 @@
 """Модуль c общими методами для всех страниц."""
 
 import allure
-import os
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import Select
-from selenium.common.exceptions import TimeoutException, NoSuchElementException
-from otus_opencart.helpers import allure_helper, waits
-from otus_opencart.helpers.waits import Element, Elements, Clickable
+from selenium.common.exceptions import TimeoutException
+from helpers import allure_helper
+from helpers.waits import Element, Elements, Clickable
+
 
 class BasePage:
     """Класс, описывающий базовую страницу."""

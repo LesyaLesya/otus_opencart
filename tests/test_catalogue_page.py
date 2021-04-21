@@ -3,12 +3,12 @@
 
 import pytest
 import allure
-from otus_opencart.pages.locators import CataloguePageLocators
-from otus_opencart.pages.catalogue_page import CataloguePage
-from otus_opencart.pages.product_page import ProductPage
-from otus_opencart.pages.login_page import LoginPage
-from otus_opencart.pages.account_page import AccountPage
-from otus_opencart.pages.comparison_page import ComparisonPage
+from pages.locators import CataloguePageLocators
+from pages.catalogue_page import CataloguePage
+from pages.product_page import ProductPage
+from pages.login_page import LoginPage
+from pages.account_page import AccountPage
+from pages.comparison_page import ComparisonPage
 
 
 @allure.feature("Страница Каталога")

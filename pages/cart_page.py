@@ -1,8 +1,8 @@
 """Модуль c методами для страницы Корзины."""
 
 import allure
-from otus_opencart.pages.base_page import BasePage
-from otus_opencart.pages.locators import CartPageLocators
+from pages.base_page import BasePage
+from pages.locators import CartPageLocators
 
 
 class CartPage(BasePage):

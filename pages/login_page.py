@@ -2,9 +2,9 @@
 
 
 import allure
-from otus_opencart.pages.base_page import BasePage
-from otus_opencart.pages.locators import LoginPageLocators
-from otus_opencart.helpers import test_data
+from pages.base_page import BasePage
+from pages.locators import LoginPageLocators
+from helpers import test_data
 
 
 class LoginPage(BasePage):

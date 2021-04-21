@@ -1,8 +1,8 @@
 """Модуль c методами для страницы Аккаунта пользователя."""
 
 import allure
-from otus_opencart.pages.base_page import BasePage
-from otus_opencart.pages.locators import AccountPageLocators
+from pages.base_page import BasePage
+from pages.locators import AccountPageLocators
 
 
 class AccountPage(BasePage):

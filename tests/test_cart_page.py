@@ -2,8 +2,8 @@
 
 import pytest
 import allure
-from otus_opencart.pages.product_page import ProductPage
-from otus_opencart.pages.cart_page import CartPage
+from pages.product_page import ProductPage
+from pages.cart_page import CartPage
 
 
 @allure.feature("Страница Корзины")

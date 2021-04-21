@@ -2,8 +2,8 @@
 
 import pytest
 import allure
-from otus_opencart.pages.search_page import SearchPage
-from otus_opencart.pages.locators import SearchPageLocators
+from pages.search_page import SearchPage
+from pages.locators import SearchPageLocators
 
 
 @allure.feature("Страница Поиска")

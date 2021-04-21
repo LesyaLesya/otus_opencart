@@ -2,10 +2,10 @@
 
 import pytest
 import allure
-from otus_opencart.pages.header_page import HeaderPage
-from otus_opencart.pages.search_page import SearchPage
-from otus_opencart.pages.login_page import LoginPage
-from otus_opencart.pages.locators import HeaderPageLocators
+from pages.header_page import HeaderPage
+from pages.search_page import SearchPage
+from pages.login_page import LoginPage
+from pages.locators import HeaderPageLocators
 
 
 @allure.feature("Шапка сайта")

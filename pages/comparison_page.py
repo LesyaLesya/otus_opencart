@@ -1,8 +1,8 @@
 """Модуль c методами для страницы Сравнение товара."""
 
 import allure
-from otus_opencart.pages.base_page import BasePage
-from otus_opencart.pages.locators import ComparePageLocators
+from pages.base_page import BasePage
+from pages.locators import ComparePageLocators
 
 
 class ComparisonPage(BasePage):

@@ -104,6 +104,7 @@ class AdminPageLocators:
     LEFT_MENU_CATALOGUE = (By.CSS_SELECTOR, "#menu-catalog > a")
     LEFT_MENU_PRODUCTS = (By.CSS_SELECTOR, "#collapse1 > li:nth-child(2) > a")
     PRODUCTS_TABLE = (By.CSS_SELECTOR, ".table-responsive")
+    FAIL_LOGIN_ALERT = (By.CSS_SELECTOR, '.alert-danger')
 
 
 class SearchPageLocators:

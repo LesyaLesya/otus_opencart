@@ -3,9 +3,9 @@
 
 import pytest
 import allure
-from otus_opencart.pages.locators import LoginPageLocators
-from otus_opencart.pages.login_page import LoginPage
-from otus_opencart.pages.account_page import AccountPage
+from pages.locators import LoginPageLocators
+from pages.login_page import LoginPage
+from pages.account_page import AccountPage
 
 
 @allure.feature("Страница логина")

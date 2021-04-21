@@ -2,8 +2,8 @@
 
 
 import allure
-from otus_opencart.pages.base_page import BasePage
-from otus_opencart.pages.locators import HeaderPageLocators
+from pages.base_page import BasePage
+from pages.locators import HeaderPageLocators
 
 
 class HeaderPage(BasePage):
