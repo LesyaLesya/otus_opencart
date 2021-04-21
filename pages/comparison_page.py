@@ -14,4 +14,4 @@ class ComparisonPage(BasePage):
 
         name_in_comparison = self.get_text_of_element(*ComparePageLocators.ITEM_NAMES)
         assert name == name_in_comparison, \
-            f"Название {name}, название в вишлисте {name_in_comparison}"
+            f"Название {name}, название в сравнении {name_in_comparison}"

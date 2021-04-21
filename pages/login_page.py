@@ -37,4 +37,5 @@ class LoginPage(BasePage):
     def check_fail_login(self):
         """Проверка отображения алерта с ошибкой авторизации."""
 
-        return self.is_element_visible(*LoginPageLocators.FAIL_LOGIN_ALERT)
+        self.is_element_visible(*LoginPageLocators.FAIL_LOGIN_ALERT)
+        return self

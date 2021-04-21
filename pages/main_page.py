@@ -17,6 +17,7 @@ class MainPage(BasePage):
                     "swiper-pagination-bullet swiper-pagination-bullet-active":
                 self.click_on_element(*MainPageLocators.BANNER_BULLET, 0)
                 self.is_element_visible(*MainPageLocators.BANNER_IPHONE)
+                return self
             else:
                 raise AssertionError(
                     f'Класс элемента {self.getting_attr("class", *MainPageLocators.BANNER_BULLET, 0)}')
@@ -25,6 +26,7 @@ class MainPage(BasePage):
                     "swiper-pagination-bullet swiper-pagination-bullet-active":
                 self.click_on_element(*MainPageLocators.BANNER_BULLET, 1)
                 self.is_element_visible(*MainPageLocators.BANNER_MACBOOK)
+                return self
             else:
                 raise AssertionError(
                     f'Класс элемента {self.getting_attr("class", *MainPageLocators.BANNER_BULLET, 1)}')
@@ -38,6 +40,7 @@ class MainPage(BasePage):
                     "swiper-pagination-bullet swiper-pagination-bullet-active":
                 self.click_on_element(*MainPageLocators.BANNER_BULLET, 1)
                 self.is_element_visible(*MainPageLocators.BANNER_MACBOOK)
+                return self
             else:
                 raise AssertionError(
                     f'Класс элемента {self.getting_attr("class", *MainPageLocators.BANNER_BULLET, 0)}')
@@ -46,6 +49,7 @@ class MainPage(BasePage):
                     "swiper-pagination-bullet swiper-pagination-bullet-active":
                 self.click_on_element(*MainPageLocators.BANNER_BULLET, 0)
                 self.is_element_visible(*MainPageLocators.BANNER_IPHONE)
+                return self
             else:
                 raise AssertionError(
                     f'Класс элемента {self.getting_attr("class", *MainPageLocators.BANNER_BULLET, 1)}')

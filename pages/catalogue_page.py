@@ -23,7 +23,8 @@ class CataloguePage(BasePage):
     def go_to_compare_page(self):
         """Клик по ссылке Сравнения."""
 
-        return self.click_on_element(*CataloguePageLocators.COMPARE_LINK)
+        self.click_on_element(*CataloguePageLocators.COMPARE_LINK)
+        return self
 
     @allure.step("Проверить, что товар добавился к сравнению - значение в ссылке увеличилось на 1")
     def should_be_adding_in_compare_link(self, txt):
@@ -97,4 +98,5 @@ class CataloguePage(BasePage):
     def click_login_from_alert(self):
         """Клик по кнопке Логина в алерте."""
 
-        return self.click_on_element(*CataloguePageLocators.LOGIN_LINK_IN_ALERT)
+        self.click_on_element(*CataloguePageLocators.LOGIN_LINK_IN_ALERT)
+        return self

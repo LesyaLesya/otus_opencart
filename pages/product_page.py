@@ -79,7 +79,8 @@ class ProductPage(BasePage):
     def click_login_from_alert(self):
         """Клик по кнопке Логина в алерте."""
 
-        return self.click_on_element(*ProductPageLocators.LINK_LOGIN_ALERT)
+        self.click_on_element(*ProductPageLocators.LINK_LOGIN_ALERT)
+        return self
 
     def add_to_compare(self):
         """Добавление товара в сравнение. Возвращает название
@@ -113,4 +114,5 @@ class ProductPage(BasePage):
     def click_cart_from_alert(self):
         """Клик по кнопке Корзины в алерте."""
 
-        return self.click_on_element(*ProductPageLocators.LINK_CART_ALERT)
+        self.click_on_element(*ProductPageLocators.LINK_CART_ALERT)
+        return self

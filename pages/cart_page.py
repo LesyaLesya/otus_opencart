@@ -20,7 +20,8 @@ class CartPage(BasePage):
     def remove_product_from_cart(self):
         """Проверка удаления товаров из корзины."""
 
-        return self.click_on_element(*CartPageLocators.REMOVE_BUTTONS)
+        self.click_on_element(*CartPageLocators.REMOVE_BUTTONS)
+        return self
 
     @allure.step("Проверить, что корзина пуста")
     def check_empty_cart(self):
@@ -40,7 +41,8 @@ class CartPage(BasePage):
     def _refresh_price(self):
         """Возвращает клик по кнопке."""
 
-        return self.click_on_element(*CartPageLocators.QUANTITY_REFRESH_BUTTON)
+        self.click_on_element(*CartPageLocators.QUANTITY_REFRESH_BUTTON)
+        return self
 
     @allure.step("Нажать на кнопку обновления цены")
     def updating_price(self, val):

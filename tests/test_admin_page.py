@@ -63,6 +63,8 @@ def test_login_failed(browser, url, login, passw):
 
     :param browser: фикстура для запуска драйвера
     :param url: фикстура с урлом тестируемого ресурса
+    :param login: передаваемый логин
+    :param passw: передаваемый пароль
     """
     url = f'{url}admin/'
     page = AdminPage(browser, url)
