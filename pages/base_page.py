@@ -5,6 +5,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import Select
 from selenium.common.exceptions import TimeoutException
+from selenium.webdriver.common.action_chains import ActionChains
 from helpers import allure_helper
 from helpers.waits import Element, Elements, Clickable
 
@@ -167,3 +168,35 @@ class BasePage:
             return self.browser.execute_script("return arguments[0].scrollIntoView(true);", el)
         except Exception as e:
             raise AssertionError(f'Ошибка {e}')
+
+    @allure.step("Получить css свойство {css_property} элемента {locator} {el_path}")
+    def get_css_property(self, locator, el_path, css_property, index=0):
+        """Возвращает значение css свойства найденного элемента.
+
+        :param locator: тип локатора
+        :param el_path: путь до элемента
+        :param css_property: css свойство
+        :param index: порядковый индекс элемента
+        """
+
+        element = self._element(locator, el_path, index)
+        try:
+            return element.value_of_css_property(css_property)
+        except TimeoutException:
+            allure_helper.attach(self.browser)
+            raise AssertionError(f'Нет элемента с локатором {locator} по пути {el_path}')
+
+    @allure.step("Навести курсор мыши на элемент {locator} {el_path}")
+    def mouse_move_to_element(self, locator, el_path, index=0):
+        """Наводит курсор мыши на элемент.
+
+        :param locator: тип локатора
+        :param el_path: путь до элемента
+        :param index: порядковый индекс элемента
+        """
+        element = self._element(locator, el_path, index)
+        try:
+            return ActionChains(self.browser).move_to_element(element).perform()
+        except TimeoutException:
+            allure_helper.attach(self.browser)
+            raise AssertionError(f'Нет элемента с локатором {locator} по пути {el_path}')

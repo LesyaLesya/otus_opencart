@@ -68,3 +68,19 @@ def test_search_result_title(browser, url, value):
     page.start_search()
     search_page = SearchPage(browser, browser.current_url)
     search_page.is_title_correct(f"Search - {value}")
+
+
+@allure.feature("Шапка сайта")
+@allure.story("Проверка стилей")
+@allure.title("Проверка стилей логотипа")
+@allure.link("#", name="User story")
+def test_logo_styles(browser, url):
+    """Тестовая функция для стилей логотипа.
+
+    :param browser: фикстура для запуска драйвера
+    :param url: фикстура с урлом тестируемого ресурса
+    """
+    page = HeaderPage(browser, url)
+    page.open_url()
+    page.check_logo_css()
+    page.check_logo_css_hover()
