@@ -48,6 +48,7 @@ def test_check_title_on_main_page(browser, url):
 
 
 @allure.feature("Главная страница")
+@allure.story("Проверка смены ротации баннеров и каруселей")
 @allure.title("Проверка смены баннеров по клику на буллеты")
 @allure.link("#", name="User story")
 def test_banners_rotation(browser, url):
@@ -81,3 +82,19 @@ def test_go_to_product_from_featured(browser, url, idx):
     name = page.go_to_product_from_featured(idx)
     product_page = ProductPage(browser, browser.current_url)
     product_page.compare_item_title_on_pages(name)
+
+
+@allure.feature("Главная страница")
+@allure.story("Проверка смены ротации баннеров и каруселей")
+@allure.title("Проверка смены брендов в карусели по клику на кнопки")
+@allure.link("#", name="User story")
+def test_carousel_rotation(browser, url):
+    """Тестовая функция для проверки смены брендов в карусели
+    по клику на кнопки.
+
+    :param browser: фикстура для запуска драйвера
+    :param url: фикстура с урлом тестируемого ресурса
+    """
+    page = MainPage(browser, url)
+    page.open_url()
+    page.click_carousel_bullet()

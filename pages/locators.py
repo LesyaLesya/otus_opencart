@@ -27,11 +27,14 @@ class MainPageLocators:
     CAROUSEL_BRAND = (By.CSS_SELECTOR, "#carousel0.swiper-container-horizontal")
     CAROUSEL_PAGINATION_BULLETS = (By.CSS_SELECTOR,
                                    ".swiper-pagination.carousel0.swiper-pagination-clickable.swiper-pagination-bullets")
+    CAROUSEL_PAGINATION_BULLET = (By.CSS_SELECTOR,
+                                  '.swiper-pagination.carousel0.swiper-pagination-clickable.swiper-pagination-bullets > .swiper-pagination-bullet')
     BANNER_MACBOOK = (By.XPATH, "//div[contains(@class, 'swiper-slide-active')]/img[@alt='MacBookAir']")
     BANNER_IPHONE = (By.XPATH, "//div[contains(@class, 'swiper-slide-active')]/a/img[@alt='iPhone 6']")
     BANNER_BULLET = (By.CSS_SELECTOR, "div.slideshow0 > span.swiper-pagination-bullet")
     FEATURED_PRODUCT_LINK = (By.CSS_SELECTOR, 'h3 + div.row > div > div > div.image > a')
     FEATURED_PRODUCT_NAME = (By.CSS_SELECTOR, 'h3 + div.row > div > div > div.image +  div.caption > h4 > a')
+    BRAND_IMAGE_IN_CAROUSEL = (By.CSS_SELECTOR, '#carousel0 .swiper-slide')
 
 
 class ProductPageLocators:
