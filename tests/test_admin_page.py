@@ -76,6 +76,7 @@ def test_login_failed(browser, url, login, passw):
 
 
 @allure.feature("Административная страница")
+@allure.story("Выход из админки")
 @allure.title("Выход из админки")
 @allure.link("#", name="User story")
 @allure.description(" Проверка разлогина из админки")

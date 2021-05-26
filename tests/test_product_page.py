@@ -38,6 +38,7 @@ def test_presence_of_elements_on_product_page(browser, url, locator):
 
 
 @allure.feature("Страница Товара")
+@allure.story("Открытие фото товара")
 @allure.title("Открытие фото товара по клику")
 @allure.link("#", name="User story")
 def test_open_image_in_window_by_click(browser, url):
@@ -55,6 +56,7 @@ def test_open_image_in_window_by_click(browser, url):
 
 
 @allure.feature("Страница Товара")
+@allure.story("Переход по табам")
 @allure.title("Переход по табам")
 @allure.link("#", name="User story")
 def test_click_on_tabs(browser, url):

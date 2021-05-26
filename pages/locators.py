@@ -133,6 +133,9 @@ class ComparePageLocators:
     """Локаторы для страницы сравнения."""
 
     ITEM_NAMES = (By.CSS_SELECTOR, 'h1 + table > tbody > tr > td > a > strong')
+    REMOVE_BUTTON = (By.CSS_SELECTOR, 'a.btn-danger')
+    ALERT_SUCCESS = (By.CSS_SELECTOR, 'div.alert-success')
+    TEXT_FOR_EMTY_COMPARE = (By.CSS_SELECTOR, '#content > h1 + p')
 
 
 class CartPageLocators:

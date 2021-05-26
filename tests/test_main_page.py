@@ -33,6 +33,7 @@ def test_presence_of_elements_on_main_page(browser, url, locator):
 
 
 @allure.feature("Главная страница")
+@allure.story("Проверка заголовка Главной страницы")
 @allure.title("Проверка заголовка Главной страницы")
 @allure.link("#", name="User story")
 def test_check_title_on_main_page(browser, url):
