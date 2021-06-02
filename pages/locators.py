@@ -10,7 +10,7 @@ class HeaderPageLocators:
     SEARCH_BUTTON = (By.CSS_SELECTOR, ".btn.btn-default.btn-lg")
     LOGO = (By.CSS_SELECTOR, "#logo > h1 > a")
     MENU = (By.CSS_SELECTOR, ".navbar-collapse")
-    CART_BUTTON = (By.ID, "cart")
+    CART_BUTTON = (By.CSS_SELECTOR, "#cart > button.btn-block")
     TOP_LINKS = (By.ID, "top-links")
     SEARCH_FIELD = (By.ID, "search")
     MY_ACCOUNT_LINK = (By.XPATH, '//a[@title = "My Account"]')

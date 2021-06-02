@@ -4,7 +4,7 @@
 import allure
 from pages.base_page import BasePage
 from pages.locators import HeaderPageLocators
-from pages.styles import Colors, Cursor
+from pages.styles import Colors, Cursor, Gradients, Border
 
 
 class HeaderPage(BasePage):
@@ -68,3 +68,101 @@ class HeaderPage(BasePage):
             assert lst[2] == Cursor.POINTER, f"Курсор - {lst[2]}"
         with allure.step(f"Проверить, что цвет {Colors.DARK_BLUE}"):
             assert lst[3] == Colors.DARK_BLUE, f"Цвет текста - {lst[3]}"
+
+    def check_cart_button_css(self):
+        """Проверка стилей кнопки корзины без наведения."""
+
+        lst = []
+        with allure.step("Получить стили элемента"):
+            for prop in ["font-size", "line-height", "color", "background-color", "background-image",
+                         "border-top-color", "border-right-color", "border-bottom-color",
+                         "border-left-color", "border-radius", "cursor"]:
+                lst.append(self.get_css_property(*HeaderPageLocators.CART_BUTTON, prop))
+        with allure.step("Проверить, что шрифт 12px"):
+            assert lst[0] == "12px", f"Размер текста - {lst[0]}"
+        with allure.step("Проверить межстрочный интервал 18px"):
+            assert lst[1] == "18px", f"Межстрочный интервал - {lst[1]}"
+        with allure.step("Проверить, что цвет текста белый"):
+            assert lst[2] == Colors.WHITE, f"Цвет текста - {lst[2]}"
+        with allure.step("Проверить цвета фона"):
+            assert lst[3] == Colors.DARK_GRAY, f"Цвет фона - {lst[3]}"
+        with allure.step("Прверить фоновое изображение"):
+            assert lst[4] == Gradients.LIGHT_BLACK, f"Фоновое изображение - {lst[4]}"
+        with allure.step("Проверит цвет верхней рамки"):
+            assert lst[5] == Colors.LIGHT_BLACK, f"Цвет верхней рамки - {lst[5]}"
+        with allure.step("Проверит цвет правой рамки"):
+            assert lst[6] == Colors.LIGHT_BLACK, f"Цвет правой рамки - {lst[6]}"
+        with allure.step("Проверит цвет нижней рамки"):
+            assert lst[7] == Colors.BLACK, f"Цвет нижней рамки - {lst[7]}"
+        with allure.step("Проверит цвет левой рамки"):
+            assert lst[8] == Colors.LIGHT_BLACK, f"Цвет левой рамки - {lst[8]}"
+        with allure.step("Проверить радиус скругления"):
+            assert lst[9] == "4px", f"Радиус скругления - {lst[9]}"
+        with allure.step("Проверить, что курсор Pointer"):
+            assert lst[10] == Cursor.POINTER, f"Курсор - {lst[10]}"
+
+    def check_cart_button_css_hover(self):
+        """Проверка стилей кнопки корзины при наведении."""
+
+        self.mouse_move_to_element(*HeaderPageLocators.CART_BUTTON)
+        lst = []
+        with allure.step("Получить стили элемента"):
+            for prop in ["font-size", "line-height", "color", "background-color", "background-image",
+                         "border-top-color", "border-right-color", "border-bottom-color",
+                         "border-left-color", "border-radius", "cursor"]:
+                lst.append(self.get_css_property(*HeaderPageLocators.CART_BUTTON, prop))
+        with allure.step("Проверить, что шрифт 12px"):
+            assert lst[0] == "12px", f"Размер текста - {lst[0]}"
+        with allure.step("Проверить межстрочный интервал 18px"):
+            assert lst[1] == "18px", f"Межстрочный интервал - {lst[1]}"
+        with allure.step("Проверить, что цвет текста белый"):
+            assert lst[2] == Colors.WHITE, f"Цвет текста - {lst[2]}"
+        with allure.step("Проверить цвета фона"):
+            assert lst[3] == Colors.LIGHT_BLACK, f"Цвет фона - {lst[3]}"
+        with allure.step("Прверить фоновое изображение"):
+            assert lst[4] == Gradients.MEDIUM_BLACK, f"Фоновое изображение - {lst[4]}"
+        with allure.step("Проверит цвет верхней рамки"):
+            assert lst[5] == Colors.LIGHT_BLACK, f"Цвет верхней рамки - {lst[5]}"
+        with allure.step("Проверит цвет правой рамки"):
+            assert lst[6] == Colors.LIGHT_BLACK, f"Цвет правой рамки - {lst[6]}"
+        with allure.step("Проверит цвет нижней рамки"):
+            assert lst[7] == Colors.BLACK, f"Цвет нижней рамки - {lst[7]}"
+        with allure.step("Проверит цвет левой рамки"):
+            assert lst[8] == Colors.LIGHT_BLACK, f"Цвет левой рамки - {lst[8]}"
+        with allure.step("Проверит радиус скругления"):
+            assert lst[9] == "4px", f"Радиус скругления - {lst[9]}"
+        with allure.step("Проверить, что курсор Pointer"):
+            assert lst[10] == Cursor.POINTER, f"Курсор - {lst[10]}"
+
+    def check_cart_button_css_click(self):
+        """Проверка стилей кнопки корзины при клике."""
+
+        self.click_on_element(*HeaderPageLocators.CART_BUTTON)
+        lst = []
+        with allure.step("Получить стили элемента"):
+            for prop in ["font-size", "line-height", "color", "background-color", "background-image",
+                         "border", "border-radius", "cursor"]:
+                lst.append(self.get_css_property(*HeaderPageLocators.CART_BUTTON, prop))
+        with allure.step("Проверить, что шрифт 12px"):
+            assert lst[0] == "12px", f"Размер текста - {lst[0]}"
+        with allure.step("Проверить межстрочный интервал 18px"):
+            assert lst[1] == "18px", f"Межстрочный интервал - {lst[1]}"
+        with allure.step("Проверить, что цвет текста серый"):
+            assert lst[2] == Colors.MEDIUM_GRAY, f"Цвет текста - {lst[2]}"
+        with allure.step("Проверить цвета фона"):
+            assert lst[3] == Colors.WHITE, f"Цвет фона - {lst[3]}"
+        with allure.step("Прверить фоновое изображение"):
+            assert lst[4] == "none", f"Фоновое изображение - {lst[4]}"
+        with allure.step("Проверит стиль рамки"):
+            assert lst[5] == Border.LIGHT_GRAY, f"Рамка - {lst[5]}"
+        with allure.step("Проверит радиус скругления"):
+            assert lst[6] == "4px", f"Радиус скругления - {lst[6]}"
+        with allure.step("Проверить, что курсор Pointer"):
+            assert lst[7] == Cursor.POINTER, f"Курсор - {lst[7]}"
+        with allure.step("Проверить, что открылась выпадашка"):
+            assert self.check_cart_button_dropdown_open() == "true", "Выпадашка не открыта"
+
+    def check_cart_button_dropdown_open(self):
+        """Прверка отображения выпадашки у кнопки корзины."""
+
+        return self.getting_attr("aria-expanded", *HeaderPageLocators.CART_BUTTON)
