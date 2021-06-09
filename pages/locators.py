@@ -148,3 +148,9 @@ class CartPageLocators:
     QUANTITY_REFRESH_BUTTON = (By.XPATH, '//button[@data-original-title="Update"]')
     UNIT_PRICE = (By.CSS_SELECTOR, 'form > div.table-responsive > table > tbody > tr > td:nth-child(5)')
     TOTAL_PRICE = (By.CSS_SELECTOR, 'form > div.table-responsive > table > tbody > tr > td:nth-child(6)')
+
+
+class FooterPageLocators:
+    """Локаторы для подвала."""
+
+    LINKS = (By.CSS_SELECTOR, "footer div.col-sm-3 > ul.list-unstyled > li > a")
