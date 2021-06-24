@@ -135,3 +135,25 @@ def test_adding_to_cart_from_product(browser, url):
     page.click_cart_from_alert()
     cart_page = CartPage(browser, browser.current_url)
     cart_page.check_item_in_cart(name)
+
+
+@allure.feature("Страница Товара")
+@allure.story("Написание отзыва на товар")
+@allure.title("Написание отзыва на товар из карточки товара")
+@allure.link("#", name="User story")
+@pytest.mark.parametrize("name, value, idx",
+                         [("TEST1", "something about the item - good item", 4)])
+def test_write_review(browser, url, name, value, idx):
+    """Тестовая функция для проверки написания отзыва к товару.
+
+    :param browser: фикстура для запуска драйвера
+    :param url: фикстура с урлом тестируемого ресурса
+    :param name: автор отзыва
+    :param value: текст отзыва
+    :param idx: индекс, соответсвующий рейтингу товара (с 0)
+    """
+    url = f'{url}index.php?route=product/product&path=18&product_id=47'
+    page = ProductPage(browser, url)
+    page.open_url()
+    page.write_review(name, value, idx)
+    page.check_review_in_db(name, value)

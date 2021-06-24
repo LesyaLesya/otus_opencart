@@ -57,6 +57,11 @@ class ProductPageLocators:
     COMPARE_BUTTON = (By.XPATH, '//div[@class="btn-group"]/button[@data-original-title="Compare this Product"]')
     LINK_COMPARE_ALERT = (By.CSS_SELECTOR, 'div.alert-success > a + a')
     LINK_CART_ALERT = (By.CSS_SELECTOR, 'div.alert-success > a + a')
+    WRITE_REVIEW_BUTTON = (By.XPATH, '//a[text()="Write a review"]')
+    REVIEW_NAME_FIELD = (By.ID, "input-name")
+    REVIEW_FIELD = (By.ID, "input-review")
+    RATING_RADIO_BUTTON = (By.NAME, "rating")
+    REVIEW_BUTTON = (By.CSS_SELECTOR, 'div.pull-right > #button-review')
 
 
 class CataloguePageLocators:

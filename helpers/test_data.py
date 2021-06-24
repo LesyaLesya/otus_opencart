@@ -32,3 +32,26 @@ def delete_user(connection, email):
     data = [email]
     connection.cursor().execute(query, data)
     connection.commit()
+
+
+@allure.step("Получить тестовый отзыв")
+def get_review(connection, author, text):
+    """Получение записи о ревью."""
+    query = "SELECT * FROM oc_review WHERE oc_review.author = %s and oc_review.text = %s"
+    result = 0
+    data = [author, text]
+    with connection.cursor() as cursor:
+        cursor.execute(query, data)
+        db_data = cursor.fetchall()
+        for _ in db_data:
+            result = result + 1
+    return result
+
+
+@allure.step("Удалить тестовый отзыв")
+def delete_review(connection, author, text):
+    """Удаление ревью."""
+    query = "DELETE FROM oc_review WHERE oc_review.author = %s and oc_review.text = %s"
+    data = [author, text]
+    connection.cursor().execute(query, data)
+    connection.commit()

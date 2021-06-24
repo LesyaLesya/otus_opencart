@@ -4,6 +4,7 @@
 import allure
 from pages.base_page import BasePage
 from pages.locators import ProductPageLocators
+from helpers import test_data
 
 
 class ProductPage(BasePage):
@@ -116,3 +117,40 @@ class ProductPage(BasePage):
 
         self.click_on_element(*ProductPageLocators.LINK_CART_ALERT)
         return self
+
+    @allure.step("Написать отзыв на товар")
+    def write_review(self, name, value, idx):
+        """ После заполнения полей и отправки формы возвращаются имя автора и текст отзыва. """
+
+        with allure.step("Нажать на кнопку написания отзыва"):
+            self.click_on_element(*ProductPageLocators.WRITE_REVIEW_BUTTON)
+        with allure.step(f"Заполнить имя автора - {name}"):
+            self.input_text(*ProductPageLocators.REVIEW_NAME_FIELD, name)
+        with allure.step(f"Заполнить текст отзыва - {value}"):
+            self.input_text(*ProductPageLocators.REVIEW_FIELD, value)
+        with allure.step("Выбрать оценку"):
+            self.click_on_element(*ProductPageLocators.RATING_RADIO_BUTTON, idx)
+        with allure.step("Нажать на кнопку отправки отзыва"):
+            self.click_on_element(*ProductPageLocators.REVIEW_BUTTON)
+        return self
+
+    def check_review_in_db(self, author, text):
+        self.__get_review_from_db(author, text)
+        self.__del_review_from_bd(author, text)
+
+    @allure.step("Проверить, что ревью появилось в БД")
+    def __get_review_from_db(self, author, text):
+        """ Проверка, сколько записей возвращается по заданному условию. """
+
+        result = test_data.get_review(self.browser.db, author, text)
+        with allure.step(f"Проверяем, что запись об отзыве создана в БД "):
+            if result > 0:
+                assert True
+            else:
+                assert False, f"Записи не найдены - {result}"
+
+    @allure.step("Удалить ревью из БД")
+    def __del_review_from_bd(self, author, text):
+        """ Возаращает удаление отзыва из БД. """
+
+        return test_data.delete_review(self.browser.db, author, text)
