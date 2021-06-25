@@ -2,6 +2,7 @@
 
 
 import allure
+import time
 from pages.base_page import BasePage
 from pages.locators import ProductPageLocators
 from helpers import test_data
@@ -143,6 +144,7 @@ class ProductPage(BasePage):
         """ Проверка, сколько записей возвращается по заданному условию. """
 
         result = test_data.get_review(self.browser.db, author, text)
+        time.sleep(1)
         with allure.step(f"Проверяем, что запись об отзыве создана в БД "):
             if result > 0:
                 assert True
