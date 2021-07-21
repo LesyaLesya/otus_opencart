@@ -101,3 +101,19 @@ def test_cart_button_styles(browser, url):
     page.check_cart_button_css()
     page.check_cart_button_css_hover()
     page.check_cart_button_css_click()
+
+
+@allure.feature("Шапка сайта")
+@allure.story("Проверка выпадающих списков")
+@allure.title("Проверка значений в списке валют")
+@allure.link("#", name="User story")
+def test_currency_values(browser, url):
+    """Тестовая функция проверки значений валют.
+
+    :param browser: фикстура для запуска драйвера
+    :param url: фикстура с урлом тестируемого ресурса
+    """
+    page = HeaderPage(browser, url)
+    page.open_url()
+    page.click_on_currency_drop_down()
+    page.check_currency_values(["€ Euro", "£ Pound Sterling", "$ US Dollar"])

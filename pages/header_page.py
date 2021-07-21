@@ -166,3 +166,19 @@ class HeaderPage(BasePage):
         """Прверка отображения выпадашки у кнопки корзины."""
 
         return self.getting_attr("aria-expanded", *HeaderPageLocators.CART_BUTTON)
+
+    @allure.step("Кликнуть на выпадающий список валют")
+    def click_on_currency_drop_down(self):
+        self.click_on_element(*HeaderPageLocators.CURRENCY_DROP_DOWN_BUTTON)
+        display_css = self.get_css_property(*HeaderPageLocators.CURRENCY_DROP_DONW, "display")
+        with allure.step(f"Проверить, что значение атрибута - block"):
+            assert display_css == "block", f"Значение атрибута - {display_css}"
+
+    @allure.step("Проверить значения валют в выпадающем списке")
+    def check_currency_values(self, lst):
+        elements = self._element(*HeaderPageLocators.CURRENCY_VALUES_BUTTONS, all=True)
+        with allure.step("Получить список валют"):
+            names = [i.text for i in elements]
+            with allure.step(f"Проверить, что полученный список - {names} - совпадает с - {lst}"):
+                for i in names:
+                    assert i in lst

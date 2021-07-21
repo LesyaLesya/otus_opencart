@@ -15,6 +15,9 @@ class HeaderPageLocators:
     SEARCH_FIELD = (By.ID, "search")
     MY_ACCOUNT_LINK = (By.XPATH, '//a[@title = "My Account"]')
     LOGIN_LINK = (By.XPATH, '//a[text() = "Login"]')
+    CURRENCY_DROP_DOWN_BUTTON = (By.CSS_SELECTOR, ".pull-left button.dropdown-toggle")
+    CURRENCY_VALUES_BUTTONS = (By.CSS_SELECTOR, ".pull-left button.dropdown-toggle + ul > li > button")
+    CURRENCY_DROP_DONW = (By.CSS_SELECTOR, ".pull-left button.dropdown-toggle + ul")
 
 
 class MainPageLocators:
