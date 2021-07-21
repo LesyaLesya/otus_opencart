@@ -57,8 +57,8 @@ local_ip=123.123.123.123 docker-compose up -d
 ```
 После этого станут доступны: 
 - приложение local_ip:80,
-- админка localhost:8888,
-- БД localhost:3306.
+- админка local_i:8888,
+- БД local_i:3306.
 
 
 Подсказка - как применить сделанные в docker-compose.yml изменения:
@@ -122,7 +122,7 @@ pip install -r requirements.txt
 В консоли (из директории проекта) выполнить команду:
 
 ```
-pytest --local  --url=http://your_external_ip/ --browser-name=(firefox/chrome)  --executor=path_to_driver -n 2
+pytest --local  --url=your_external_ip --browser-name=(firefox/chrome)  --executor=path_to_driver -n 2
 ```
 где:
 
@@ -130,7 +130,7 @@ pytest --local  --url=http://your_external_ip/ --browser-name=(firefox/chrome)  
 
 - --local - запускает тесты локально
 
-- --url - адрес машины в сети (указать с http) (где запущен opencart)
+- --url - адрес машины в сети (где запущен opencart)
 
 - --browser-name - какой браузер запускать
 
@@ -151,13 +151,13 @@ UI станет доступен на localhost:8080.
 2.В консоли (из директории проекта) выполнить команду:
 
 ```
-pytest  --url=http://your_external_ip/ --browser-name=(chrome/firefox/opera) --browser-version --executor=selenoid_host -n 2
+pytest  --url=your_external_ip --browser-name=(chrome/firefox/opera) --browser-version --executor=selenoid_host -n 2
 ```
 где:
 
 - -n - во сколько потоков запускать тесты, если не указывать параметр при запуске - тесты будут запущены в 1 поток.
 
-- --url - адрес машины в сети (указать с http) (где запущен opencart)
+- --url - адрес машины в сети (где запущен opencart)
 
 - --browser-name - какой браузер запускать
 
@@ -188,9 +188,9 @@ git clone repository_url
 и путь до исполняемого файла allure на вашей машине:
 
 ```
-./run_test_in_docker_with_allure.sh http://your_external_ip/ browser browser_version selenoid_host(external) /path/to/allure/bin
+./run_test_in_docker_with_allure.sh your_external_ip browser browser_version selenoid_host(external) /path/to/allure/bin
 
-Пример: ./run_test_in_docker_with_allure.sh http://123.123.123.123/ chrome 87.0 123.123.123.123 /Applications/allure/bin/allure
+Пример: ./run_test_in_docker_with_allure.sh 123.123.123.123 chrome 87.0 123.123.123.123 /Applications/allure/bin/allure
 ```
 
 ## Запуск тестов в Jenkins + Docker + Selenoid

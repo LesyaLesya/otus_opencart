@@ -12,7 +12,7 @@ pipeline {
             steps {
                 echo 'Running tests in container'
                 sh '''
-                   ${DOCKER_PATH} run --name my_container tests --url http://${URL}/ --browser-name ${BROWSER_NAME} --browser-version ${BROWSER_VERSION} --executor ${EXECUTOR} -n ${NODES}
+                   ${DOCKER_PATH} run --name my_container tests --url ${URL} --browser-name ${BROWSER_NAME} --browser-version ${BROWSER_VERSION} --executor ${EXECUTOR} -n ${NODES}
 
                 '''
             }
