@@ -73,7 +73,8 @@ def pytest_addoption(parser):
 @pytest.fixture()
 def url(request):
     """Фикстура, возвращающая url, переданный в командной строке."""
-    return request.config.getoption("--url")
+    get_url = request.config.getoption("--url")
+    return f"http://{get_url}/"
 
 
 @pytest.fixture()
@@ -147,7 +148,7 @@ def browser(request, db_connection):
 
 @pytest.fixture
 def db_connection(request):
-    db_host = request.config.getoption("--executor")
+    db_host = request.config.getoption("--url")
     config = SimpleNamespace(
         DB_NAME='bitnami_opencart',
         HOST=db_host,
