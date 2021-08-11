@@ -100,3 +100,23 @@ class CataloguePage(BasePage):
 
         self.click_on_element(*CataloguePageLocators.LOGIN_LINK_IN_ALERT)
         return self
+
+    @allure.step("Кликнуть на кнопку вида 'Список'")
+    def click_list_view(self):
+        """Клик по кнопке с видом списка и проверка изменения вида."""
+
+        elements = self._element(*CataloguePageLocators.ITEM_CART, all=True)
+        self.click_on_element(*CataloguePageLocators.LIST_VIEW_BUTTON)
+        for i in range(len(elements)):
+            attr = self.getting_attr("class", *CataloguePageLocators.ITEM_CART, i)
+            assert "product-list" in attr, f"Значение атрибута -  {attr}"
+
+    @allure.step("Кликнуть на кнопку вида 'Сетка'")
+    def click_list_grid(self):
+        """Клик по кнопке с видом сетки и проверка изменения вида."""
+
+        elements = self._element(*CataloguePageLocators.ITEM_CART, all=True)
+        self.click_on_element(*CataloguePageLocators.GRID_VIEW_BUTTON)
+        for i in range(len(elements)):
+            attr = self.getting_attr("class", *CataloguePageLocators.ITEM_CART, i)
+            assert "product-grid" in attr, f"Значение атрибута -  {attr}"

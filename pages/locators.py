@@ -84,6 +84,9 @@ class CataloguePageLocators:
     ITEM_PRICE = (By.CSS_SELECTOR, '.caption > h4 + p + p.price')
     LOGIN_LINK_IN_ALERT = (By.CSS_SELECTOR, 'div.alert-success > i + a')
     WISH_LIST_BUTTON = (By.XPATH, '//button[@data-original-title="Add to Wish List"]')
+    ITEM_CART = (By.CSS_SELECTOR, "div.row > div.product-layout")
+    LIST_VIEW_BUTTON = (By.ID, "list-view")
+    GRID_VIEW_BUTTON = (By.ID, "grid-view")
 
 
 class LoginPageLocators:

@@ -140,3 +140,21 @@ def test_adding_to_compare_from_catalogue(browser, url, idx):
     page.go_to_compare_page()
     compare_page = ComparisonPage(browser, browser.current_url)
     compare_page.check_item_in_comparison(name)
+
+
+@allure.feature("Страница Каталога")
+@allure.story("Переключение вида отображения карточек товара")
+@allure.title("Переключение вида отображения карточек товара")
+@allure.link("#", name="User story")
+def test_change_view_carts(browser, url):
+    """Тестовая функция для проверки изменения отображения вида
+    вывода карточек товара.
+
+    :param browser: фикстура для запуска драйвера
+    :param url: фикстура с урлом тестируемого ресурса
+    """
+    url = f'{url}index.php?route=product/category&path=18'
+    page = CataloguePage(browser, url)
+    page.open_url()
+    page.click_list_view()
+    page.click_list_grid()
