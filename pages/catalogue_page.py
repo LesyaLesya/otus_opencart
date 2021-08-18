@@ -120,3 +120,12 @@ class CataloguePage(BasePage):
         for i in range(len(elements)):
             attr = self.getting_attr("class", *CataloguePageLocators.ITEM_CART, i)
             assert "product-grid" in attr, f"Значение атрибута -  {attr}"
+
+    @allure.step("Сравнить символ в ценах товаров с символом выбранной валюты")
+    def check_currency_in_price(self, idx, symbol):
+        """Проверка отображения значка валюты в ценах."""
+
+        elements = self._element(*CataloguePageLocators.ITEM_PRICE, all=True)
+        prices_with_tax = [i.text for i in elements]
+        prices_without_tax = [i.split('\nEx')[0] for i in prices_with_tax]
+        assert all([i[idx] == symbol for i in prices_without_tax]), f"{prices_without_tax} - список цен"

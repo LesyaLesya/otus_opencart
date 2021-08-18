@@ -182,3 +182,13 @@ class HeaderPage(BasePage):
             with allure.step(f"Проверить, что полученный список - {names} - совпадает с - {lst}"):
                 for i in names:
                     assert i in lst
+
+    @allure.step("Выбрать значение валюты")
+    def choose_currency(self, value):
+        self.click_on_currency_drop_down()
+        elements = self._element(*HeaderPageLocators.CURRENCY_VALUES_BUTTONS, all=True)
+        for i in range(len(elements)):
+            element = self.get_text_of_element(*HeaderPageLocators.CURRENCY_VALUES_BUTTONS, index=i)
+            if element == value:
+                with allure.step(f"Кликнуть по значению валюты {value}"):
+                    return self.click_on_element(*HeaderPageLocators.CURRENCY_VALUES_BUTTONS, index=i)
