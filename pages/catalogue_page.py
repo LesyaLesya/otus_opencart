@@ -3,6 +3,7 @@
 import allure
 from pages.base_page import BasePage
 from pages.locators import CataloguePageLocators
+from pages.styles import Cursor
 
 
 class CataloguePage(BasePage):
@@ -57,6 +58,15 @@ class CataloguePage(BasePage):
         elements = self._element(*CataloguePageLocators.ITEM_NAME, all=True)
         names = [i.text for i in elements]
         assert all(names[i] < names[i+1] for i in range(len(names)-1)), f"Порядок названий - {names}"
+
+    @allure.step("Проверить, что товары отсортированы от Z до A")
+    def check_sort_by_name_z_a(self):
+        """Получение всех названий товаров после сортировки и проверка
+        заданной сортировки."""
+
+        elements = self._element(*CataloguePageLocators.ITEM_NAME, all=True)
+        names = [i.text for i in elements]
+        assert all(names[i] > names[i + 1] for i in range(len(names) - 1)), f"Порядок названий - {names}"
 
     @allure.step("Проверить, что товары отсортированы по возрастанию цены")
     def check_sort_by_price_low_high(self):
@@ -129,3 +139,43 @@ class CataloguePage(BasePage):
         prices_with_tax = [i.text for i in elements]
         prices_without_tax = [i.split('\nEx')[0] for i in prices_with_tax]
         assert all([i[idx] == symbol for i in prices_without_tax]), f"{prices_without_tax} - список цен"
+
+    @allure.step("Проверить стиль кнопки добавления в корзину без наведения")
+    def check_add_to_cart_css(self):
+        """Проверка стилей кнопки добавления в корзину без наведения."""
+
+        elements = self._element(*CataloguePageLocators.ADD_TO_CART_BUTTON, all=True)
+        lst = []
+        for i in range(len(elements)):
+            for prop in ["background-color", "color", "font-weight"]:
+                lst.append(self.get_css_property(*CataloguePageLocators.ADD_TO_CART_BUTTON, prop, i))
+            with allure.step("Проверить, что background-color - rgba(238, 238, 238, 1)"):
+                assert lst[0] == "rgba(238, 238, 238, 1)", f"background-color - {lst[0]}"
+            with allure.step("Проверить, что color - rgba(136, 136, 136, 1)"):
+                assert lst[1] == "rgba(136, 136, 136, 1)", f"color - {lst[1]}"
+            with allure.step("Проверить, что font-weight - 700"):
+                assert lst[2] == "700", f"font-weight - {lst[2]}"
+
+    @allure.step("Проверить стиль кнопки добавления в корзину с наведением")
+    def check_add_to_cart_css_hover(self):
+        """Проверка стилей кнопки добавления в корзину с наведением."""
+
+        elements = self._element(*CataloguePageLocators.ADD_TO_CART_BUTTON, all=True)
+        lst = []
+        for i in range(len(elements)):
+            self.mouse_move_to_element(*CataloguePageLocators.ADD_TO_CART_BUTTON, i)
+            for prop in ["color", "background-color", "cursor"]:
+                lst.append(self.get_css_property(*CataloguePageLocators.ADD_TO_CART_BUTTON, prop, i))
+            with allure.step("Проверить, что color - rgba(68, 68, 68, 1)"):
+                assert lst[0] == "rgba(68, 68, 68, 1)", f"color - {lst[0]}"
+            with allure.step("Проверить, что background-color - rgba(221, 221, 221, 1)"):
+                assert lst[1] == "rgba(221, 221, 221, 1)", f"background-color - {lst[1]}"
+            with allure.step("Проверить, что cursor - pointer"):
+                assert lst[2] == Cursor.POINTER, f"cursor - {lst[2]}"
+
+    @allure.step("Проверка заголовка страницы каталога")
+    def check_catalogue_page_header(self, name):
+        """Проверка заголовка страницы каталога."""
+
+        header = self.get_text_of_element(*CataloguePageLocators.CATALOGUE_HEADER)
+        assert name == header, f'Заголовок (ФР) - {header}, name (ОР) - {name}'

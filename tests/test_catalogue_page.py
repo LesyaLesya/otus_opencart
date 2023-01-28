@@ -58,6 +58,24 @@ def test_sort_by_name_a_z(browser, url):
 
 @allure.feature("Страница Каталога")
 @allure.story("Сортировка товаров")
+@allure.title("Сортировка по названию от Z до A")
+@allure.link("#", name="User story")
+def test_sort_by_name_z_a(browser, url):
+    """Тестовая функция для проверки сортировки товаров по
+    названию от Z до A.
+
+    :param browser: фикстура для запуска драйвера
+    :param url: фикстура с урлом тестируемого ресурса
+    """
+    url = f'{url}index.php?route=product/category&path=18'
+    page = CataloguePage(browser, url)
+    page.open_url()
+    page.select_by_text("Name (Z - A)")
+    page.check_sort_by_name_z_a()
+
+
+@allure.feature("Страница Каталога")
+@allure.story("Сортировка товаров")
 @allure.title("Сортировка по цене Low > High")
 @allure.link("#", name="User story")
 def test_sort_by_price_low_to_high(browser, url):
@@ -185,3 +203,65 @@ def test_change_currency(browser, url, values, idx, symbol):
     currency_page.choose_currency(values)
     catalogue_page2 = CataloguePage(browser, browser.current_url)
     catalogue_page2.check_currency_in_price(idx, symbol)
+
+
+@allure.feature("Страница Каталога")
+@allure.story("Проверка стилей")
+@allure.title("Проверка стилей кнопки добавления в корзину")
+@allure.link("#", name="User story")
+def test_add_to_cart_css(browser, url):
+    """Тестовая функция для стилей кнопки добавления в корзину.
+
+    :param browser: фикстура для запуска драйвера
+    :param url: фикстура с урлом тестируемого ресурса
+    """
+    url = f'{url}index.php?route=product/category&path=18'
+    catalogue_page = CataloguePage(browser, url)
+    catalogue_page.open_url()
+    catalogue_page.check_add_to_cart_css()
+
+
+@allure.feature("Страница Каталога")
+@allure.story("Проверка стилей")
+@allure.title("Проверка стилей при наведении кнопки добавления в корзину")
+@allure.link("#", name="User story")
+def test_add_to_cart_css_hover(browser, url):
+    """Тестовая функция для стилей при наведении кнопки добавления в корзину.
+
+    :param browser: фикстура для запуска драйвера
+    :param url: фикстура с урлом тестируемого ресурса
+    """
+    url = f'{url}index.php?route=product/category&path=18'
+    catalogue_page = CataloguePage(browser, url)
+    catalogue_page.open_url()
+    catalogue_page.check_add_to_cart_css_hover()
+
+
+@allure.feature("Страница Каталога")
+@allure.story("Проверка бокового меню")
+@allure.title("Проверка перехода в другие разделы каталога")
+@allure.link("#", name="User story")
+@pytest.mark.parametrize('categories, value', [
+    (CataloguePageLocators.DESKTOPS_IN_LEFT_MENU, 'Desktops'),
+    (CataloguePageLocators.LAPTOPS_IN_LEFT_MENU, 'Laptops & Notebooks'),
+    (CataloguePageLocators.COMPONENTS_IN_LEFT_MENU, 'Components'),
+    (CataloguePageLocators.TABLETS_IN_LEFT_MENU, 'Tablets'),
+    (CataloguePageLocators.SOFTWARE_IN_LEFT_MENU, 'Software'),
+    (CataloguePageLocators.PHONES_IN_LEFT_MENU, 'Phones & PDAs'),
+    (CataloguePageLocators.CAMERAS_IN_LEFT_MENU, 'Cameras'),
+     (CataloguePageLocators.MP3_IN_LEFT_MENU, 'MP3 Players')])
+def test_go_to_others_catalogue_sections(browser, url, categories, value):
+    """Тестовая функция для проверки перехода в другие разделы каталога.
+
+    :param browser: фикстура для запуска драйвера
+    :param url: фикстура с урлом тестируемого ресурса
+    :param categories: локаторы разделов каталога в левом меню
+    :param value: название категории каталога
+    """
+    url = f'{url}index.php?route=product/category&path=18'
+    catalogue_page = CataloguePage(browser, url)
+    catalogue_page.open_url()
+    catalogue_page.click_on_element(*categories)
+    new_catalogue_page = CataloguePage(browser, browser.current_url)
+    new_catalogue_page.is_title_correct(value)
+    new_catalogue_page.check_catalogue_page_header(value)

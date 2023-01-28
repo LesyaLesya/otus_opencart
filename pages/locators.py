@@ -87,6 +87,15 @@ class CataloguePageLocators:
     ITEM_CART = (By.CSS_SELECTOR, "div.row > div.product-layout")
     LIST_VIEW_BUTTON = (By.ID, "list-view")
     GRID_VIEW_BUTTON = (By.ID, "grid-view")
+    ADD_TO_CART_BUTTON = (By.XPATH, '//div[@class="button-group"]/button[1]')
+    DESKTOPS_IN_LEFT_MENU = (By.PARTIAL_LINK_TEXT, 'Desktops (')
+    LAPTOPS_IN_LEFT_MENU = (By.PARTIAL_LINK_TEXT, 'Laptops & Notebooks (')
+    COMPONENTS_IN_LEFT_MENU = (By.PARTIAL_LINK_TEXT, 'Components (')
+    TABLETS_IN_LEFT_MENU = (By.PARTIAL_LINK_TEXT, 'Tablets (')
+    SOFTWARE_IN_LEFT_MENU = (By.PARTIAL_LINK_TEXT, 'Software (')
+    PHONES_IN_LEFT_MENU = (By.PARTIAL_LINK_TEXT, 'Phones & PDAs (')
+    CAMERAS_IN_LEFT_MENU = (By.PARTIAL_LINK_TEXT, 'Cameras (')
+    MP3_IN_LEFT_MENU = (By.PARTIAL_LINK_TEXT, 'MP3 Players (')
 
 
 class LoginPageLocators:

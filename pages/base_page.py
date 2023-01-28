@@ -100,7 +100,7 @@ class BasePage:
             return self.wait.until(EC.title_is(title))
         except TimeoutException:
             allure_helper.attach(self.browser)
-            raise AssertionError("Заголовок не совпал")
+            raise AssertionError(f"Заголовок не совпал: {self.browser.title}, ожидаем {title}")
 
     @allure.step("Получить title страницы")
     def get_title(self):
