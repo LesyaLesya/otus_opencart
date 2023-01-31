@@ -192,3 +192,8 @@ class HeaderPage(BasePage):
             if element == value:
                 with allure.step(f"Кликнуть по значению валюты {value}"):
                     return self.click_on_element(*HeaderPageLocators.CURRENCY_VALUES_BUTTONS, index=i)
+
+    @allure.step("Навести на раздел главного меню и проверить, что есть выпадашка")
+    def check_dropdown_menu(self, menu_locator, dropdown_locator):
+        self.mouse_move_to_element(*menu_locator)
+        assert self.is_element_visible(*dropdown_locator)

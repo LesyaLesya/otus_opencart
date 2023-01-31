@@ -18,6 +18,12 @@ class HeaderPageLocators:
     CURRENCY_DROP_DOWN_BUTTON = (By.CSS_SELECTOR, ".pull-left button.dropdown-toggle")
     CURRENCY_VALUES_BUTTONS = (By.CSS_SELECTOR, ".pull-left button.dropdown-toggle + ul > li > button")
     CURRENCY_DROP_DONW = (By.CSS_SELECTOR, ".pull-left button.dropdown-toggle + ul")
+    DROPDOWN_FOR_DESKTOPS = (By.XPATH, '//a[text()="Desktops"]//following-sibling::div')
+    COMPONENTS_FOR_DROPDOWN = (By.XPATH, '//a[text()="Components"]//following-sibling::div')
+    LAPTOPS_FOR_DROPDOWN = (By.XPATH, '//a[text()="Laptops & Notebooks"]//following-sibling::div')
+    DESKTOPS_IN_MENU = (By.XPATH, '//a[text()="Desktops"]')
+    COMPONENTS_IN_MENU = (By.XPATH, '//a[text()="Components"]')
+    LAPTOPS_IN_MENU = (By.XPATH, '//a[text()="Laptops & Notebooks"]')
 
 
 class MainPageLocators:
@@ -168,6 +174,7 @@ class CartPageLocators:
     QUANTITY_REFRESH_BUTTON = (By.XPATH, '//button[@data-original-title="Update"]')
     UNIT_PRICE = (By.CSS_SELECTOR, 'form > div.table-responsive > table > tbody > tr > td:nth-child(5)')
     TOTAL_PRICE = (By.CSS_SELECTOR, 'form > div.table-responsive > table > tbody > tr > td:nth-child(6)')
+    CONTINUE_SHOPPING_BUTTON = (By.CSS_SELECTOR, 'div.pull-left > a.btn.btn-default')
 
 
 class FooterPageLocators:

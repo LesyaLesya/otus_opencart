@@ -55,3 +55,9 @@ class CartPage(BasePage):
         total_price_in_float = float(total_price.replace(',', '').replace('$', ''))
         assert total_price_in_float == unit_price_in_float * value, \
             f'Общая цена - {total_price_in_float}, цена за единицу {unit_price_in_float}'
+
+    @allure.step("Нажать на кнопку возврата к покупкам")
+    def click_continue_shopping(self):
+        """Проверка нажатия на кнопку возврата к покупкам."""
+
+        return self.click_on_element(*CartPageLocators.CONTINUE_SHOPPING_BUTTON)

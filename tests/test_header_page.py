@@ -117,3 +117,22 @@ def test_currency_values(browser, url):
     page.open_url()
     page.click_on_currency_drop_down()
     page.check_currency_values(["€ Euro", "£ Pound Sterling", "$ US Dollar"])
+
+
+@allure.feature("Шапка сайта")
+@allure.story("Проверка выпадающих списков")
+@allure.title("Проверка выпадающих списков горизонтального меню")
+@allure.link("#", name="User story")
+@pytest.mark.parametrize('menu_locator, dropdown_locator',
+                         [(HeaderPageLocators.DESKTOPS_IN_MENU, HeaderPageLocators.DROPDOWN_FOR_DESKTOPS),
+                          (HeaderPageLocators.COMPONENTS_IN_MENU, HeaderPageLocators.COMPONENTS_FOR_DROPDOWN),
+                          (HeaderPageLocators.LAPTOPS_IN_MENU, HeaderPageLocators.LAPTOPS_FOR_DROPDOWN)])
+def test_dropdown_in_menu(browser, url, menu_locator, dropdown_locator):
+    """Тестовая функция проверки выпадающих списков горизонтального меню.
+
+    :param browser: фикстура для запуска драйвера
+    :param url: фикстура с урлом тестируемого ресурса
+    """
+    page = HeaderPage(browser, url)
+    page.open_url()
+    page.check_dropdown_menu(menu_locator, dropdown_locator)
