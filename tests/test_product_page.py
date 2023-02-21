@@ -157,3 +157,82 @@ def test_write_review(browser, url, name, value, idx):
     page.open_url()
     page.write_review(name, value, idx)
     page.check_review_in_db(name, value)
+
+
+@allure.feature("Страница Товара")
+@allure.story("Инфо блок о товаре")
+@allure.title("Проверка полей инфо блока о товаре")
+@allure.link("#", name="User story")
+@pytest.mark.parametrize('path', ['laptop-notebook/hp-lp3065', 'laptop-notebook/macbook', 'laptop-notebook/macbook-air'])
+def test_check_product_info_block(browser, url, path):
+    """Проверка полей инфо блока о товаре.
+
+    :param browser: фикстура для запуска драйвера
+    :param url: фикстура с урлом тестируемого ресурса
+    :param path: urn
+    """
+    url = f'{url}/{path}'
+    page = ProductPage(browser, url)
+    page.open_url()
+    page.compare_page_title_and_item_title()
+    page.check_visibility_of_info_blocks()
+    page.check_fields_in_first_info_block()
+    page.check_visibility_of_price()
+    page.check_fields_in_second_info_block()
+
+
+@allure.feature("Страница Товара")
+@allure.story("Написание отзыва на товар")
+@allure.title("Нет текста отзыва")
+@allure.link("#", name="User story")
+def test_write_empty_review(browser, url):
+    """Тестовая функция для проверки написания отзыва к товару - без тела отзыва.
+
+    :param browser: фикстура для запуска драйвера
+    :param url: фикстура с урлом тестируемого ресурса
+    """
+    url = f'{url}index.php?route=product/product&path=18&product_id=47'
+    page = ProductPage(browser, url)
+    page.open_url()
+    page.write_review("TEST1", "", 4)
+    page.check_error_visibility_review()
+    page.check_error_text_empty_review()
+    page.check_review_not_in_db("TEST1", "")
+
+
+@allure.feature("Страница Товара")
+@allure.story("Написание отзыва на товар")
+@allure.title("Нет автора отзыва")
+@allure.link("#", name="User story")
+def test_write_review_without_author(browser, url):
+    """Тестовая функция для проверки написания отзыва к товару - без автора отзыва.
+
+    :param browser: фикстура для запуска драйвера
+    :param url: фикстура с урлом тестируемого ресурса
+    """
+    url = f'{url}index.php?route=product/product&path=18&product_id=47'
+    page = ProductPage(browser, url)
+    page.open_url()
+    page.write_review("", "Good ithem. I really like it. Great!", 4)
+    page.check_error_visibility_review()
+    page.check_error_text_empty_author_review()
+    page.check_review_not_in_db("", "Good ithem. I really like it. Great!")
+
+
+@allure.feature("Страница Товара")
+@allure.story("Написание отзыва на товар")
+@allure.title("Нет рейтинга отзыва")
+@allure.link("#", name="User story")
+def test_write_review_without_rating(browser, url):
+    """Тестовая функция для проверки написания отзыва к товару - без рейтинга отзыва.
+
+    :param browser: фикстура для запуска драйвера
+    :param url: фикстура с урлом тестируемого ресурса
+    """
+    url = f'{url}index.php?route=product/product&path=18&product_id=47'
+    page = ProductPage(browser, url)
+    page.open_url()
+    page.write_review("TEST1", "Good ithem. I really like it. Great!", None)
+    page.check_error_visibility_review()
+    page.check_error_text_empty_rating_review()
+    page.check_review_not_in_db("TEST1", "Good ithem. I really like it. Great!")

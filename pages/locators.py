@@ -71,6 +71,11 @@ class ProductPageLocators:
     REVIEW_FIELD = (By.ID, "input-review")
     RATING_RADIO_BUTTON = (By.NAME, "rating")
     REVIEW_BUTTON = (By.CSS_SELECTOR, 'div.pull-right > #button-review')
+    RIGHT_BLOCK_INFO = (By.XPATH, '//div[@class="col-sm-4"]/ul[@class="list-unstyled"]')
+    ELEMENTS_OF_RIGHT_BLOCK_INFO_FIRST = (By.XPATH, '//div[@class="col-sm-4"]/ul[@class="list-unstyled"][1]/li')
+    ELEMENTS_OF_RIGHT_BLOCK_INFO_SECOND = (By.XPATH, '//div[@class="col-sm-4"]/ul[@class="list-unstyled"][2]/li')
+    PRODUCT_PRICE = (By.XPATH, '//div[@class="col-sm-4"]/ul[@class="list-unstyled"][2]/li/h2')
+    REVIEW_ALERT = (By.CSS_SELECTOR, '.alert.alert-danger.alert-dismissible')
 
 
 class CataloguePageLocators:
@@ -118,6 +123,24 @@ class LoginPageLocators:
     PASSWORD_INPUT = (By.ID, "input-password")
     LOGIN_BUTTON = (By.XPATH, '//input[@value="Login"]')
     FAIL_LOGIN_ALERT = (By.CSS_SELECTOR, "i.fa-exclamation-circle")
+
+
+class RegisterPageLocators:
+    """Локаторы для страницы Регистрации."""
+
+    HEADER = (By.CSS_SELECTOR, 'div#content > h1')
+    TEXT_FOR_LOGIN = (By.CSS_SELECTOR, 'div#content > p')
+    FIRST_NAME_FIELD = (By.CSS_SELECTOR, 'input#input-firstname')
+    LAST_NAME_FIELD = (By.CSS_SELECTOR, 'input#input-lastname')
+    EMAIL_FIELD = (By.CSS_SELECTOR, 'input#input-email')
+    TEL_FIELD = (By.CSS_SELECTOR, 'input#input-telephone')
+    PASSW_FIELD = (By.CSS_SELECTOR, 'input#input-password')
+    CONFIRM_FIELD = (By.CSS_SELECTOR, 'input#input-confirm')
+    SUBSCRIBE_RADIO = (By.CSS_SELECTOR, '[name="newsletter"]')
+    PRIVACY_POLICY = (By.CSS_SELECTOR, '.buttons > .pull-right')
+    CONTINUE_BUTTON = (By.CSS_SELECTOR, '[type="submit"]')
+    RIGHT_MENU = (By.CSS_SELECTOR, 'div.list-group')
+    AGREE_CHECKBOX = (By.CSS_SELECTOR, '[name="agree"]')
 
 
 class AdminPageLocators:

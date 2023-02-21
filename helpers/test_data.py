@@ -26,10 +26,10 @@ def create_test_user(connection, email):
 
 
 @allure.step("Удалить тестового пользователя")
-def delete_user(connection, email):
+def delete_user(connection, email, firstname='TEST1'):
     """Удаление тестового пользователя."""
-    query = "DELETE FROM oc_customer WHERE firstname = 'TEST1' and email = %s"
-    data = [email]
+    query = "DELETE FROM oc_customer WHERE firstname = %s and email = %s"
+    data = [firstname, email]
     connection.cursor().execute(query, data)
     connection.commit()
 
@@ -55,3 +55,14 @@ def delete_review(connection, author, text):
     data = [author, text]
     connection.cursor().execute(query, data)
     connection.commit()
+
+
+@allure.step("Получить пользователя")
+def get_new_user(connection, firstname, email):
+    """Получение записи о пользователе."""
+    query = "SELECT * FROM oc_customer WHERE oc_customer.firstname = %s and oc_customer.email = %s"
+    data = [firstname, email]
+    with connection.cursor() as cursor:
+        cursor.execute(query, data)
+        db_data = cursor.fetchall()
+    return db_data

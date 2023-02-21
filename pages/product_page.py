@@ -129,8 +129,9 @@ class ProductPage(BasePage):
             self.input_text(*ProductPageLocators.REVIEW_NAME_FIELD, name)
         with allure.step(f"Заполнить текст отзыва - {value}"):
             self.input_text(*ProductPageLocators.REVIEW_FIELD, value)
-        with allure.step("Выбрать оценку"):
-            self.click_on_element(*ProductPageLocators.RATING_RADIO_BUTTON, idx)
+        if idx:
+            with allure.step("Выбрать оценку"):
+                self.click_on_element(*ProductPageLocators.RATING_RADIO_BUTTON, idx)
         with allure.step("Нажать на кнопку отправки отзыва"):
             self.click_on_element(*ProductPageLocators.REVIEW_BUTTON)
         return self
@@ -138,6 +139,18 @@ class ProductPage(BasePage):
     def check_review_in_db(self, author, text):
         self.__get_review_from_db(author, text)
         self.__del_review_from_bd(author, text)
+
+    @allure.step("Проверить, что ревью НЕ появилось в БД")
+    def check_review_not_in_db(self, author, text):
+        """ Проверить, что ревью НЕ появилось в БД. """
+
+        result = test_data.get_review(self.browser.db, author, text)
+        time.sleep(1)
+        with allure.step(f"Проверяем, что запись об отзыве НЕ создана в БД "):
+            if result == 0:
+                assert True
+            else:
+                assert False, f"Записей найдено - {result}"
 
     @allure.step("Проверить, что ревью появилось в БД")
     def __get_review_from_db(self, author, text):
@@ -153,6 +166,108 @@ class ProductPage(BasePage):
 
     @allure.step("Удалить ревью из БД")
     def __del_review_from_bd(self, author, text):
-        """ Возаращает удаление отзыва из БД. """
+        """ Возвращает удаление отзыва из БД. """
 
         return test_data.delete_review(self.browser.db, author, text)
+
+    @allure.step("Сравнить тайтл страницы и заголовок товара")
+    def compare_page_title_and_item_title(self):
+        """Сравнить тайтл страницы и заголовок товара."""
+
+        name_on_product_page = (self.get_text_of_element(*ProductPageLocators.ITEM_TITLE)).lower()
+        name_in_title = (self.get_title()).lower()
+        assert name_on_product_page == name_in_title, \
+            f"Название товара - {name_on_product_page}, заголовок - {name_in_title}"
+
+    @allure.step("Проверить наличие блоков с информацией")
+    def check_visibility_of_info_blocks(self):
+        """Проверить наличие блоков с информацией."""
+
+        assert self.is_element_visible(*ProductPageLocators.RIGHT_BLOCK_INFO, index=0)
+        assert self.is_element_visible(*ProductPageLocators.RIGHT_BLOCK_INFO, index=1)
+
+    @allure.step("Проверить поля в первом инфоблоке")
+    def check_fields_in_first_info_block(self):
+        """Проверить поля в первом инфоблоке."""
+
+        self.__check_brand_fields_in_first_info_block()
+        self.__check_product_code_fields_in_first_info_block()
+        self.__check_reward_fields_in_first_info_block()
+        self.__check_availability_fields_in_first_info_block()
+
+    @allure.step("Проверить поле бренд")
+    def __check_brand_fields_in_first_info_block(self):
+        """Проверить поле бренд."""
+
+        brand = self.get_text_of_element(*ProductPageLocators.ELEMENTS_OF_RIGHT_BLOCK_INFO_FIRST, index=0)
+        assert brand.startswith('Brand:'), f'Инфа о бренде - {brand}'
+
+    @allure.step("Проверить поле кода продута")
+    def __check_product_code_fields_in_first_info_block(self):
+        """Проверить поле кода продута."""
+
+        product_code = self.get_text_of_element(*ProductPageLocators.ELEMENTS_OF_RIGHT_BLOCK_INFO_FIRST, index=1)
+        assert product_code.startswith('Product Code:'), f'Инфа о коде - {product_code}'
+
+    @allure.step("Проверить поле награды")
+    def __check_reward_fields_in_first_info_block(self):
+        """Проверить поле награды."""
+
+        reward = self.get_text_of_element(*ProductPageLocators.ELEMENTS_OF_RIGHT_BLOCK_INFO_FIRST, index=2)
+        assert reward.startswith('Reward Points:'), f'Инфа о награде - {reward}'
+
+    @allure.step("Проверить поле доступности")
+    def __check_availability_fields_in_first_info_block(self):
+        """Проверить поле доступности."""
+
+        availability = self.get_text_of_element(*ProductPageLocators.ELEMENTS_OF_RIGHT_BLOCK_INFO_FIRST, index=3)
+        assert availability.startswith('Availability:'), f'Инфа о доступности - {availability}'
+
+    @allure.step("Проверить наличие цены")
+    def check_visibility_of_price(self):
+        """Проверить наличие цены."""
+
+        assert self.is_element_visible(*ProductPageLocators.PRODUCT_PRICE)
+
+    @allure.step("Проверить поля во втором инфоблоке")
+    def check_fields_in_second_info_block(self):
+        """Проверить поля в первом инфоблоке."""
+
+        self.__check_tax_fields_in_second_info_block()
+
+    @allure.step("Проверить поле пошлины")
+    def __check_tax_fields_in_second_info_block(self):
+        """Проверить поле пошлины."""
+
+        tax = self.get_text_of_element(*ProductPageLocators.ELEMENTS_OF_RIGHT_BLOCK_INFO_SECOND, index=1)
+        assert tax.startswith('Ex Tax:'), f'Инфа о пошлине - {tax}'
+
+    @allure.step("Проверить алерт при пустом отзыве")
+    def check_error_visibility_review(self):
+        """Проверить алерт при пустом отзыве."""
+
+        assert self.is_element_visible(*ProductPageLocators.REVIEW_ALERT)
+
+    @allure.step("Проверить сообщение об ошибке при пустом отзыве")
+    def check_error_text_empty_review(self):
+        """Проверить сообщение об ошибке при пустом отзыве."""
+
+        error_text = self.get_text_of_element(*ProductPageLocators.REVIEW_ALERT)
+        assert error_text == 'Warning: Review Text must be between 25 and 1000 characters!', \
+            f'Текст ошибки {error_text}'
+
+    @allure.step("Проверить сообщение об ошибке при пустом авторе отзыва")
+    def check_error_text_empty_author_review(self):
+        """Проверить сообщение об ошибке при пустом авторе отзыва."""
+
+        error_text = self.get_text_of_element(*ProductPageLocators.REVIEW_ALERT)
+        assert error_text == 'Warning: Review Name must be between 3 and 25 characters!', \
+            f'Текст ошибки {error_text}'
+
+    @allure.step("Проверить сообщение об ошибке при пустом рейтинге отзыва")
+    def check_error_text_empty_rating_review(self):
+        """Проверить сообщение об ошибке при пустом рейтинге отзыва."""
+
+        error_text = self.get_text_of_element(*ProductPageLocators.REVIEW_ALERT)
+        assert error_text == 'Warning: Please select a review rating!', \
+            f'Текст ошибки {error_text}'

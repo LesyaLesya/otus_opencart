@@ -16,19 +16,12 @@ class LoginPage(BasePage):
         if create:
             test_data.delete_user(self.browser.db, email)
             email = test_data.create_test_user(self.browser.db, email)
-            with allure.step(f"Ввести логин {email}"):
-                self.input_text(*LoginPageLocators.EMAIL_INPUT, email)
-            with allure.step(f"Ввести пароль {password}"):
-                self.input_text(*LoginPageLocators.PASSWORD_INPUT, password)
-            with allure.step("Кликнуть на кнопку логина"):
-                self.click_on_element(*LoginPageLocators.LOGIN_BUTTON)
-        else:
-            with allure.step(f"Ввести логин {email}"):
-                self.input_text(*LoginPageLocators.EMAIL_INPUT, email)
-            with allure.step(f"Ввести пароль {password}"):
-                self.input_text(*LoginPageLocators.PASSWORD_INPUT, password)
-            with allure.step("Кликнуть на кнопку логина"):
-                self.click_on_element(*LoginPageLocators.LOGIN_BUTTON)
+        with allure.step(f"Ввести логин {email}"):
+            self.input_text(*LoginPageLocators.EMAIL_INPUT, email)
+        with allure.step(f"Ввести пароль {password}"):
+            self.input_text(*LoginPageLocators.PASSWORD_INPUT, password)
+        with allure.step("Кликнуть на кнопку логина"):
+            self.click_on_element(*LoginPageLocators.LOGIN_BUTTON)
         if clr is True:
             test_data.delete_user(self.browser.db, email)
         return self
