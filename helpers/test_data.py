@@ -58,10 +58,16 @@ def delete_review(connection, author, text):
 
 
 @allure.step("Получить пользователя")
-def get_new_user(connection, firstname, email):
+def get_new_user(connection, email=None, firstname=None, lastname=None, tel=None):
     """Получение записи о пользователе."""
-    query = "SELECT * FROM oc_customer WHERE oc_customer.firstname = %s and oc_customer.email = %s"
-    data = [firstname, email]
+    query = ''
+    data = []
+    if email:
+        query = "SELECT * FROM oc_customer WHERE oc_customer.email = %s"
+        data = [email]
+    if firstname and lastname and tel:
+        query = "SELECT * FROM oc_customer WHERE oc_customer.firstname = %s and oc_customer.lastname = %s and oc_customer.telephone = %s"
+        data = [firstname, lastname, tel]
     with connection.cursor() as cursor:
         cursor.execute(query, data)
         db_data = cursor.fetchall()

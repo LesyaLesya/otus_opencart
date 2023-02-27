@@ -28,11 +28,11 @@ class AccountPage(BasePage):
         self.__get_user_from_db(firstname, lastname, email, tel, radio_idx)
         self.__del_user_from_bd(email, firstname)
 
-    @allure.step("Проверить, что пользователь появилось в БД")
+    @allure.step("Проверить, что пользователь появился в БД")
     def __get_user_from_db(self, firstname, lastname, email, tel, radio_idx):
         """ Проверка пользователя в БД. """
 
-        result = test_data.get_new_user(self.browser.db, firstname, email)
+        result = test_data.get_new_user(self.browser.db, email)
         firstname_db = result[0][4]
         lastname_db = result[0][5]
         email_db = result[0][6]
@@ -55,3 +55,35 @@ class AccountPage(BasePage):
         """ Возвращает удаление юзера из БД. """
 
         return test_data.delete_user(self.browser.db, email, fistname)
+
+    @allure.step("Логаут из правого блока")
+    def logout_from_right_block(self,):
+        """Логаут из правого блока."""
+
+        return self.click_on_element(*AccountPageLocators.LOGOUT_RIGHT_BLOCK)
+
+
+    @allure.step("Проверка текста после логаута")
+    def check_text_after_logout(self):
+        """Проверка текста после логаута."""
+
+        assert self.is_element_visible(*AccountPageLocators.TEXT_AFTER_LOGOUT)
+        text = self.get_text_of_element(*AccountPageLocators.TEXT_AFTER_LOGOUT)
+        assert text == 'You have been logged off your account. It is now safe to leave the computer.', \
+            f'Текст после логаута {text}'
+
+    @allure.step("Проверка пунктов в правом блоке после логаута")
+    def check_right_block_after_logout(self):
+        """Проверка пунктов в правом блоке после логаута."""
+
+        assert self.is_element_visible(*AccountPageLocators.REGISTER_RIGHT_BLOCK)
+        assert self.is_element_visible(*AccountPageLocators.LOGIN_RIGHT_BLOCK)
+
+    @allure.step("Заход в аккаунт после логаута")
+    def click_my_account_after_logout(self, email, fistname, del_user=True):
+        """Заход в аккаунт после логаута."""
+
+        self.click_on_element(*AccountPageLocators.MY_ACCOUNT_RIGHT_BLOCK)
+        if del_user:
+            self.__del_user_from_bd(email, fistname)
+        return self

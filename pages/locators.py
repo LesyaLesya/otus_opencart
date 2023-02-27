@@ -141,6 +141,13 @@ class RegisterPageLocators:
     CONTINUE_BUTTON = (By.CSS_SELECTOR, '[type="submit"]')
     RIGHT_MENU = (By.CSS_SELECTOR, 'div.list-group')
     AGREE_CHECKBOX = (By.CSS_SELECTOR, '[name="agree"]')
+    FIRST_NAME_ERROR = (By.CSS_SELECTOR, '#input-firstname + .text-danger')
+    LAST_NAME_ERROR = (By.CSS_SELECTOR, '#input-lastname + .text-danger')
+    EMAIL_ERROR = (By.CSS_SELECTOR, '#input-email + .text-danger')
+    TEL_ERROR = (By.CSS_SELECTOR, '#input-telephone + .text-danger')
+    PASSWORD_ERROR = (By.CSS_SELECTOR, '#input-password + .text-danger')
+    CONFIRM_ERROR = (By.CSS_SELECTOR, '#input-confirm + .text-danger')
+    PRIVACY_POLICY_ALERT = (By.CSS_SELECTOR, '.alert.alert-danger.alert-dismissible')
 
 
 class AdminPageLocators:
@@ -176,6 +183,11 @@ class AccountPageLocators:
 
     WISH_LIST_LINK = (By.XPATH, '//div[@id="content"]/ul[1]/li[4]/a')
     ITEM_NAMES = (By.CSS_SELECTOR, '#content > div > table > tbody > tr >td.text-left > a')
+    LOGOUT_RIGHT_BLOCK = (By.XPATH, '//div[@class="list-group"]/a[contains(text(), "Logout")]')
+    TEXT_AFTER_LOGOUT = (By.CSS_SELECTOR, 'h1 + p')
+    LOGIN_RIGHT_BLOCK = (By.XPATH, '//div[@class="list-group"]/a[contains(text(), "Login")]')
+    REGISTER_RIGHT_BLOCK = (By.XPATH, '//div[@class="list-group"]/a[contains(text(), "Register")]')
+    MY_ACCOUNT_RIGHT_BLOCK = (By.XPATH, '//div[@class="list-group"]/a[contains(text(), "My Account")]')
 
 
 class ComparePageLocators:
