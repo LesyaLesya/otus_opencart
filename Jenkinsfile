@@ -12,8 +12,12 @@ pipeline {
             steps {
                 echo 'Running tests in container'
                 sh '''
+                   if [ "$MARKER" == "all" ]
+                   then
                    ${DOCKER_PATH} run --name my_container tests --url ${URL} --browser-name ${BROWSER_NAME} --browser-version ${BROWSER_VERSION} --executor ${EXECUTOR} -n ${NODES}
-
+                   else
+                   ${DOCKER_PATH} run --name my_container tests --url ${URL} --browser-name ${BROWSER_NAME} --browser-version ${BROWSER_VERSION} --executor ${EXECUTOR} -n ${NODES} -m ${MARKER}
+                   fi
                 '''
             }
         }

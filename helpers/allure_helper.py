@@ -1,6 +1,7 @@
 """Модуль c вспомогательными методами для allure."""
 
 import allure
+import json
 
 
 def attach(browser):
@@ -8,6 +9,13 @@ def attach(browser):
             body=browser.get_screenshot_as_png(),
             name="screenshot_image",
             attachment_type=allure.attachment_type.PNG)
+
+
+def attach_capabilities(browser):
+    return allure.attach(
+            body=browser.session_id,
+            name=json.dumps(browser.desired_capabilities),
+            attachment_type=allure.attachment_type.JSON)
 
 
 def add_allure_env(browser_name, browser_version, local):

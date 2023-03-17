@@ -1,34 +1,10 @@
 ## Описание проекта
 
-Проект по автоматизации тестирования cms Opencart.
+Проект по автоматизации тестирования cms Opencart на selenium + pytest.
 
 
 + В директории tests/ находятся файлы с тестами для отдельных страниц.
-  
-  - tests/test_admin_page.py - несколько тестов на страницу Админки
-  - tests/test_catalogue_page.py - несколько тестов на страницу Каталога
-  - tests/test_header_page.py - несколько тестов на Шапку сайта
-  - tests/test_login_page.py - несколько тестов на страницу Авторизации пользователя
-  - tests/test_main_page.py - несколько тестов на Главную страницу
-  - tests/test_product_page.py - несколько тестов на страницу Товара
-  - tests/test_search_page.py - несколько тестов на страницу поиска
-  - tests/test_cart_page.py - несколько тестов на корзину
-
 + В директории pages/ находятся файлы с вспомогательными методами по каждой странице.
-
-  - pages/admin_page.py - методы для страницы Админки
-  - pages/catalogue_page.py - методы для страницы Каталога
-  - pages/header_page.py - методы для Шапки сайта
-  - pages/login_page.py - методы для страницы Авторизации пользователя
-  - pages/main_page.py - методы для Главной страницы
-  - pages/product_page.py - методы для страницы Товара
-  - pages/search_page.py - методы для страницы Поиска
-  - pages/base_page.py - базовые методы, переиспользуемые на всех страницах
-  - pages/locators.py - классы с локаторами элементов
-  - pages/account_page.py - методы для страницы пользователя
-  - pages/cart_page.py - методы для корзины
-  - pages/comparison_page.py - методы для страницы Сравнение товаров
-
 + В файле conftest описана фикстура для запуска драйвера.
 ____
 
@@ -122,20 +98,16 @@ pip install -r requirements.txt
 В консоли (из директории проекта) выполнить команду:
 
 ```
-pytest --local  --url=your_external_ip --browser-name=(firefox/chrome)  --executor=path_to_driver -n 2
+pytest --local  --url=your_external_ip --browser-name=(firefox/chrome)  --executor=path_to_driver -m marker -n 2
 ```
 где:
 
 - -n - во сколько потоков запускать тесты, если не указывать параметр при запуске - тесты будут запущены в 1 поток.
-
 - --local - запускает тесты локально
-
 - --url - адрес машины в сети (где запущен opencart)
-
 - --browser-name - какой браузер запускать
-
 - --executor - путь до драйвера на машине  
-
+- -m - маркер группы тестов
 
 
 #### Удаленный запуск (Selenoid)
@@ -151,21 +123,17 @@ UI станет доступен на localhost:8080.
 2.В консоли (из директории проекта) выполнить команду:
 
 ```
-pytest  --url=your_external_ip --browser-name=(chrome/firefox/opera) --browser-version --executor=selenoid_host -n 2
+pytest  --url=your_external_ip --browser-name=(chrome/firefox/opera) --browser-version --executor=selenoid_host -m marker -n 2
 ```
 где:
 
 - -n - во сколько потоков запускать тесты, если не указывать параметр при запуске - тесты будут запущены в 1 поток.
-
 - --url - адрес машины в сети (где запущен opencart)
-
 - --browser-name - какой браузер запускать
-
 - --browser-version - версия указанного браузера
-
 - --executor - хост selenoid-а (если на своей машине - 127.0.0.1)
+- -m - маркер группы тестов
 ____
-
 
 
 ## Запуск тестов в Docker + Selenoid
@@ -188,10 +156,11 @@ git clone repository_url
 и путь до исполняемого файла allure на вашей машине:
 
 ```
-./run_test_in_docker_with_allure.sh your_external_ip browser browser_version selenoid_host(external) /path/to/allure/bin
+./run_test_in_docker_with_allure.sh your_external_ip browser browser_version selenoid_host(external) marker /path/to/allure/bin 
 
-Пример: ./run_test_in_docker_with_allure.sh 123.123.123.123 chrome 87.0 123.123.123.123 /Applications/allure/bin/allure
+Пример: ./run_test_in_docker_with_allure.sh 123.123.123.123 chrome 87.0 123.123.123.123 search_page /Applications/allure/bin/allure 
 ```
+Если надо запустить все тесты, то marker указать 'all'
 
 ## Запуск тестов в Jenkins + Docker + Selenoid
 Установить - Docker, Selenoid (+образы браузеров), Jenkins, плагин Allure для Jenkins
@@ -211,6 +180,7 @@ git clone repository_url
   + EXECUTOR - хост selenoid-а
   + NODES - значение по-умолчанию 1 (количество потоков)
   + DOCKER_PATH - путь до исполняемого файла Docker на машине
+  + MARKER - маркер группы тестов (all - для запуска всех тестов)
   
 - Выбрать Pipeline script from SCM
 
