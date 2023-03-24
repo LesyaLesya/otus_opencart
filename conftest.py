@@ -2,7 +2,6 @@
 
 
 import allure
-import json
 import mysql.connector
 import pytest
 import requests
@@ -11,7 +10,8 @@ from types import SimpleNamespace
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options as ChOp
 from selenium.webdriver.firefox.options import Options as FFOp
-
+from webdriver_manager.chrome import ChromeDriverManager
+from webdriver_manager.firefox import GeckoDriverManager
 from helpers import allure_helper
 
 
@@ -47,16 +47,16 @@ def pytest_addoption(parser):
     parser.addoption(
         '--url', action='store', required=True, help='Укажите url приложения')
     parser.addoption(
-        '--browser-name', action='store', required=True, choices=['chrome', 'firefox', 'opera'],
-        help='Укажите браузер: chrome, firefox, opera')
+        '--browser-name', action='store', required=True, choices=['chrome', 'firefox'],
+        help='Укажите браузер: chrome, firefox')
     parser.addoption(
         '--browser-version', action='store', help='Укажите версию браузера - для запуска через selenoid')
     parser.addoption(
         '--local', action='store_true',
         help='Укажите флаг для локального запуска драйвера, без флага - для удаленного запуска')
     parser.addoption(
-        '--executor', action='store', required=True,
-        help='Если local True - укажите путь до драйвера, если local False - укажите хост selenoid')
+        '--executor', action='store',
+        help='если local False - укажите хост selenoid, если True - не надо передавать параметр')
 
 
 @pytest.fixture
@@ -89,11 +89,11 @@ def browser(request, db_connection):
         if browser_name == 'chrome':
             options = ChOp()
             options.headless = True
-            driver = webdriver.Chrome(options=options, executable_path=executor)
+            driver = webdriver.Chrome(options=options, executable_path=ChromeDriverManager().install())
         elif browser_name == 'firefox':
             options = FFOp()
             options.headless = True
-            driver = webdriver.Firefox(options=options, executable_path=executor)
+            driver = webdriver.Firefox(options=options, executable_path=GeckoDriverManager().install())
         else:
             raise pytest.UsageError('Для локального запуска --browser_name - chrome или firefox')
         allure_helper.attach_capabilities(driver)
