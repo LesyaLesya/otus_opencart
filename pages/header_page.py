@@ -3,6 +3,7 @@
 
 import allure
 
+from helpers import allure_helper
 from helpers.locators import HeaderPageLocators
 from helpers.styles import Border, Colors, Cursor, Gradients, SIZES
 from pages.base_page import BasePage
@@ -140,6 +141,7 @@ class HeaderPage(BasePage):
         self.click_on_element(*HeaderPageLocators.CURRENCY_DROP_DOWN_BUTTON)
         display_css = self.get_css_property(*HeaderPageLocators.CURRENCY_DROP_DONW, 'display')
         with allure.step(f'Проверить, что значение атрибута {display_css} - block'):
+            allure_helper.attach(self.browser)
             assert display_css == 'block', f'Значение атрибута - {display_css}'
 
     @allure.step('Проверить значения валют в выпадающем списке')
@@ -152,6 +154,7 @@ class HeaderPage(BasePage):
         names = [i.text for i in elements]
         for i in names:
             with allure.step(f'Проверить, что название {i} есть в {lst}'):
+                allure_helper.attach(self.browser)
                 assert i in lst, f'ФР - {names}, ОР - {lst}'
 
     @allure.step('Выбрать значение валюты {value}')

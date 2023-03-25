@@ -2,6 +2,7 @@
 
 import allure
 
+from helpers import allure_helper
 from helpers.db_helper import del_user_from_bd
 from helpers.locators import AccountPageLocators
 from pages.base_page import BasePage
@@ -24,6 +25,7 @@ class AccountPage(BasePage):
         elements = self._element(*AccountPageLocators.ITEM_NAMES, all=True)
         product_names = [i.text for i in elements]
         with allure.step(f'Проверить что все товары {product_names} содержат название {name}'):
+            allure_helper.attach(self.browser)
             assert name in product_names, f'Название {name}, названия продуктов в вишлисте {product_names}'
 
     @allure.step('Сделать логаут из правого блока')
@@ -38,6 +40,7 @@ class AccountPage(BasePage):
         text = self.get_text_of_element(*AccountPageLocators.TEXT_AFTER_LOGOUT)
         with allure.step(
                 'Проверить что текст после логаута  - You have been logged off your account. It is now safe to leave the computer.'):
+            allure_helper.attach(self.browser)
             assert text == 'You have been logged off your account. It is now safe to leave the computer.', \
                 f'Текст после логаута {text}'
 

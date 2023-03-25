@@ -2,6 +2,7 @@
 
 import allure
 
+from helpers import allure_helper
 from helpers.locators import ComparePageLocators
 from pages.base_page import BasePage
 
@@ -17,6 +18,7 @@ class ComparisonPage(BasePage):
         """
         name_in_comparison = self.get_text_of_element(*ComparePageLocators.ITEM_NAMES)
         with allure.step(f'Проверить что все товары {name_in_comparison} содержат название {name}'):
+            allure_helper.attach(self.browser)
             assert name == name_in_comparison, \
                 f'Название {name}, название в сравнении {name_in_comparison}'
 
@@ -37,4 +39,5 @@ class ComparisonPage(BasePage):
         """Проверка текста при отсутсвии товаров в сравнении."""
         txt = self.get_text_of_element(*ComparePageLocators.TEXT_FOR_EMTY_COMPARE)
         with allure.step('Проверить, что текст - You have not chosen any products to compare.'):
+            allure_helper.attach(self.browser)
             assert txt == 'You have not chosen any products to compare.', f'Текст - {txt}'

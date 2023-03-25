@@ -48,6 +48,7 @@ class BasePage:
                 return self.wait.until(Elements(locator, el_path))
             return self.wait.until(Element(locator, el_path, index))
         except TimeoutException:
+            allure_helper.attach(self.browser)
             raise AssertionError(f'Нет элемента с локатором {locator} по пути {el_path} и индексом {index}')
 
     @allure.step('Проверить что элемент {locator}, {el_path} с индексом {index} виден на странице')

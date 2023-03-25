@@ -74,13 +74,12 @@ def browser(request, db_connection):
     executor = request.config.getoption('--executor')
     local = request.config.getoption('--local')
     test_name = request.node.name
-    module_name = request.module.__name__
 
     capabilities = {
         'browserName': browser_name,
         'browserVersion': browser_version,
         'screenResolution': '1440x900',
-        'name': test_name + module_name,
+        'name': test_name,
         'selenoid:options': {
             'enableVNC': True,
             'enableVideo': True}}
@@ -125,7 +124,7 @@ def browser(request, db_connection):
         return driver
 
 
-@pytest.fixture
+@pytest.fixture(scope='session')
 def db_connection(request):
     db_host = request.config.getoption('--url')
     config = SimpleNamespace(

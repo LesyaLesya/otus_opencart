@@ -3,6 +3,7 @@
 
 import allure
 
+from helpers import allure_helper
 from helpers.locators import FooterPageLocators
 from pages.base_page import BasePage
 
@@ -19,4 +20,5 @@ class FooterPage(BasePage):
         elements = self._element(*FooterPageLocators.LINKS, all=True)
         links_text = [i.text for i in elements]
         with allure.step(f'Проверить, что тексты ссылок {links_text} совпадают с {lst}'):
+            allure_helper.attach(self.browser)
             assert links_text == lst, f'Список ссылок - {links_text}'

@@ -2,6 +2,7 @@
 
 import allure
 
+from helpers import allure_helper
 from helpers.locators import CartPageLocators
 from pages.base_page import BasePage
 
@@ -18,6 +19,7 @@ class CartPage(BasePage):
         elements = self._element(*CartPageLocators.ITEM_NAMES, all=True)
         product_names = [i.text for i in elements]
         with allure.step(f'Проверить что все товары {product_names} содержат название {name}'):
+            allure_helper.attach(self.browser)
             assert name in product_names, f'Название {name}, названия товаров в корзине {product_names}'
 
     @allure.step('Удалить товар из корзины')
@@ -31,6 +33,7 @@ class CartPage(BasePage):
         text = self.get_text_of_element(*CartPageLocators.TEXT_EMPTY_CART)
         with allure.step(
                 'Проверить что текст - Your shopping cart is empty!'):
+            allure_helper.attach(self.browser)
             assert text == 'Your shopping cart is empty!', f'Текст - {text}'
 
     @allure.step('Обновить цену, указав количество {value}')
@@ -55,6 +58,7 @@ class CartPage(BasePage):
             total_price = self.get_text_of_element(*CartPageLocators.TOTAL_PRICE)
         total_price_in_float = float(total_price.replace(',', '').replace('$', ''))
         with allure.step(f'Проверить, что общая цена {total_price_in_float} == {unit_price_in_float} * {value}'):
+            allure_helper.attach(self.browser)
             assert total_price_in_float == unit_price_in_float * value, \
                 f'Общая цена - {total_price_in_float}, цена за единицу {unit_price_in_float}'
 

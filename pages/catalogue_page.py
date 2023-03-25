@@ -2,6 +2,7 @@
 
 import allure
 
+from helpers import allure_helper
 from helpers.locators import CataloguePageLocators
 from helpers.styles import Colors, Cursor, FontWeight
 from pages.base_page import BasePage
@@ -46,6 +47,7 @@ class CataloguePage(BasePage):
         """
         link_txt = self.get_text_of_element(*CataloguePageLocators.COMPARE_LINK)
         with allure.step(f'Проверить, что текст ссылки {link_txt} == Product Compare ({value})'):
+            allure_helper.attach(self.browser)
             assert link_txt == f'Product Compare ({value})', f'Текст - {link_txt}'
 
     @allure.step('Сортировать товары по {txt}')
@@ -64,6 +66,7 @@ class CataloguePage(BasePage):
         elements = self._element(*CataloguePageLocators.ITEM_NAME, all=True)
         names = [i.text for i in elements]
         with allure.step(f'Проверить порядок в списке названий {names}'):
+            allure_helper.attach(self.browser)
             assert all(names[i] < names[i+1] for i in range(len(names)-1)), f'Порядок названий - {names}'
 
     @allure.step('Проверить, что товары отсортированы от Z до A')
@@ -73,6 +76,7 @@ class CataloguePage(BasePage):
         elements = self._element(*CataloguePageLocators.ITEM_NAME, all=True)
         names = [i.text for i in elements]
         with allure.step(f'Проверить порядок в списке названий {names}'):
+            allure_helper.attach(self.browser)
             assert all(names[i] > names[i + 1] for i in range(len(names) - 1)), f'Порядок названий - {names}'
 
     @allure.step('Проверить, что товары отсортированы по возрастанию цены')
@@ -84,6 +88,7 @@ class CataloguePage(BasePage):
         prices_without_tax = [i.split('\nEx')[0] for i in prices_with_tax]
         prices_in_float = [float(i.replace(',', '').replace('$', '')) for i in prices_without_tax]
         with allure.step(f'Проверить порядок в списке цен {prices_in_float}'):
+            allure_helper.attach(self.browser)
             assert all(prices_in_float[i] <= prices_in_float[i+1] for i in range(len(prices_in_float)-1)), \
                 f'Порядок цен - {prices_in_float}'
 
@@ -122,6 +127,7 @@ class CataloguePage(BasePage):
         for i in range(len(elements)):
             attr = self.getting_attr('class', *CataloguePageLocators.ITEM_CART, i)
             with allure.step(f'Проверить, что товар с индексом {i} имеет класс со значением product-list'):
+                allure_helper.attach(self.browser)
                 assert 'product-list' in attr, f'Значение атрибута -  {attr}'
 
     @allure.step('Кликнуть на кнопку вида Сетка')
@@ -132,6 +138,7 @@ class CataloguePage(BasePage):
         for i in range(len(elements)):
             attr = self.getting_attr('class', *CataloguePageLocators.ITEM_CART, i)
             with allure.step(f'Проверить, что товар с индексом {i} имеет класс со значением product-grid'):
+                allure_helper.attach(self.browser)
                 assert 'product-grid' in attr, f'Значение атрибута -  {attr}'
 
     @allure.step('Сравнить символ в ценах товаров с символом выбранной валюты')
@@ -145,6 +152,7 @@ class CataloguePage(BasePage):
         prices_with_tax = [i.text for i in elements]
         prices_without_tax = [i.split('\nEx')[0] for i in prices_with_tax]
         with allure.step(f'Проверить, что во всех ценах {prices_without_tax} символ {symbol}'):
+            allure_helper.attach(self.browser)
             assert all([i[index] == symbol for i in prices_without_tax]), f'{prices_without_tax} - список цен'
 
     @allure.step('Проверить стиль кнопки добавления в корзину без наведения')
@@ -186,4 +194,5 @@ class CataloguePage(BasePage):
         """
         header = self.get_text_of_element(*CataloguePageLocators.CATALOGUE_HEADER)
         with allure.step(f'Проверить что {header} == {name}'):
+            allure_helper.attach(self.browser)
             assert name == header, f'Заголовок (ФР) - {header}, name (ОР) - {name}'

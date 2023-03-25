@@ -3,6 +3,7 @@
 
 import allure
 
+from helpers import allure_helper
 from helpers.locators import SearchPageLocators
 from pages.base_page import BasePage
 
@@ -41,6 +42,7 @@ class SearchPage(BasePage):
         names = [i.text for i in elements]
         for i in names:
             with allure.step(f'Проверить, что значение {value} есть в результатах поиска {i.lower()}'):
+                allure_helper.attach(self.browser)
                 assert value in i.lower(), f'Название товара {i.lower()}'
 
     @allure.step('Проверить, что поиск выдал 0 результатов.')
@@ -48,6 +50,7 @@ class SearchPage(BasePage):
         """Получение пустого результата поиска."""
         result = self.get_text_of_element(*SearchPageLocators.EMPTY_RESULT)
         with allure.step('Проверить, что текст - There is no product that matches the search criteria.'):
+            allure_helper.attach(self.browser)
             assert result == 'There is no product that matches the search criteria.', \
                 'Найдены товары'
 

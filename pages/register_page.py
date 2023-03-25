@@ -3,6 +3,7 @@
 
 import allure
 
+from helpers import allure_helper
 from helpers.locators import RegisterPageLocators
 from pages.base_page import BasePage
 
@@ -67,6 +68,7 @@ class RegisterPage(BasePage):
         self.is_element_visible(*RegisterPageLocators.FIRST_NAME_ERROR)
         error_text = self.get_text_of_element(*RegisterPageLocators.FIRST_NAME_ERROR)
         with allure.step('Проверить, что текст ошибки при пустом имени - First Name must be between 1 and 32 characters!'):
+            allure_helper.attach(self.browser)
             assert error_text == 'First Name must be between 1 and 32 characters!', \
                 f'Текст ошибки {error_text}'
 
@@ -77,6 +79,7 @@ class RegisterPage(BasePage):
         error_text = self.get_text_of_element(*RegisterPageLocators.LAST_NAME_ERROR)
         with allure.step(
                 'Проверить, что текст ошибки при пустом имени - Last Name must be between 1 and 32 characters!'):
+            allure_helper.attach(self.browser)
             assert error_text == 'Last Name must be between 1 and 32 characters!', \
                 f'Текст ошибки {error_text}'
 
@@ -87,6 +90,7 @@ class RegisterPage(BasePage):
         error_text = self.get_text_of_element(*RegisterPageLocators.EMAIL_ERROR)
         with allure.step(
                 'Проверить, что текст ошибки при пустом имени - E-Mail Address does not appear to be valid!'):
+            allure_helper.attach(self.browser)
             assert error_text == 'E-Mail Address does not appear to be valid!', \
                 f'Текст ошибки {error_text}'
 
@@ -97,6 +101,7 @@ class RegisterPage(BasePage):
         error_text = self.get_text_of_element(*RegisterPageLocators.TEL_ERROR)
         with allure.step(
                 'Проверить, что текст ошибки при пустом имени - Telephone must be between 3 and 32 characters!'):
+            allure_helper.attach(self.browser)
             assert error_text == 'Telephone must be between 3 and 32 characters!', \
                 f'Текст ошибки {error_text}'
 
@@ -107,6 +112,7 @@ class RegisterPage(BasePage):
         error_text = self.get_text_of_element(*RegisterPageLocators.PASSWORD_ERROR)
         with allure.step(
                 'Проверить, что текст ошибки при пустом имени - Password must be between 4 and 20 characters!'):
+            allure_helper.attach(self.browser)
             assert error_text == 'Password must be between 4 and 20 characters!', \
                 f'Текст ошибки {error_text}'
 
@@ -117,6 +123,7 @@ class RegisterPage(BasePage):
         error_text = self.get_text_of_element(*RegisterPageLocators.CONFIRM_ERROR)
         with allure.step(
                 'Проверить, что текст ошибки при пустом имени - Password confirmation does not match password!'):
+            allure_helper.attach(self.browser)
             assert error_text == 'Password confirmation does not match password!', \
                 f'Текст ошибки {error_text}'
 
@@ -127,5 +134,6 @@ class RegisterPage(BasePage):
         error_text = self.get_text_of_element(*RegisterPageLocators.PRIVACY_POLICY_ALERT)
         with allure.step(
                 'Проверить, что текст ошибки при пустом имени - Warning: You must agree to the Privacy Policy!'):
+            allure_helper.attach(self.browser)
             assert error_text == 'Warning: You must agree to the Privacy Policy!', \
                 f'Текст ошибки {error_text}'

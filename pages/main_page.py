@@ -2,6 +2,7 @@
 
 import allure
 
+from helpers import allure_helper
 from helpers.locators import MainPageLocators
 from pages.base_page import BasePage
 
@@ -72,6 +73,7 @@ class MainPage(BasePage):
                                     with allure.step('Получить список атрибутов класса элемента'):
                                         actual_class = k.get_attribute('class').split()
                                         with allure.step(f'Проверить, что классы swiper-slide-active или swiper-slide-duplicate-active есть в {actual_class}'):
+                                            allure_helper.attach(self.browser)
                                             assert 'swiper-slide-active' or 'swiper-slide-duplicate-active' \
                                                    in actual_class, f'Класс - {actual_class}'
                                         break
