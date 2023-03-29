@@ -7,7 +7,6 @@ import pytest
 from helpers.db_helper import check_user_in_db, check_user_not_in_db
 from helpers.urls import URLS
 from pages.account_page import AccountPage
-from pages.alert_page import AlertPage
 from pages.register_page import RegisterPage
 
 
@@ -133,5 +132,4 @@ class TestRegisterPage:
         page_after_register = RegisterPage(browser, browser.current_url)
         page_after_register.is_title_correct('Register Account')
         check_user_not_in_db(db_connection, email)
-        alert_page = AlertPage(browser, browser.current_url)
-        alert_page.check_fail_register_without_accept_privacy_policy()
+        page_after_register.alert.check_error_text('Warning: You must agree to the Privacy Policy!')

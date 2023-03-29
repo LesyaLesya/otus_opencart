@@ -6,9 +6,8 @@ from selenium.webdriver.common.by import By
 class AlertsLocators:
     """Локаторы алертов."""
 
-    LINK_LOGIN_ALERT = (By.CSS_SELECTOR, 'div.alert-success > i + a')
-    LINK_ALERT = (By.CSS_SELECTOR, 'div.alert-success > a + a')
-    FAIL_LOGIN_ALERT = (By.CSS_SELECTOR, '.alert-danger')
+    LINK_LOGIN_ALERT = (By.CSS_SELECTOR, 'i + a')
+    LINK_ALERT = (By.CSS_SELECTOR, 'a + a')
     DANGER_ALERT = (By.CSS_SELECTOR, '.alert.alert-danger.alert-dismissible')
     SUCCESS_ALERT = (By.CSS_SELECTOR, 'div.alert-success')
 

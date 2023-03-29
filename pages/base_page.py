@@ -10,6 +10,8 @@ from selenium.webdriver.support.ui import Select, WebDriverWait
 from helpers import allure_helper
 from helpers.waits import Element, Elements, Clickable
 
+from pages.common.alert import Alert
+
 
 class BasePage:
     """Класс, описывающий базовую страницу."""
@@ -25,6 +27,7 @@ class BasePage:
         self.url = url
         self.wait = WebDriverWait(browser, wait)
         self.db_connection = db_connection
+        self.alert = Alert(self.browser)
 
     def open_url(self, path='/'):
         """Открытие url.

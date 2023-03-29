@@ -7,7 +7,6 @@ import pytest
 from helpers.locators import CataloguePageLocators
 from helpers.urls import URLS
 from pages.account_page import AccountPage
-from pages.alert_page import AlertPage
 from pages.catalogue_page import CataloguePage
 from pages.comparison_page import ComparisonPage
 from pages.header_page import HeaderPage
@@ -112,8 +111,7 @@ class TestCataloguePage:
         page = CataloguePage(browser, url)
         page.open_url(path=URLS.CATALOGUE_PAGE)
         name = page.add_to_wishlist(idx)
-        alert_page = AlertPage(browser, browser.current_url)
-        alert_page.click_login_from_alert()
+        page.alert.click_login_from_alert()
         login_page = LoginPage(browser, browser.current_url, db_connection)
         login_page.login_user()
         account_page = AccountPage(browser, browser.current_url)
