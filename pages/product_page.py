@@ -78,11 +78,6 @@ class ProductPage(BasePage):
         self.click_on_element(*ProductPageLocators.WISH_LIST_BUTTON)
         return name
 
-    @allure.step('Кликнуть на кнопку Логина в алерте')
-    def click_login_from_alert(self):
-        """Клик по кнопке Логина в алерте."""
-        self.click_on_element(*ProductPageLocators.LINK_LOGIN_ALERT)
-
     @allure.step('Добавить товар в сравнение')
     def add_to_compare(self):
         """Добавление товара в сравнение. Возвращает название
@@ -91,11 +86,6 @@ class ProductPage(BasePage):
         name = self.get_text_of_element(*ProductPageLocators.ITEM_TITLE)
         self.click_on_element(*ProductPageLocators.COMPARE_BUTTON)
         return name
-
-    @allure.step('Кликнуть на кнопку в алерте')
-    def click_link_from_alert(self):
-        """Клик по кнопке Сравнения в алерте."""
-        self.click_on_element(*ProductPageLocators.LINK_ALERT)
 
     @allure.step('Добавить товар в корзину')
     def add_to_cart(self):
@@ -157,35 +147,3 @@ class ProductPage(BasePage):
         tax = self.get_text_of_element(*ProductPageLocators.ELEMENTS_OF_RIGHT_BLOCK_INFO_SECOND, index=1)
         with allure.step(f'Проверить, что поле пошлины {tax} начинается с Ex Tax:'):
             assert tax.startswith('Ex Tax:'), f'Инфа о пошлине - {tax}'
-
-    @allure.step('Проверить алерт при пустом отзыве')
-    def check_error_visibility_review(self):
-        """Проверить алерт при пустом отзыве."""
-        self.is_element_visible(*ProductPageLocators.REVIEW_ALERT)
-
-    @allure.step('Проверить сообщение об ошибке при пустом отзыве')
-    def check_error_text_empty_review(self):
-        """Проверить сообщение об ошибке при пустом отзыве."""
-        error_text = self.get_text_of_element(*ProductPageLocators.REVIEW_ALERT)
-        with allure.step(
-                'Проверить, что текст ошибки при пустом отзыве - Warning: Review Text must be between 25 and 1000 characters!'):
-            assert error_text == 'Warning: Review Text must be between 25 and 1000 characters!', \
-                f'Текст ошибки {error_text}'
-
-    @allure.step('Проверить сообщение об ошибке при пустом авторе отзыва')
-    def check_error_text_empty_author_review(self):
-        """Проверить сообщение об ошибке при пустом авторе отзыва."""
-        error_text = self.get_text_of_element(*ProductPageLocators.REVIEW_ALERT)
-        with allure.step(
-                'Проверить, что текст ошибки при пустом авторе - Warning: Review Name must be between 3 and 25 characters!'):
-            assert error_text == 'Warning: Review Name must be between 3 and 25 characters!', \
-                f'Текст ошибки {error_text}'
-
-    @allure.step('Проверить сообщение об ошибке при пустом рейтинге отзыва')
-    def check_error_text_empty_rating_review(self):
-        """Проверить сообщение об ошибке при пустом рейтинге отзыва."""
-        error_text = self.get_text_of_element(*ProductPageLocators.REVIEW_ALERT)
-        with allure.step(
-                'Проверить, что текст ошибки при пустом авторе - Warning: Please select a review rating!'):
-            assert error_text == 'Warning: Please select a review rating!', \
-                f'Текст ошибки {error_text}'

@@ -126,14 +126,3 @@ class RegisterPage(BasePage):
             allure_helper.attach(self.browser)
             assert error_text == 'Password confirmation does not match password!', \
                 f'Текст ошибки {error_text}'
-
-    @allure.step('Проверить, что выведена ошибка  - принятие пользовательского соглашения обязательно')
-    def check_fail_register_without_accept_privacy_policy(self):
-        """ Проверка отображения ошибки регистрации без принятия пользовательского соглашения. """
-        self.is_element_visible(*RegisterPageLocators.PRIVACY_POLICY_ALERT)
-        error_text = self.get_text_of_element(*RegisterPageLocators.PRIVACY_POLICY_ALERT)
-        with allure.step(
-                'Проверить, что текст ошибки при пустом имени - Warning: You must agree to the Privacy Policy!'):
-            allure_helper.attach(self.browser)
-            assert error_text == 'Warning: You must agree to the Privacy Policy!', \
-                f'Текст ошибки {error_text}'

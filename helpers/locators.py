@@ -3,6 +3,16 @@
 from selenium.webdriver.common.by import By
 
 
+class AlertsLocators:
+    """Локаторы алертов."""
+
+    LINK_LOGIN_ALERT = (By.CSS_SELECTOR, 'div.alert-success > i + a')
+    LINK_ALERT = (By.CSS_SELECTOR, 'div.alert-success > a + a')
+    FAIL_LOGIN_ALERT = (By.CSS_SELECTOR, '.alert-danger')
+    DANGER_ALERT = (By.CSS_SELECTOR, '.alert.alert-danger.alert-dismissible')
+    SUCCESS_ALERT = (By.CSS_SELECTOR, 'div.alert-success')
+
+
 class HeaderPageLocators:
     """Локаторы для Шапки сайта."""
 
@@ -61,10 +71,8 @@ class ProductPageLocators:
     TAB_SPECIFICATION_LINK = (By.XPATH, '//a[@href="#tab-specification"]')
     TAB_REVIEWS_LINK = (By.XPATH, '//a[@href="#tab-review"]')
     ITEM_TITLE = (By.CSS_SELECTOR, '.col-sm-4 > .btn-group + h1')
-    LINK_LOGIN_ALERT = (By.CSS_SELECTOR, 'div.alert-success > i + a')
     WISH_LIST_BUTTON = (By.XPATH, '//button[@data-original-title="Add to Wish List"]')
     COMPARE_BUTTON = (By.XPATH, '//div[@class="btn-group"]/button[@data-original-title="Compare this Product"]')
-    LINK_ALERT = (By.CSS_SELECTOR, 'div.alert-success > a + a')
     WRITE_REVIEW_BUTTON = (By.XPATH, '//a[text()="Write a review"]')
     REVIEW_NAME_FIELD = (By.ID, 'input-name')
     REVIEW_FIELD = (By.ID, 'input-review')
@@ -74,7 +82,6 @@ class ProductPageLocators:
     ELEMENTS_OF_RIGHT_BLOCK_INFO_FIRST = (By.XPATH, '//div[@class="col-sm-4"]/ul[@class="list-unstyled"][1]/li')
     ELEMENTS_OF_RIGHT_BLOCK_INFO_SECOND = (By.XPATH, '//div[@class="col-sm-4"]/ul[@class="list-unstyled"][2]/li')
     PRODUCT_PRICE = (By.XPATH, '//div[@class="col-sm-4"]/ul[@class="list-unstyled"][2]/li/h2')
-    REVIEW_ALERT = (By.CSS_SELECTOR, '.alert.alert-danger.alert-dismissible')
 
 
 class CataloguePageLocators:
@@ -87,12 +94,10 @@ class CataloguePageLocators:
     BANNER_UNDER_LEFT_MENU = (By.ID, 'banner0')
     COMPARE_BUTTON = (
         By.XPATH, '//button[@data-original-title="Compare this Product"]')
-    ALERT_SUCCESS_COMPARE = (By.CSS_SELECTOR, '.alert-success')
     COMPARE_LINK = (By.ID, 'compare-total')
     SELECT_SORT = (By.ID, 'input-sort')
     ITEM_NAME = (By.CSS_SELECTOR, '.caption > h4 > a')
     ITEM_PRICE = (By.CSS_SELECTOR, '.caption > h4 + p + p.price')
-    LOGIN_LINK_IN_ALERT = (By.CSS_SELECTOR, 'div.alert-success > i + a')
     WISH_LIST_BUTTON = (By.XPATH, '//button[@data-original-title="Add to Wish List"]')
     ITEM_CART = (By.CSS_SELECTOR, 'div.row > div.product-layout')
     LIST_VIEW_BUTTON = (By.ID, 'list-view')
@@ -121,7 +126,6 @@ class LoginPageLocators:
     EMAIL_INPUT = (By.ID, 'input-email')
     PASSWORD_INPUT = (By.ID, 'input-password')
     LOGIN_BUTTON = (By.XPATH, '//input[@value="Login"]')
-    FAIL_LOGIN_ALERT = (By.CSS_SELECTOR, 'i.fa-exclamation-circle')
 
 
 class RegisterPageLocators:
@@ -146,7 +150,6 @@ class RegisterPageLocators:
     TEL_ERROR = (By.CSS_SELECTOR, '#input-telephone + .text-danger')
     PASSWORD_ERROR = (By.CSS_SELECTOR, '#input-password + .text-danger')
     CONFIRM_ERROR = (By.CSS_SELECTOR, '#input-confirm + .text-danger')
-    PRIVACY_POLICY_ALERT = (By.CSS_SELECTOR, '.alert.alert-danger.alert-dismissible')
 
 
 class AdminPageLocators:
@@ -162,7 +165,6 @@ class AdminPageLocators:
     LEFT_MENU_CATALOGUE = (By.CSS_SELECTOR, '#menu-catalog > a')
     LEFT_MENU_PRODUCTS = (By.CSS_SELECTOR, '#collapse1 > li:nth-child(2) > a')
     PRODUCTS_TABLE = (By.CSS_SELECTOR, '.table-responsive')
-    FAIL_LOGIN_ALERT = (By.CSS_SELECTOR, '.alert-danger')
 
 
 class SearchPageLocators:
@@ -194,8 +196,8 @@ class ComparePageLocators:
 
     ITEM_NAMES = (By.CSS_SELECTOR, 'h1 + table > tbody > tr > td > a > strong')
     REMOVE_BUTTON = (By.CSS_SELECTOR, 'a.btn-danger')
-    ALERT_SUCCESS = (By.CSS_SELECTOR, 'div.alert-success')
     TEXT_FOR_EMTY_COMPARE = (By.CSS_SELECTOR, '#content > h1 + p')
+    ADD_TO_CART_BUTTON = (By.CSS_SELECTOR,'input.btn-primary')
 
 
 class CartPageLocators:

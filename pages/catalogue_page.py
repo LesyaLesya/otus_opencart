@@ -114,11 +114,6 @@ class CataloguePage(BasePage):
         self.click_on_element(*CataloguePageLocators.WISH_LIST_BUTTON, index)
         return name
 
-    @allure.step('Кликнуть на кнопку Логина в алерте')
-    def click_login_from_alert(self):
-        """Клик по кнопке Логина в алерте."""
-        self.click_on_element(*CataloguePageLocators.LOGIN_LINK_IN_ALERT)
-
     @allure.step('Кликнуть на кнопку вида Список')
     def click_list_view(self):
         """Клик по кнопке с видом списка и проверка изменения вида."""

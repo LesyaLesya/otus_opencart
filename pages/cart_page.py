@@ -22,6 +22,17 @@ class CartPage(BasePage):
             allure_helper.attach(self.browser)
             assert name in product_names, f'Название {name}, названия товаров в корзине {product_names}'
 
+    @allure.step('Проверить, сколько товаров в корзине')
+    def check_quantity_of_items_in_cart(self, value):
+        """Проверка видимости товара в корзине.
+
+        :param value: количество товаров в корзине
+        """
+        elements = self._element(*CartPageLocators.ITEM_NAMES, all=True)
+        quantity = len(elements)
+        with allure.step(f'Проверить, что в корзине {value} товаров'):
+            assert quantity == value, f'Товаров в корзине {quantity}, ожидаем {value}'
+
     @allure.step('Удалить товар из корзины')
     def remove_product_from_cart(self):
         """Проверка удаления товаров из корзины."""

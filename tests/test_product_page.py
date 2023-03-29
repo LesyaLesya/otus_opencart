@@ -7,6 +7,7 @@ import pytest
 from helpers.db_helper import check_review_in_db, check_review_not_in_db
 from helpers.urls import URLS
 from pages.account_page import AccountPage
+from pages.alert_page import AlertPage
 from pages.cart_page import CartPage
 from pages.comparison_page import ComparisonPage
 from pages.login_page import LoginPage
@@ -76,7 +77,8 @@ class TestProductPage:
         page = ProductPage(browser, url)
         page.open_url(path=URLS.PRODUCT_PAGE)
         name = page.add_to_wishlist()
-        page.click_login_from_alert()
+        alert_page = AlertPage(browser, browser.current_url)
+        alert_page.click_login_from_alert()
         login_page = LoginPage(browser, browser.current_url, db_connection)
         login_page.login_user()
         account_page = AccountPage(browser, browser.current_url)
@@ -96,7 +98,8 @@ class TestProductPage:
         page = ProductPage(browser, url)
         page.open_url(path=URLS.PRODUCT_PAGE)
         name = page.add_to_compare()
-        page.click_link_from_alert()
+        alert_page = AlertPage(browser, browser.current_url)
+        alert_page.click_link_from_alert()
         compare_page = ComparisonPage(browser, browser.current_url)
         compare_page.check_item_in_comparison(name)
 
@@ -113,7 +116,8 @@ class TestProductPage:
         page = ProductPage(browser, url)
         page.open_url(path=URLS.PRODUCT_PAGE)
         name = page.add_to_cart()
-        page.click_link_from_alert()
+        alert_page = AlertPage(browser, browser.current_url)
+        alert_page.click_link_from_alert()
         cart_page = CartPage(browser, browser.current_url)
         cart_page.check_item_in_cart(name)
 
@@ -170,8 +174,9 @@ class TestProductPage:
         page = ProductPage(browser, url)
         page.open_url(path=URLS.PRODUCT_PAGE)
         page.write_review('TEST1', '', 4)
-        page.check_error_visibility_review()
-        page.check_error_text_empty_review()
+        alert_page = AlertPage(browser, browser.current_url)
+        alert_page.check_error_visibility_review()
+        alert_page.check_error_text_empty_review()
         check_review_not_in_db(db_connection, 'TEST1', '')
 
     @allure.story('Написание отзыва на товар')
@@ -187,8 +192,9 @@ class TestProductPage:
         page = ProductPage(browser, url)
         page.open_url(path=URLS.PRODUCT_PAGE)
         page.write_review('', 'Good ithem. I really like it. Great!', 4)
-        page.check_error_visibility_review()
-        page.check_error_text_empty_author_review()
+        alert_page = AlertPage(browser, browser.current_url)
+        alert_page.check_error_visibility_review()
+        alert_page.check_error_text_empty_author_review()
         check_review_not_in_db(db_connection, '', 'Good ithem. I really like it. Great!')
 
     @allure.story('Написание отзыва на товар')
@@ -204,6 +210,7 @@ class TestProductPage:
         page = ProductPage(browser, url)
         page.open_url(path=URLS.PRODUCT_PAGE)
         page.write_review('TEST1', 'Good ithem. I really like it. Great!', None)
-        page.check_error_visibility_review()
-        page.check_error_text_empty_rating_review()
+        alert_page = AlertPage(browser, browser.current_url)
+        alert_page.check_error_visibility_review()
+        alert_page.check_error_text_empty_rating_review()
         check_review_not_in_db(db_connection, 'TEST1', 'Good ithem. I really like it. Great!')

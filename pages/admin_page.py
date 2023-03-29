@@ -54,8 +54,3 @@ class AdminPage(BasePage):
     def check_products_table(self):
         """Проверка видимости таблицы."""
         self.is_element_visible(*AdminPageLocators.PRODUCTS_TABLE)
-
-    @allure.step('Проверить, что выведен алерт с ошибкой авторизации')
-    def check_fail_login_alert(self):
-        """Проверка видимости алерта."""
-        self.is_element_visible(*AdminPageLocators.FAIL_LOGIN_ALERT)

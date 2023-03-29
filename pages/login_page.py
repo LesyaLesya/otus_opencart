@@ -38,8 +38,3 @@ class LoginPage(BasePage):
         self.click_on_element(*LoginPageLocators.LOGIN_BUTTON)
         if clr is True:
             db_queries.delete_user(self.db_connection, email)
-
-    @allure.step('Проверить, что выведен алерт с ошибкой авторизации')
-    def check_fail_login(self):
-        """Проверка отображения алерта с ошибкой авторизации."""
-        self.is_element_visible(*LoginPageLocators.FAIL_LOGIN_ALERT)
