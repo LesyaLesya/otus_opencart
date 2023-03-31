@@ -8,3 +8,4 @@ class URLS:
     CATALOGUE_PAGE = '/index.php?route=product/category&path=18'
     ADMIN_PAGE = '/admin/'
     REGISTER_PAGE = '/index.php?route=account/register'
+    CART_PAGE = '/index.php?route=checkout/cart'

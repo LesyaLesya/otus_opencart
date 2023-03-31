@@ -9,7 +9,6 @@ from helpers.urls import URLS
 from pages.account_page import AccountPage
 from pages.catalogue_page import CataloguePage
 from pages.comparison_page import ComparisonPage
-from pages.header_page import HeaderPage
 from pages.login_page import LoginPage
 from pages.product_page import ProductPage
 
@@ -172,8 +171,7 @@ class TestCataloguePage:
         """
         page = CataloguePage(browser, url)
         page.open_url(path=URLS.CATALOGUE_PAGE)
-        currency_page = HeaderPage(browser, browser.current_url)
-        currency_page.choose_currency(values)
+        page.header.choose_currency(values)
         catalogue_page2 = CataloguePage(browser, browser.current_url)
         catalogue_page2.check_currency_in_price(idx, symbol)
 

@@ -1,15 +1,18 @@
-"""Модуль c методами для Подвала сайта."""
-
-
 import allure
+from selenium.webdriver.support.wait import WebDriverWait
 
-from helpers import allure_helper
+from helpers.allure_helper import attach
 from helpers.locators import FooterPageLocators
-from pages.base_page import BasePage
+from helpers.waits import Elements
 
 
-class FooterPage(BasePage):
-    """Класс с методами для подвала сайта."""
+class Footer:
+    def __init__(self, browser):
+        self.browser = browser
+
+    @property
+    def footer_links(self):
+        return WebDriverWait(self.browser, 5).until(Elements(*FooterPageLocators.LINKS))
 
     @allure.step('Проверить ссылки в подвале')
     def check_footer_links(self, lst):
@@ -17,8 +20,7 @@ class FooterPage(BasePage):
 
         :param lst: список названий ссылок
         """
-        elements = self._element(*FooterPageLocators.LINKS, all=True)
-        links_text = [i.text for i in elements]
+        links_text = [i.text for i in self.footer_links]
         with allure.step(f'Проверить, что тексты ссылок {links_text} совпадают с {lst}'):
-            allure_helper.attach(self.browser)
+            attach(self.browser)
             assert links_text == lst, f'Список ссылок - {links_text}'
