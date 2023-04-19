@@ -5,3 +5,4 @@ allure-pytest==2.8.22
 requests==2.24.0
 mysql-connector-python==8.0.22
 webdriver-manager==3.8.5
+Faker==18.4.0

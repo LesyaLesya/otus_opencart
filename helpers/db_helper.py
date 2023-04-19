@@ -16,12 +16,14 @@ def check_user_not_in_db(db_connection, email=None, firstname=None, lastname=Non
 
 @allure.step(
     'Проверить, что пользователь появился в БД - с email {email}, именем {firstname}, фамилией {lastname}, телефоном {tel}')
-def check_user_in_db(db_connection, firstname, lastname, email, tel, radio_idx):
-    get_user_from_db(db_connection, firstname, lastname, email, tel, radio_idx)
-    del_user_from_bd(db_connection, email, firstname)
+def check_user_in_db(db_connection, delete_user, firstname, lastname, email, tel, radio_idx=None):
+    try:
+        get_user_from_db(db_connection, firstname, lastname, email, tel, radio_idx)
+    finally:
+        delete_user(email, firstname, lastname, tel)
 
 
-def get_user_from_db(db_connection, firstname, lastname, email, tel, radio_idx):
+def get_user_from_db(db_connection, firstname, lastname, email, tel, radio_idx=None):
     """Проверка пользователя в БД."""
 
     result = db_queries.get_new_user(db_connection, email)
@@ -38,14 +40,10 @@ def get_user_from_db(db_connection, firstname, lastname, email, tel, radio_idx):
     assert active_db == 1, f'Активность пользователя в базе {active_db}, ОР 1'
     if radio_idx == 0:
         assert newsletter_db == 1, f'Рассылка пользователя в базе {newsletter_db}, ОР 1'
-    else:
+    elif radio_idx == 1:
         assert newsletter_db == 0, f'Рассылка пользователя в базе {newsletter_db}, ОР 0'
-
-
-def del_user_from_bd(db_connection, email, fistname):
-    """Удаление юзера из БД."""
-
-    return db_queries.delete_user(db_connection, email, fistname)
+    else:
+        pass
 
 
 @allure.step('Проверить, что ревью НЕ появилось в БД')
@@ -62,8 +60,10 @@ def check_review_not_in_db(db_connection, author, text):
 
 @allure.step('Проверить, что ревью появилось в БД - автор {author}, текст {text}')
 def check_review_in_db(db_connection, author, text):
-    get_review_from_db(db_connection, author, text)
-    del_review_from_bd(db_connection, author, text)
+    try:
+        get_review_from_db(db_connection, author, text)
+    finally:
+        db_queries.delete_review(db_connection, author, text)
 
 
 def get_review_from_db(db_connection, author, text):
@@ -75,9 +75,3 @@ def get_review_from_db(db_connection, author, text):
         assert True
     else:
         assert False, f'Записи не найдены - {result}'
-
-
-def del_review_from_bd(db_connection, author, text):
-    """Возвращает удаление отзыва из БД."""
-
-    return db_queries.delete_review(db_connection, author, text)

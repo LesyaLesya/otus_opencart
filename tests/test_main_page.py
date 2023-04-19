@@ -7,7 +7,6 @@ from pages.main_page import MainPage
 from pages.product_page import ProductPage
 
 
-
 @allure.feature('Главная страница')
 @pytest.mark.main_page
 class TestMainPage:

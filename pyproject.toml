@@ -3,16 +3,18 @@
 addopts = "--alluredir allure-results"
 filterwarnings = "ignore::DeprecationWarning"
 markers = [
-    "register_page",
+    "account_register_page",
     "search_page",
     "main_page",
     "product_page",
-    "login_page",
+    "account_login_page",
     "header_page",
     "footer_page",
     "comparison_page",
     "catalogue_page",
     "cart_page",
     "admin_page",
-    "account_page"
+    "account_page",
+    "account_logout_page",
+    "account_edit_page"
     ]

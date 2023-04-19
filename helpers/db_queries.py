@@ -4,7 +4,7 @@ import allure
 
 
 @allure.step('Создать тестового пользователя с email {email}, именем {lastname}, фамилией {lastname}')
-def create_test_user(connection, email, fistname='TEST1', lastname='TEST1'):
+def create_test_user(connection, email, fistname, lastname, telephone):
     """Создает тестового пользователя и возвращает его email."""
 
     query = 'INSERT INTO oc_customer ' \
@@ -14,24 +14,24 @@ def create_test_user(connection, email, fistname='TEST1', lastname='TEST1'):
     e_mail = email
     fistname = fistname
     lastname = lastname
+    telephone = telephone
     test_password = '49dcc5aacf9491668e729c0c46bc815988f641e4'
     salt = 'VGNUpQvgV'
-    data = [1, 0, 1, fistname, lastname, e_mail, 123456,
+    data = [1, 0, 1, fistname, lastname, e_mail, telephone,
             0, test_password, salt, 1, '12', '123.123.123.123',
             1, 0, '', '', 0, '2020-12-05 23:27:44']
 
     connection.cursor().execute(query, data)
     connection.commit()
     allure.attach(name=email, body=email)
-    return email
 
 
 @allure.step('Удалить тестового пользователя с email {email} и firstname {firstname}')
-def delete_user(connection, email, firstname='TEST1'):
+def delete_user(connection, email, firstname, lastname, telephone):
     """Удаление тестового пользователя."""
 
-    query = 'DELETE FROM oc_customer WHERE firstname = %s and email = %s'
-    data = [firstname, email]
+    query = 'DELETE FROM oc_customer WHERE firstname = %s and email = %s and lastname = %s and telephone = %s'
+    data = [firstname, email, lastname, telephone]
     connection.cursor().execute(query, data)
     connection.commit()
 

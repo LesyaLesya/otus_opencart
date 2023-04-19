@@ -9,3 +9,5 @@ class URLS:
     ADMIN_PAGE = '/admin/'
     REGISTER_PAGE = '/index.php?route=account/register'
     CART_PAGE = '/index.php?route=checkout/cart'
+    LOGOUT_PAGE = '/index.php?route=account/logout'
+    EDIT_ACCOUNT_PAGE = '/index.php?route=account/edit'

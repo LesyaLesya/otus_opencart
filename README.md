@@ -98,7 +98,7 @@ pip install -r requirements.txt
 В консоли (из директории проекта) выполнить команду:
 
 ```
-pytest --local  --url=your_external_ip --browser-name=(firefox/chrome)  -m marker -n 2
+pytest --local  --url=your_external_ip --browser-name=(firefox/chrome)  -m marker -n 2 tests/
 ```
 где:
 
