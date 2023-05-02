@@ -5,7 +5,9 @@ import pytest
 
 from helpers.urls import URLS
 from pages.cart_page import CartPage
+from pages.catalogue_page import CataloguePage
 from pages.main_page import MainPage
+from pages.product_page import ProductPage
 from pages.search_page import SearchPage
 
 
@@ -24,41 +26,21 @@ def return_lst():
 class TestFooterPage:
     """Тесты Подвала сайта."""
 
+    common_args = ('pages, path',
+                   [(SearchPage, URLS.SEARCH_PAGE), (CartPage, URLS.CART_PAGE),
+                    (MainPage, ''), (ProductPage, URLS.PRODUCT_PAGE),
+                    (CataloguePage, URLS.CATALOGUE_PAGE)])
+
     @allure.story('Элементы страницы')
-    @allure.title('Проверка текста ссылок в подвале на Главной странице')
+    @allure.title('Проверка текста ссылок в подвале на странице {pages}')
     @allure.link('#', name='User story')
-    def test_check_footer_links_text_on_main_page(self, browser, url, return_lst):
-        """Тестовая функция для проверки текста ссылок в подвале на главой странице.
+    @pytest.mark.parametrize(*common_args)
+    def test_check_footer_links_text(self, browser, url, return_lst, pages, path):
+        """Тестовая функция для проверки текста ссылок в подвале на страницах.
 
         :param browser: фикстура для запуска драйвера
         :param url: фикстура с урлом тестируемого ресурса
         """
-        page = MainPage(browser, url)
-        page.open_url()
-        page.footer.check_footer_links(return_lst)
-
-    @allure.story('Элементы страницы')
-    @allure.title('Проверка текста ссылок в подвале на странице Корзины')
-    @allure.link('#', name='User story')
-    def test_check_footer_links_text_on_cart_page(self, browser, url, return_lst):
-        """Тестовая функция для проверки текста ссылок в подвале на странице корзины.
-
-        :param browser: фикстура для запуска драйвера
-        :param url: фикстура с урлом тестируемого ресурса
-        """
-        page = CartPage(browser, url)
-        page.open_url(path=URLS.CART_PAGE)
-        page.footer.check_footer_links(return_lst)
-
-    @allure.story('Элементы страницы')
-    @allure.title('Проверка текста ссылок в подвале на странице Поиска')
-    @allure.link('#', name='User story')
-    def test_check_footer_links_text_on_search_page(self, browser, url, return_lst):
-        """Тестовая функция для проверки текста ссылок в подвале на странице поиска.
-
-        :param browser: фикстура для запуска драйвера
-        :param url: фикстура с урлом тестируемого ресурса
-        """
-        page = SearchPage(browser, url)
-        page.open_url(path=URLS.SEARCH_PAGE)
+        page = pages(browser, url)
+        page.open_url(path=path)
         page.footer.check_footer_links(return_lst)

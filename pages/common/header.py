@@ -208,3 +208,17 @@ class Header:
                 with allure.step(f'Кликнуть по значению валюты {value}'):
                     self.currency_dropdown_value(i).click()
 
+    def check_dropdown_menu(self, lst):
+        """Проверка выпадающих списков горизонтального меню.
+
+        :param lst: список локторов пунктов меню и выпадающих списков меню
+        """
+        for i in lst:
+            el_menu = WebDriverWait(self.browser, 5).until(Element(*i[0]))
+            with allure.step(f'Навести курсок на пункт меню {i[0]}'):
+                ActionChains(self.browser).move_to_element(el_menu).perform()
+                attach(self.browser)
+            with allure.step(f'Проверить выпадающее меню {i[1]}'):
+                el_dropdown = WebDriverWait(self.browser, 5).until(Element(*i[1]))
+                attach(self.browser)
+                assert el_dropdown.is_displayed(), f'Элемент {i[1]} не отображается на странице'
