@@ -43,6 +43,12 @@ class Alert:
                 f'Текст ошибки {error_text}'
 
     @allure.step('Проверить видимость успешного алерта')
-    def check_success_alert(self):
+    def check_success_alert(self, txt=None):
         """Вывод успешного алерта."""
         assert self.success_alert.is_displayed()
+        if txt:
+            success_text = self.success_alert.text
+            res = success_text.replace('×', '').strip()
+            with allure.step(f'Проверить, что текст - {txt}'):
+                attach(self.browser)
+                assert res == txt, f'Текст - {res}'

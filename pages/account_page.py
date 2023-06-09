@@ -36,6 +36,14 @@ class AccountPage(BasePage):
 class WishlistPage(AccountPage):
     """Класс с методами для страницы Вишлиста Аккаунта пользователя."""
 
+    @allure.step('Проверить количество товаров в вишлисте')
+    def check_len_items_in_wish_list(self, n):
+        """Проверка количества товаров в вилисте."""
+        elements = self._element(*WishlistPageLocators.ITEM_NAMES, all=True)
+        with allure.step(f'Проверить, что в вишлисте {n} товаров'):
+            allure_helper.attach(self.browser)
+            assert len(elements) == n, f'Количество товаров - {len(elements)}'
+
     @allure.step('Проверить, что товар в виш-листе')
     def check_item_in_wish_list(self, name):
         """Проверка видимости товара в вишлисте.
@@ -47,6 +55,27 @@ class WishlistPage(AccountPage):
         with allure.step(f'Проверить что все товары {product_names} содержат название {name}'):
             allure_helper.attach(self.browser)
             assert name in product_names, f'Название {name}, названия продуктов в вишлисте {product_names}'
+
+    @allure.step('Проверить, что вишлист пустой')
+    def check_empty_wish_list(self):
+        """Проверка, что вишлист пустой."""
+        self.is_element_visible(*WishlistPageLocators.EMPTY_WISHLIST_TEXT)
+        text = self.get_text_of_element(*WishlistPageLocators.EMPTY_WISHLIST_TEXT)
+        with allure.step(
+                'Проверить что текст - Your wish list is empty.'):
+            allure_helper.attach(self.browser)
+            assert text == 'Your wish list is empty.', \
+                f'Текств в пустом вишлисте - {text}'
+
+    @allure.step('Удалить товары из вишлиста')
+    def del_items_from_wish_list(self, all=False, idx=0):
+        """Проверка удаления из вишлиста."""
+        if all:
+            elements = self._element(*WishlistPageLocators.REMOVE_BUTTON, all=True)
+            for i in range(len(elements)):
+                self.click_on_element(*WishlistPageLocators.REMOVE_BUTTON, i)
+        else:
+            self.click_on_element(*WishlistPageLocators.REMOVE_BUTTON, idx)
 
 
 class LogoutPage(AccountPage):
@@ -260,3 +289,8 @@ class EditAccountPage(AccountPage):
         with allure.step(f'Проверить, что телефон в инпуте {phone_in_input} == {phone}'):
             allure_helper.attach(self.browser)
             assert phone_in_input == phone, f'Телефон в инпуте {phone_in_input}, ОР {phone}'
+
+    @allure.step('Нажать на кнопку назад')
+    def press_back(self):
+        """Сохранение данных аккаунта."""
+        self.click_on_element(*EditAccountPageLocators.BACK_BUTTON)

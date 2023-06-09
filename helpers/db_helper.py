@@ -4,6 +4,7 @@ import allure
 import time
 
 from helpers import db_queries
+from helpers.db_queries import delete_user
 
 
 @allure.step('Проверить, что пользователь не появился в БД')
@@ -15,35 +16,31 @@ def check_user_not_in_db(db_connection, email=None, firstname=None, lastname=Non
 
 
 @allure.step(
-    'Проверить, что пользователь появился в БД - с email {email}, именем {firstname}, фамилией {lastname}, телефоном {tel}')
-def check_user_in_db(db_connection, delete_user, firstname, lastname, email, tel, radio_idx=None):
+    'Проверить, что пользователь появился в БД - с email {email}, '
+    'именем {firstname}, фамилией {lastname}, телефоном {tel}')
+def check_user_in_db(db_connection, firstname, lastname, email, tel, radio_idx=None):
     try:
-        get_user_from_db(db_connection, firstname, lastname, email, tel, radio_idx)
+        result = db_queries.get_new_user(db_connection, email)
+        firstname_db = result[0][4]
+        lastname_db = result[0][5]
+        email_db = result[0][6]
+        tel_db = result[0][7]
+        newsletter_db = result[0][13]
+        active_db = result[0][17]
+        user_id = result[0][0]
+        assert firstname_db == firstname, f'Имя пользователя в базе {firstname_db}, ОР {firstname}'
+        assert lastname_db == lastname, f'Фамилия пользователя в базе {lastname_db}, ОР {lastname}'
+        assert email_db == email, f'Email пользователя в базе {email_db}, ОР {email}'
+        assert tel_db == tel, f'Телефон пользователя в базе {tel_db}, ОР {tel}'
+        assert active_db == 1, f'Активность пользователя в базе {active_db}, ОР 1'
+        if radio_idx == 0:
+            assert newsletter_db == 1, f'Рассылка пользователя в базе {newsletter_db}, ОР 1'
+        elif radio_idx == 1:
+            assert newsletter_db == 0, f'Рассылка пользователя в базе {newsletter_db}, ОР 0'
+        else:
+            pass
     finally:
-        delete_user(email, firstname, lastname, tel)
-
-
-def get_user_from_db(db_connection, firstname, lastname, email, tel, radio_idx=None):
-    """Проверка пользователя в БД."""
-
-    result = db_queries.get_new_user(db_connection, email)
-    firstname_db = result[0][4]
-    lastname_db = result[0][5]
-    email_db = result[0][6]
-    tel_db = result[0][7]
-    newsletter_db = result[0][13]
-    active_db = result[0][17]
-    assert firstname_db == firstname, f'Имя пользователя в базе {firstname_db}, ОР {firstname}'
-    assert lastname_db == lastname, f'Фамилия пользователя в базе {lastname_db}, ОР {lastname}'
-    assert email_db == email, f'Email пользователя в базе {email_db}, ОР {email}'
-    assert tel_db == tel, f'Телефон пользователя в базе {tel_db}, ОР {tel}'
-    assert active_db == 1, f'Активность пользователя в базе {active_db}, ОР 1'
-    if radio_idx == 0:
-        assert newsletter_db == 1, f'Рассылка пользователя в базе {newsletter_db}, ОР 1'
-    elif radio_idx == 1:
-        assert newsletter_db == 0, f'Рассылка пользователя в базе {newsletter_db}, ОР 0'
-    else:
-        pass
+        delete_user(db_connection, user_id)
 
 
 @allure.step('Проверить, что ревью НЕ появилось в БД')

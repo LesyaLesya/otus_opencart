@@ -41,4 +41,5 @@ class ComparisonPage(BasePage):
     @allure.step('Добавить товар в корзину из сравнения')
     def add_to_cart_from_compare(self, idx):
         """Добавление товара в корзину из сравнения."""
+        self.scroll_down_page()
         self.click_on_element(*ComparePageLocators.ADD_TO_CART_BUTTON, idx)

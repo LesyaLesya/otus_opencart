@@ -7,7 +7,9 @@ from helpers.db_helper import check_user_in_db, check_user_not_in_db
 from helpers.locators import LoginPageLocators
 from helpers.urls import URLS
 from pages.account_page import (
-    AccountPage, EditAccountPage, LoginPage, LogoutPage, RegisterPage)
+    AccountPage, EditAccountPage, LoginPage, LogoutPage, RegisterPage, WishlistPage)
+
+from pages.catalogue_page import CataloguePage
 
 
 @allure.feature('Страница логаута из аккаунта')
@@ -141,7 +143,7 @@ class TestAccountRegisterPage:
                              [('Test1', 'Test2', 'test@test12.com', '89991112233', 'test', 'test', 0),
                               ('Пользователь', 'Фамилия', 'a1@test.ru', '11111111', '12345', '12345', 1)])
     def test_success_register_new_user(
-            self, browser, url, db_connection, delete_user, firstname,
+            self, browser, url, db_connection, firstname,
             lastname, email, tel, password, confirm, radio_idx):
         """Тестовая функция для проверки успешной регистрации нового пользователя.
 
@@ -162,18 +164,18 @@ class TestAccountRegisterPage:
             firstname, lastname, email, tel, password, confirm, radio_idx)
         account_page = AccountPage(browser, browser.current_url)
         account_page.is_title_correct('Your Account Has Been Created!')
-        check_user_in_db(db_connection, delete_user, firstname, lastname, email, tel, radio_idx)
+        check_user_in_db(db_connection, firstname, lastname, email, tel, radio_idx)
 
     @allure.story('Проверка регистрации нового пользователя')
     @allure.title('Пустые поля')
     @allure.link('#', name='User story')
     @pytest.mark.parametrize('firstname, lastname, email, tel, password, confirm, radio_idx',
-                             [(None, 'Test2', 'test@test12.com', '89991112233', 'test', 'test', 0),
-                              ('Test1', None, 'test@test12.com', '89991112233', 'test', 'test', 0),
+                             [(None, 'Test2', 'test@test13.com', '89991112233', 'test', 'test', 0),
+                              ('Test1', None, 'test@test14.com', '89991112233', 'test', 'test', 0),
                               ('Test1', 'Test2', None, '89991112233', 'test', 'test', 0),
-                              ('Test1', 'Test2', 'test@test12.com', None, 'test', 'test', 0),
-                              ('Test1', 'Test2', 'test@test12.com', '89991112233', None, 'test', 0),
-                              ('Test1', 'Test2', 'test@test12.com', '89991112233', 'test', None, 0)])
+                              ('Test1', 'Test2', 'test@test15.com', None, 'test', 'test', 0),
+                              ('Test1', 'Test2', 'test@test16.com', '89991112233', None, 'test', 0),
+                              ('Test1', 'Test2', 'test@test17.com', '89991112233', 'test', None, 0)])
     def test_register_new_user_empty_fields(
             self, browser, url, db_connection, firstname, lastname, email, tel, password, confirm, radio_idx):
         """Тестовая функция для проверки регистрации нового пользователя - пустые поля.
@@ -253,7 +255,7 @@ class TestAccountEditPage:
     @allure.link('#', name='User story')
     @pytest.mark.parametrize('new_firstname', ['lala', '123'])
     def test_change_firstname_user(
-            self, browser, url, fixture_create_delete_user, new_firstname, db_connection, delete_user):
+            self, browser, url, fixture_create_delete_user, new_firstname, db_connection):
         """Тестовая функция для проверки изменения имени пользователя на странице редактирования аккаунт.
 
         :param browser: фикстура для запуска драйвера
@@ -280,4 +282,95 @@ class TestAccountEditPage:
         edit_page_new.check_lastname(lastname)
         edit_page_new.check_email(email)
         edit_page_new.check_phone(telephone)
-        check_user_in_db(db_connection, delete_user, new_firstname, lastname, email, telephone)
+        check_user_in_db(db_connection, new_firstname, lastname, email, telephone)
+
+    @allure.story('Редактирование данных аккаунта')
+    @allure.title('Проверка, что изменения не были сохранены при нажатии на back')
+    @allure.link('#', name='User story')
+    @pytest.mark.parametrize('new_firstname', ['lala'])
+    def test_change_firstname_user_back(
+            self, browser, url, fixture_create_delete_user, new_firstname, db_connection):
+        """Тестовая функция для проверки, что изменения не были сохранены при
+        нажатии на back на странице редактирования аккаунта.
+
+        :param browser: фикстура для запуска драйвера
+        :param db_connection: фикстура коннекта к БД
+        :param url: фикстура с урлом тестируемого ресурса
+        :param fixture_create_delete_user: фикстура создания и удаления тестового пользователя
+        :param new_firstname: имя пользователя
+        """
+        email, firstname, lastname, telephone = fixture_create_delete_user
+        page = LoginPage(browser, url)
+        page.open_url(path=URLS.LOGIN_PAGE)
+        page.login_user(email)
+        account_page = AccountPage(browser, browser.current_url)
+        account_page.click_edit_account()
+        edit_page = EditAccountPage(browser, browser.current_url)
+        edit_page.is_title_correct('My Account Information')
+        edit_page.change_firstname(new_firstname)
+        edit_page.press_back()
+        account_page_after_back = AccountPage(browser, browser.current_url)
+        account_page_after_back.click_edit_account()
+        edit_page_after_back = EditAccountPage(browser, browser.current_url)
+        edit_page_after_back.check_firstname(firstname)
+        edit_page_after_back.check_lastname(lastname)
+        edit_page_after_back.check_email(email)
+        edit_page_after_back.check_phone(telephone)
+        check_user_in_db(db_connection, firstname, lastname, email, telephone)
+
+
+@allure.feature('Страница вишлиста')
+@pytest.mark.account_page
+@pytest.mark.account_wishlist
+class TestAccountWishlist:
+    """Тесты страницы вишлиста."""
+
+    @allure.story('Редактирование вишлиста')
+    @allure.title('Проверка пустого вишлиста')
+    @allure.link('#', name='User story')
+    def test_check_empty_wishlist(
+            self, browser, url, fixture_create_delete_user, db_connection, delete_user):
+        """Тестовая функция для проверки пустого вишлиста.
+
+        :param browser: фикстура для запуска драйвера
+        :param db_connection: фикстура коннекта к БД
+        :param url: фикстура с урлом тестируемого ресурса
+        :param fixture_create_delete_user: фикстура создания и удаления тестового пользователя
+        """
+        email, firstname, lastname, telephone = fixture_create_delete_user
+        page = LoginPage(browser, url)
+        page.open_url(path=URLS.LOGIN_PAGE)
+        page.login_user(email)
+        account_page = AccountPage(browser, browser.current_url)
+        account_page.open_wishlist()
+        wishlist_page = WishlistPage(browser, browser.current_url)
+        wishlist_page.is_title_correct('My Wish List')
+        wishlist_page.check_empty_wish_list()
+
+    @allure.story('Редактирование вишлиста')
+    @allure.title('Проверка удаления товара из вишлиста')
+    @allure.link('#', name='User story')
+    def test_delete_item_from_wishlist(
+            self, browser, url, fixture_create_delete_user, db_connection, delete_user):
+        """Тестовая функция для проверки удаления товара из вишлиста.
+
+        :param browser: фикстура для запуска драйвера
+        :param db_connection: фикстура коннекта к БД
+        :param url: фикстура с урлом тестируемого ресурса
+        :param fixture_create_delete_user: фикстура создания и удаления тестового пользователя
+        """
+        email, firstname, lastname, telephone = fixture_create_delete_user
+        login_page = LoginPage(browser, url)
+        login_page.open_url(path=URLS.LOGIN_PAGE)
+        login_page.login_user(email)
+        catalogue_page = CataloguePage(browser, url)
+        catalogue_page.open_url(path=URLS.CATALOGUE_PAGE)
+        name = catalogue_page.add_to_wishlist(0)
+        catalogue_page.add_to_wishlist(1)
+        wishlist_page = WishlistPage(browser, browser.current_url)
+        wishlist_page.open_wishlist()
+        wishlist_page.check_len_items_in_wish_list(2)
+        wishlist_page.del_items_from_wish_list(idx=0)
+        wishlist_page.alert.check_success_alert(txt='Success: You have modified your wish list!')
+        wishlist_page.check_len_items_in_wish_list(1)
+        wishlist_page.check_item_in_wish_list(name)

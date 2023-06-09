@@ -157,8 +157,8 @@ def do_fake():
 @pytest.fixture
 def delete_user(db_connection):
     """Фикстура, удаляющая пользователя."""
-    def __del_user_from_bd(email, firstname, lastname, telephone):
-        return db_queries.delete_user(db_connection, email, firstname, lastname, telephone)
+    def __del_user_from_bd(user_id):
+        return db_queries.delete_user(db_connection, user_id)
     return __del_user_from_bd
 
 
@@ -189,13 +189,14 @@ def create_user(db_connection, do_fake):
             telephone = telephone
 
         db_queries.create_test_user(db_connection, email, firstname, lastname, telephone)
-        return email, firstname, lastname, telephone
+        user_id = db_queries.get_user_id(db_connection, email, firstname, lastname, telephone)
+        return email, firstname, lastname, telephone, user_id
     return __create_user
 
 
 @pytest.fixture
 def fixture_create_delete_user(create_user, delete_user):
     """Фикстура создания и удаления пользователя."""
-    email, firstname, lastname, telephone = create_user()
+    email, firstname, lastname, telephone, user_id = create_user()
     yield email, firstname, lastname, telephone
-    delete_user(email, firstname, lastname, telephone)
+    delete_user(user_id)

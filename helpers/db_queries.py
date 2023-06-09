@@ -26,12 +26,24 @@ def create_test_user(connection, email, fistname, lastname, telephone):
     allure.attach(name=email, body=email)
 
 
-@allure.step('Удалить тестового пользователя с email {email} и firstname {firstname}')
-def delete_user(connection, email, firstname, lastname, telephone):
+@allure.step('Получить id пользователя с email {email} и firstname {firstname}')
+def get_user_id(connection, email, firstname, lastname, telephone):
     """Удаление тестового пользователя."""
 
-    query = 'DELETE FROM oc_customer WHERE firstname = %s and email = %s and lastname = %s and telephone = %s'
+    query = 'SELECT customer_id FROM oc_customer WHERE firstname = %s and email = %s and lastname = %s and telephone = %s'
     data = [firstname, email, lastname, telephone]
+    with connection.cursor() as cursor:
+        cursor.execute(query, data)
+        user_id = cursor.fetchall()
+    return user_id[0][0]
+
+
+@allure.step('Удалить тестового пользователя с id {user_id}')
+def delete_user(connection, user_id):
+    """Удаление тестового пользователя."""
+
+    query = 'DELETE FROM oc_customer WHERE customer_id = %s'
+    data = [user_id]
     connection.cursor().execute(query, data)
     connection.commit()
 

@@ -16,5 +16,6 @@ markers = [
     "admin_page",
     "account_page",
     "account_logout_page",
-    "account_edit_page"
+    "account_edit_page",
+    "account_wishlist"
     ]

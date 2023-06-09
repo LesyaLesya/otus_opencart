@@ -181,7 +181,7 @@ class SearchPageLocators:
 class AccountPageLocators:
     """Локаторы для страницы аккаунта пользователя."""
 
-    WISH_LIST_LINK = (By.XPATH, '//div[@id="content"]/ul[1]/li[4]/a')
+    WISH_LIST_LINK = (By.CSS_SELECTOR, '#wishlist-total')
     LOGOUT_RIGHT_BLOCK = (By.XPATH, '//div[@class="list-group"]/a[contains(text(), "Logout")]')
     MY_ACCOUNT_RIGHT_BLOCK = (By.XPATH, '//div[@class="list-group"]/a[contains(text(), "My Account")]')
     EDIT_ACCOUNT_RIGHT_BLOCK = (By.XPATH, '//div[@class="list-group"]/a[contains(text(), "Edit Account")]')
@@ -191,6 +191,8 @@ class WishlistPageLocators:
     """Локаторы для страницы вишлиста аккаунта пользователя."""
 
     ITEM_NAMES = (By.CSS_SELECTOR, '#content > div > table > tbody > tr >td.text-left > a')
+    EMPTY_WISHLIST_TEXT = (By.CSS_SELECTOR, 'h2 + p')
+    REMOVE_BUTTON = (By.CSS_SELECTOR, 'a.btn-danger')
 
 
 class LogoutPageLocators:
@@ -209,6 +211,7 @@ class EditAccountPageLocators:
     LASTNAME_FIELD = (By.CSS_SELECTOR, '#input-lastname')
     EMAIL_INPUT = (By.CSS_SELECTOR, '#input-email')
     TELEPHONE_INPUT = (By.CSS_SELECTOR, '#input-telephone')
+    BACK_BUTTON = (By.CSS_SELECTOR, 'a.btn-default')
 
 
 class ComparePageLocators:

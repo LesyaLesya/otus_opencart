@@ -169,11 +169,20 @@ class BasePage:
             allure_helper.attach(self.browser)
             raise AssertionError(f'Не получается ввести текст {value} в элемент {locator} {el_path} {index}')
 
-    @allure.step('Проскроллить до элемента {el}')
-    def scroll_to_element(self, el):
+    @allure.step('Проскроллить до элемента {el_path} с индексом {index}')
+    def scroll_to_element(self, locator, el_path, index=0):
         """Возвращает скролл до элемента."""
         try:
-            return self.browser.execute_script('return arguments[0].scrollIntoView(true);', el)
+            element = self._element(locator, el_path, index)
+            return self.browser.execute_script('return arguments[0].scrollIntoView(true);', element)
+        except Exception as e:
+            raise AssertionError(f'Ошибка {e}')
+
+    @allure.step('Проскроллить до низа страницы')
+    def scroll_down_page(self):
+        """Возвращает скролл до низа страницы"""
+        try:
+            return self.browser.execute_script('window.scrollTo(0, document.body.scrollHeight);')
         except Exception as e:
             raise AssertionError(f'Ошибка {e}')
 
