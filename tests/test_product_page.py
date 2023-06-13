@@ -4,7 +4,7 @@
 import allure
 import pytest
 
-from helpers.db_helper import check_review_in_db, check_review_not_in_db
+from helpers.db_helper import check_review_in_db, check_review_not_in_db, check_item_in_wishlist_in_db
 from helpers.urls import URLS
 from pages.account_page import LoginPage, WishlistPage
 from pages.cart_page import CartPage
@@ -64,7 +64,7 @@ class TestProductPage:
     @allure.story('Добавление товара в Виш-лист')
     @allure.title('Добавление товара в Виш-лист со страницы Товара')
     @allure.link('#', name='User story')
-    def test_adding_to_wish_list_from_product(self, browser, url, fixture_create_delete_user):
+    def test_adding_to_wish_list_from_product(self, browser, url, fixture_create_delete_user, db_connection):
         """Тестовая функция для проверки добавления продукта
         в виш-лист из карточки товара.
 
@@ -72,16 +72,17 @@ class TestProductPage:
         :param url: фикстура с урлом тестируемого ресурса
         :param fixture_create_delete_user: фикстура создания и удаления тестового пользователя
         """
-        email, firstname, lastname, telephone = fixture_create_delete_user
+        email, firstname, lastname, telephone, user_id = fixture_create_delete_user
         page = ProductPage(browser, url)
         page.open_url(path=URLS.PRODUCT_PAGE)
-        name = page.add_to_wishlist()
+        name, item_id = page.add_to_wishlist()
         page.alert.click_login_from_alert()
         login_page = LoginPage(browser, browser.current_url)
         login_page.login_user(email)
         wishlist_page = WishlistPage(browser, browser.current_url)
         wishlist_page.open_wishlist()
-        wishlist_page.check_item_in_wish_list(name)
+        wishlist_page.check_items_in_wish_list(name, 1)
+        check_item_in_wishlist_in_db(db_connection, user_id, item_id)
 
     @allure.story('Добавление товара в сравнение')
     @allure.title('Добавление товара в сравнение из карточки товара')

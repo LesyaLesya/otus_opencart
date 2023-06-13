@@ -3,6 +3,7 @@
 import allure
 
 from helpers import allure_helper
+from helpers.datas import AccountTexts
 from helpers.locators import (
      AccountPageLocators, EditAccountPageLocators, LoginPageLocators,
      LogoutPageLocators, RegisterPageLocators, WishlistPageLocators)
@@ -36,25 +37,26 @@ class AccountPage(BasePage):
 class WishlistPage(AccountPage):
     """Класс с методами для страницы Вишлиста Аккаунта пользователя."""
 
-    @allure.step('Проверить количество товаров в вишлисте')
-    def check_len_items_in_wish_list(self, n):
-        """Проверка количества товаров в вилисте."""
+    @allure.step('Проверить, что товары в виш-листе')
+    def check_items_in_wish_list(self, names, n):
+        """Проверка видимости товаров в вишлисте.
+
+        :param names: названия товаров
+        :param n: количество товаров в вишлисте
+        """
         elements = self._element(*WishlistPageLocators.ITEM_NAMES, all=True)
         with allure.step(f'Проверить, что в вишлисте {n} товаров'):
             allure_helper.attach(self.browser)
             assert len(elements) == n, f'Количество товаров - {len(elements)}'
-
-    @allure.step('Проверить, что товар в виш-листе')
-    def check_item_in_wish_list(self, name):
-        """Проверка видимости товара в вишлисте.
-
-        :param name: название товара
-        """
-        elements = self._element(*WishlistPageLocators.ITEM_NAMES, all=True)
         product_names = [i.text for i in elements]
-        with allure.step(f'Проверить что все товары {product_names} содержат название {name}'):
-            allure_helper.attach(self.browser)
-            assert name in product_names, f'Название {name}, названия продуктов в вишлисте {product_names}'
+        with allure.step(f'Проверить что в {product_names} есть товары {names}'):
+            if type(names) == list:
+                for i in names:
+                    allure_helper.attach(self.browser)
+                    assert i in product_names, f'Название {i}, названия продуктов в вишлисте {product_names}'
+            else:
+                allure_helper.attach(self.browser)
+                assert names in product_names, f'Название {names}, названия продуктов в вишлисте {product_names}'
 
     @allure.step('Проверить, что вишлист пустой')
     def check_empty_wish_list(self):
@@ -62,20 +64,23 @@ class WishlistPage(AccountPage):
         self.is_element_visible(*WishlistPageLocators.EMPTY_WISHLIST_TEXT)
         text = self.get_text_of_element(*WishlistPageLocators.EMPTY_WISHLIST_TEXT)
         with allure.step(
-                'Проверить что текст - Your wish list is empty.'):
+                f'Проверить что текст - {AccountTexts.EMPTY_WISHLIST}'):
             allure_helper.attach(self.browser)
-            assert text == 'Your wish list is empty.', \
-                f'Текств в пустом вишлисте - {text}'
+            assert text == AccountTexts.EMPTY_WISHLIST, \
+                f'Текст в пустом вишлисте - {text}'
 
     @allure.step('Удалить товары из вишлиста')
     def del_items_from_wish_list(self, all=False, idx=0):
         """Проверка удаления из вишлиста."""
         if all:
             elements = self._element(*WishlistPageLocators.REMOVE_BUTTON, all=True)
-            for i in range(len(elements)):
-                self.click_on_element(*WishlistPageLocators.REMOVE_BUTTON, i)
+            while len(elements) != 0:
+                self.click_on_element(*WishlistPageLocators.REMOVE_BUTTON, idx)
+                self.alert.check_success_alert(txt=AccountTexts.WISHLIST_CHANGE)
+                elements.pop(idx)
         else:
             self.click_on_element(*WishlistPageLocators.REMOVE_BUTTON, idx)
+            self.alert.check_success_alert(txt=AccountTexts.WISHLIST_CHANGE)
 
 
 class LogoutPage(AccountPage):
@@ -87,10 +92,9 @@ class LogoutPage(AccountPage):
         self.is_element_visible(*LogoutPageLocators.TEXT_AFTER_LOGOUT)
         text = self.get_text_of_element(*LogoutPageLocators.TEXT_AFTER_LOGOUT)
         with allure.step(
-                'Проверить что текст после логаута  - '
-                'You have been logged off your account. It is now safe to leave the computer.'):
+                f'Проверить что текст после логаута  - {AccountTexts.LOGOUT}'):
             allure_helper.attach(self.browser)
-            assert text == 'You have been logged off your account. It is now safe to leave the computer.', \
+            assert text == AccountTexts.LOGOUT, \
                 f'Текст после логаута {text}'
 
     @allure.step('Проверить пункты в правом блоке после логаута')
@@ -185,9 +189,9 @@ class RegisterPage(AccountPage):
         """ Проверка отображения ошибки регистрации без firstname. """
         self.is_element_visible(*RegisterPageLocators.FIRST_NAME_ERROR)
         error_text = self.get_text_of_element(*RegisterPageLocators.FIRST_NAME_ERROR)
-        with allure.step('Проверить, что текст ошибки при пустом имени - First Name must be between 1 and 32 characters!'):
+        with allure.step(f'Проверить, что текст ошибки при пустом имени - {AccountTexts.REGISTER_FIRST_NAME_ERROR}'):
             allure_helper.attach(self.browser)
-            assert error_text == 'First Name must be between 1 and 32 characters!', \
+            assert error_text == AccountTexts.REGISTER_FIRST_NAME_ERROR, \
                 f'Текст ошибки {error_text}'
 
     @allure.step('Проверить, что выведена ошибка  - фамилия обязательна')
@@ -196,9 +200,9 @@ class RegisterPage(AccountPage):
         self.is_element_visible(*RegisterPageLocators.LAST_NAME_ERROR)
         error_text = self.get_text_of_element(*RegisterPageLocators.LAST_NAME_ERROR)
         with allure.step(
-                'Проверить, что текст ошибки при пустом имени - Last Name must be between 1 and 32 characters!'):
+                f'Проверить, что текст ошибки при пустом имени - {AccountTexts.REGISTER_LAST_NAME_ERROR}'):
             allure_helper.attach(self.browser)
-            assert error_text == 'Last Name must be between 1 and 32 characters!', \
+            assert error_text == AccountTexts.REGISTER_LAST_NAME_ERROR, \
                 f'Текст ошибки {error_text}'
 
     @allure.step('Проверить, что выведена ошибка  - email обязателен')
@@ -207,9 +211,9 @@ class RegisterPage(AccountPage):
         self.is_element_visible(*RegisterPageLocators.EMAIL_ERROR)
         error_text = self.get_text_of_element(*RegisterPageLocators.EMAIL_ERROR)
         with allure.step(
-                'Проверить, что текст ошибки при пустом имени - E-Mail Address does not appear to be valid!'):
+                f'Проверить, что текст ошибки при пустом имени - {AccountTexts.REGISTER_EMAIL_ERROR}'):
             allure_helper.attach(self.browser)
-            assert error_text == 'E-Mail Address does not appear to be valid!', \
+            assert error_text == AccountTexts.REGISTER_EMAIL_ERROR, \
                 f'Текст ошибки {error_text}'
 
     @allure.step('Проверить, что выведена ошибка  - телефон обязателен')
@@ -218,9 +222,9 @@ class RegisterPage(AccountPage):
         self.is_element_visible(*RegisterPageLocators.TEL_ERROR)
         error_text = self.get_text_of_element(*RegisterPageLocators.TEL_ERROR)
         with allure.step(
-                'Проверить, что текст ошибки при пустом имени - Telephone must be between 3 and 32 characters!'):
+                f'Проверить, что текст ошибки при пустом имени - {AccountTexts.REGISTER_PHONE_ERROR}'):
             allure_helper.attach(self.browser)
-            assert error_text == 'Telephone must be between 3 and 32 characters!', \
+            assert error_text == AccountTexts.REGISTER_PHONE_ERROR, \
                 f'Текст ошибки {error_text}'
 
     @allure.step('Проверить, что выведена ошибка  - пароль обязателен')
@@ -229,9 +233,9 @@ class RegisterPage(AccountPage):
         self.is_element_visible(*RegisterPageLocators.PASSWORD_ERROR)
         error_text = self.get_text_of_element(*RegisterPageLocators.PASSWORD_ERROR)
         with allure.step(
-                'Проверить, что текст ошибки при пустом имени - Password must be between 4 and 20 characters!'):
+                f'Проверить, что текст ошибки при пустом имени -{AccountTexts.REGISTER_PASSW_ERROR}'):
             allure_helper.attach(self.browser)
-            assert error_text == 'Password must be between 4 and 20 characters!', \
+            assert error_text == AccountTexts.REGISTER_PASSW_ERROR, \
                 f'Текст ошибки {error_text}'
 
     @allure.step('Проверить, что выведена ошибка  - подтверждение пароля обязательно')
@@ -240,9 +244,9 @@ class RegisterPage(AccountPage):
         self.is_element_visible(*RegisterPageLocators.CONFIRM_ERROR)
         error_text = self.get_text_of_element(*RegisterPageLocators.CONFIRM_ERROR)
         with allure.step(
-                'Проверить, что текст ошибки при пустом имени - Password confirmation does not match password!'):
+                f'Проверить, что текст ошибки при пустом имени - {AccountTexts.REGISTER_PASSW_CONFIRM_ERROR}'):
             allure_helper.attach(self.browser)
-            assert error_text == 'Password confirmation does not match password!', \
+            assert error_text == AccountTexts.REGISTER_PASSW_CONFIRM_ERROR, \
                 f'Текст ошибки {error_text}'
 
 

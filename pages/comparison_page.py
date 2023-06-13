@@ -23,12 +23,16 @@ class ComparisonPage(BasePage):
             assert name in product_names, \
                 f'Название {name}, названия в сравнении {product_names}'
 
-    @allure.step('Удалить все товары из сравнения')
-    def del_from_compare(self):
-        """Удаление всех товаров из сравнения."""
-        elements = self._element(*ComparePageLocators.REMOVE_BUTTON, all=True)
-        for i in range(len(elements)):
-            self.click_on_element(*ComparePageLocators.REMOVE_BUTTON, i)
+    @allure.step('Удалить товары из сравнения')
+    def del_from_compare(self, all=True, idx=0):
+        """Удаление товаров из сравнения."""
+        if all:
+            elements = self._element(*ComparePageLocators.REMOVE_BUTTON, all=True)
+            while len(elements) != 0:
+                self.click_on_element(*ComparePageLocators.REMOVE_BUTTON, idx)
+                elements.pop(0)
+        else:
+            self.click_on_element(*ComparePageLocators.REMOVE_BUTTON, idx)
 
     @allure.step('Проверить текст на пустой странице Сравнения')
     def check_empty_compare(self):

@@ -1,0 +1,10 @@
+class AccountTexts:
+    WISHLIST_CHANGE = 'Success: You have modified your wish list!'
+    EMPTY_WISHLIST = 'Your wish list is empty.'
+    LOGOUT = 'You have been logged off your account. It is now safe to leave the computer.'
+    REGISTER_FIRST_NAME_ERROR = 'First Name must be between 1 and 32 characters!'
+    REGISTER_LAST_NAME_ERROR = 'Last Name must be between 1 and 32 characters!'
+    REGISTER_EMAIL_ERROR = 'E-Mail Address does not appear to be valid!'
+    REGISTER_PHONE_ERROR = 'Telephone must be between 3 and 32 characters!'
+    REGISTER_PASSW_ERROR = 'Password must be between 4 and 20 characters!'
+    REGISTER_PASSW_CONFIRM_ERROR = 'Password confirmation does not match password!'

@@ -3,7 +3,8 @@
 import allure
 import pytest
 
-from helpers.db_helper import check_user_in_db, check_user_not_in_db
+from helpers.db_helper import (
+    check_user_in_db, check_user_not_in_db, check_items_in_wishlist_in_db, check_empty_wishlist_in_db)
 from helpers.locators import LoginPageLocators
 from helpers.urls import URLS
 from pages.account_page import (
@@ -28,7 +29,7 @@ class TestAccountLogoutPage:
             :param url: фикстура с урлом тестируемого ресурса
             :param fixture_create_delete_user: фикстура создания и удаления тестового пользователя
             """
-        email, firstname, lastname, telephone = fixture_create_delete_user
+        email, firstname, lastname, telephone, user_id = fixture_create_delete_user
         page = LoginPage(browser, url)
         page.open_url(path=URLS.LOGIN_PAGE)
         page.login_user(email)
@@ -73,7 +74,7 @@ class TestAccountLoginPage:
             :param url: фикстура с урлом тестируемого ресурса
             :param fixture_create_delete_user: фикстура создания и удаления тестового пользователя
             """
-        email, firstname, lastname, telephone = fixture_create_delete_user
+        email, firstname, lastname, telephone, user_id = fixture_create_delete_user
         page = LoginPage(browser, url)
         page.open_url(path=URLS.LOGIN_PAGE)
         page.login_user(email)
@@ -110,7 +111,7 @@ class TestAccountLoginPage:
             :param passw: пароль
             :param fixture_create_delete_user: фикстура создания и удаления тестового пользователя
             """
-        email, firstname, lastname, telephone = fixture_create_delete_user
+        email, firstname, lastname, telephone, user_id = fixture_create_delete_user
         page = LoginPage(browser, url)
         page.open_url(path=URLS.LOGIN_PAGE)
         page.login_user(email, passw)
@@ -264,7 +265,7 @@ class TestAccountEditPage:
         :param fixture_create_delete_user: фикстура создания и удаления тестового пользователя
         :param new_firstname: имя пользователя
         """
-        email, firstname, lastname, telephone = fixture_create_delete_user
+        email, firstname, lastname, telephone, user_id = fixture_create_delete_user
         page = LoginPage(browser, url)
         page.open_url(path=URLS.LOGIN_PAGE)
         page.login_user(email)
@@ -299,7 +300,7 @@ class TestAccountEditPage:
         :param fixture_create_delete_user: фикстура создания и удаления тестового пользователя
         :param new_firstname: имя пользователя
         """
-        email, firstname, lastname, telephone = fixture_create_delete_user
+        email, firstname, lastname, telephone, user_id = fixture_create_delete_user
         page = LoginPage(browser, url)
         page.open_url(path=URLS.LOGIN_PAGE)
         page.login_user(email)
@@ -329,21 +330,19 @@ class TestAccountWishlist:
     @allure.title('Проверка пустого вишлиста')
     @allure.link('#', name='User story')
     def test_check_empty_wishlist(
-            self, browser, url, fixture_create_delete_user, db_connection, delete_user):
+            self, browser, url, fixture_create_delete_user, delete_user):
         """Тестовая функция для проверки пустого вишлиста.
 
         :param browser: фикстура для запуска драйвера
-        :param db_connection: фикстура коннекта к БД
         :param url: фикстура с урлом тестируемого ресурса
         :param fixture_create_delete_user: фикстура создания и удаления тестового пользователя
         """
-        email, firstname, lastname, telephone = fixture_create_delete_user
+        email, firstname, lastname, telephone, user_id = fixture_create_delete_user
         page = LoginPage(browser, url)
         page.open_url(path=URLS.LOGIN_PAGE)
         page.login_user(email)
-        account_page = AccountPage(browser, browser.current_url)
-        account_page.open_wishlist()
         wishlist_page = WishlistPage(browser, browser.current_url)
+        wishlist_page.open_wishlist()
         wishlist_page.is_title_correct('My Wish List')
         wishlist_page.check_empty_wish_list()
 
@@ -359,18 +358,44 @@ class TestAccountWishlist:
         :param url: фикстура с урлом тестируемого ресурса
         :param fixture_create_delete_user: фикстура создания и удаления тестового пользователя
         """
-        email, firstname, lastname, telephone = fixture_create_delete_user
+        email, firstname, lastname, telephone, user_id = fixture_create_delete_user
         login_page = LoginPage(browser, url)
         login_page.open_url(path=URLS.LOGIN_PAGE)
         login_page.login_user(email)
         catalogue_page = CataloguePage(browser, url)
         catalogue_page.open_url(path=URLS.CATALOGUE_PAGE)
-        name = catalogue_page.add_to_wishlist(0)
-        catalogue_page.add_to_wishlist(1)
+        name1, item_id1 = catalogue_page.add_to_wishlist(0)
+        name2, item_id2 = catalogue_page.add_to_wishlist(1)
         wishlist_page = WishlistPage(browser, browser.current_url)
         wishlist_page.open_wishlist()
-        wishlist_page.check_len_items_in_wish_list(2)
+        wishlist_page.check_items_in_wish_list([name1, name2], 2)
         wishlist_page.del_items_from_wish_list(idx=0)
-        wishlist_page.alert.check_success_alert(txt='Success: You have modified your wish list!')
-        wishlist_page.check_len_items_in_wish_list(1)
-        wishlist_page.check_item_in_wish_list(name)
+        wishlist_page.check_items_in_wish_list(name1, 1)
+        check_items_in_wishlist_in_db(db_connection, user_id, 1, item_id1)
+
+    @allure.story('Редактирование вишлиста')
+    @allure.title('Проверка удаления всех товаров из вишлиста')
+    @allure.link('#', name='User story')
+    def test_delete_all_items_from_wishlist(
+            self, browser, url, fixture_create_delete_user, db_connection, delete_user):
+        """Тестовая функция для проверки удаления всех товаров из вишлиста.
+
+        :param browser: фикстура для запуска драйвера
+        :param db_connection: фикстура коннекта к БД
+        :param url: фикстура с урлом тестируемого ресурса
+        :param fixture_create_delete_user: фикстура создания и удаления тестового пользователя
+        """
+        email, firstname, lastname, telephone, user_id = fixture_create_delete_user
+        login_page = LoginPage(browser, url)
+        login_page.open_url(path=URLS.LOGIN_PAGE)
+        login_page.login_user(email)
+        catalogue_page = CataloguePage(browser, url)
+        catalogue_page.open_url(path=URLS.CATALOGUE_PAGE)
+        name1, item_id1 = catalogue_page.add_to_wishlist(0)
+        name2, item_id2 = catalogue_page.add_to_wishlist(1)
+        wishlist_page = WishlistPage(browser, browser.current_url)
+        wishlist_page.open_wishlist()
+        wishlist_page.check_items_in_wish_list([name1, name2], 2)
+        wishlist_page.del_items_from_wish_list(all=True)
+        wishlist_page.check_empty_wish_list()
+        check_empty_wishlist_in_db(db_connection, user_id)

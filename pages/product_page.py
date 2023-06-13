@@ -75,8 +75,9 @@ class ProductPage(BasePage):
         добавленного товара.
         """
         name = self.get_text_of_element(*ProductPageLocators.ITEM_TITLE)
+        item_id = self.get_item_id(*ProductPageLocators.WISH_LIST_BUTTON)
         self.click_on_element(*ProductPageLocators.WISH_LIST_BUTTON)
-        return name
+        return name, item_id
 
     @allure.step('Добавить товар в сравнение')
     def add_to_compare(self):

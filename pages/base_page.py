@@ -216,3 +216,15 @@ class BasePage:
         except TimeoutException:
             allure_helper.attach(self.browser)
             raise AssertionError(f'Не получается навести на элемент {locator} {el_path} {index}')
+
+    @allure.step('Получить id у товара {el_path} с индексом {index}')
+    def get_item_id(self, locator, el_path, index=0):
+        """Возвращает id товара.
+
+        :param locator: тип локатора
+        :param el_path: путь до элемента
+        :param index: порядковый индекс элемента
+        """
+        element = self._element(locator, el_path, index)
+        value = element.get_attribute('onclick')
+        return int(''.join([i for i in value if i.isdigit()]))

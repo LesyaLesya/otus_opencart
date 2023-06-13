@@ -4,6 +4,8 @@
 import allure
 import pytest
 
+
+from helpers.db_helper import check_item_in_wishlist_in_db
 from helpers.locators import CataloguePageLocators
 from helpers.urls import URLS
 from pages.account_page import LoginPage, WishlistPage
@@ -97,7 +99,7 @@ class TestCataloguePage:
     @allure.title('Добавление товара в Виш-лист из каталога')
     @allure.link('#', name='User story')
     @pytest.mark.parametrize('idx', [0])
-    def test_adding_to_wish_list_from_catalogue(self, browser, url, idx, fixture_create_delete_user):
+    def test_adding_to_wish_list_from_catalogue(self, browser, url, idx, fixture_create_delete_user, db_connection):
         """Тестовая функция для проверки добавления продукта
         в виш-лист из каталога.
 
@@ -106,16 +108,17 @@ class TestCataloguePage:
         :param idx: порядковый индекс элемента
         :param fixture_create_delete_user: фикстура создания и удаления тестового пользователя
         """
-        email, firstname, lastname, telephone = fixture_create_delete_user
+        email, firstname, lastname, telephone, user_id = fixture_create_delete_user
         page = CataloguePage(browser, url)
         page.open_url(path=URLS.CATALOGUE_PAGE)
-        name = page.add_to_wishlist(idx)
+        name, item_id = page.add_to_wishlist(idx)
         page.alert.click_login_from_alert()
         login_page = LoginPage(browser, browser.current_url)
         login_page.login_user(email)
         wishlist_page = WishlistPage(browser, browser.current_url)
         wishlist_page.open_wishlist()
-        wishlist_page.check_item_in_wish_list(name)
+        wishlist_page.check_items_in_wish_list(name, 1)
+        check_item_in_wishlist_in_db(db_connection, user_id, item_id)
 
     @allure.story('Добавление товара в сравнение')
     @allure.title('Добавление товара в сравнение из каталога')

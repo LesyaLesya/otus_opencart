@@ -4,7 +4,8 @@ import allure
 import time
 
 from helpers import db_queries
-from helpers.db_queries import delete_user
+from helpers.db_queries import (
+    delete_user, del_item_in_wishlist_for_user, del_all_items_in_wishlist_for_user)
 
 
 @allure.step('Проверить, что пользователь не появился в БД')
@@ -72,3 +73,41 @@ def get_review_from_db(db_connection, author, text):
         assert True
     else:
         assert False, f'Записи не найдены - {result}'
+
+
+@allure.step('Проверить, что товар {item_id} появился в вишлисте у юзера {user_id} в БД')
+def check_item_in_wishlist_in_db(db_connection, user_id, item_id):
+    """Проверка записи о товаре в вишлисте в БД."""
+
+    try:
+        result = db_queries.get_item_in_wishlist(db_connection, user_id, item_id)
+        user_id_db = result[0][0]
+        item_id_db = result[0][1]
+        assert user_id_db == user_id, f'ID пользователя в базе {user_id_db}, ОР {user_id}'
+        assert item_id_db == item_id, f'ID товара в базе {item_id_db}, ОР {item_id}'
+    finally:
+        del_item_in_wishlist_for_user(db_connection, user_id, item_id)
+
+
+@allure.step('Проверить, что товар {item_id} появился в вишлисте у юзера {user_id} в БД')
+def check_items_in_wishlist_in_db(db_connection, user_id, l, item_id):
+    """Проверка записи о товарах в вишлисте в БД."""
+
+    try:
+        result = db_queries.get_all_items_in_wishlist_for_user(db_connection, user_id)
+        assert len(result) == l, f'Количество товаров в вишлисте {len(result)}'
+        if type(item_id) == list:
+            for i in item_id:
+                assert i in result, f'Название {i}, названия продуктов в вишлисте {result}'
+        else:
+            assert item_id == result[0], f'{item_id} нет в {result}'
+    finally:
+        del_all_items_in_wishlist_for_user(db_connection, user_id)
+
+
+@allure.step('Проверить, что в БД у юзера {user_id} нет избранных товаров')
+def check_empty_wishlist_in_db(db_connection, user_id):
+    """Проверка записи о товаре в вишлисте в БД."""
+
+    result = db_queries.get_all_items_in_wishlist_for_user(db_connection, user_id)
+    assert len(result) == 0, f'Найдено записей {len(result)}'

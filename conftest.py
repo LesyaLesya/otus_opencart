@@ -198,5 +198,5 @@ def create_user(db_connection, do_fake):
 def fixture_create_delete_user(create_user, delete_user):
     """Фикстура создания и удаления пользователя."""
     email, firstname, lastname, telephone, user_id = create_user()
-    yield email, firstname, lastname, telephone
+    yield email, firstname, lastname, telephone, user_id
     delete_user(user_id)
