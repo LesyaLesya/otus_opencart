@@ -9,7 +9,6 @@ from helpers.locators import LoginPageLocators
 from helpers.urls import URLS
 from pages.account_page import (
     AccountPage, EditAccountPage, LoginPage, LogoutPage, RegisterPage, WishlistPage)
-
 from pages.catalogue_page import CataloguePage
 
 
@@ -36,7 +35,7 @@ class TestAccountLogoutPage:
         account_page = AccountPage(browser, browser.current_url)
         account_page.logout_from_right_block()
         logout_page = LogoutPage(browser, browser.current_url)
-        logout_page.is_title_correct('Account Logout')
+        logout_page.is_title_correct(logout_page.TITLE)
         logout_page.check_text_after_logout()
         logout_page.check_right_block_after_logout()
         logout_page.click_my_account()
@@ -79,7 +78,7 @@ class TestAccountLoginPage:
         page.open_url(path=URLS.LOGIN_PAGE)
         page.login_user(email)
         account_page = AccountPage(browser, browser.current_url)
-        account_page.is_title_correct('My Account')
+        account_page.is_title_correct(account_page.TITLE)
 
     @allure.story('Проверка авторизации в ЛК')
     @allure.title('Неуспешная авторизация - невалидный email')
@@ -164,7 +163,7 @@ class TestAccountRegisterPage:
         page.register_user(
             firstname, lastname, email, tel, password, confirm, radio_idx)
         account_page = AccountPage(browser, browser.current_url)
-        account_page.is_title_correct('Your Account Has Been Created!')
+        account_page.is_title_correct(account_page.SUCCESS_CREATE_ACCOUNT)
         check_user_in_db(db_connection, firstname, lastname, email, tel, radio_idx)
 
     @allure.story('Проверка регистрации нового пользователя')
@@ -197,7 +196,7 @@ class TestAccountRegisterPage:
         page.register_user(
             firstname, lastname, email, tel, password, confirm, radio_idx)
         page_after_register = RegisterPage(browser, browser.current_url)
-        page_after_register.is_title_correct('Register Account')
+        page_after_register.is_title_correct(page_after_register.TITLE)
         if not email:
             check_user_not_in_db(db_connection, firstname=firstname, lastname=lastname, tel=tel)
             page_after_register.check_fail_register_without_email()
@@ -240,9 +239,9 @@ class TestAccountRegisterPage:
         page.register_user(
             firstname, lastname, email, tel, password, confirm, radio_idx, privacy)
         page_after_register = RegisterPage(browser, browser.current_url)
-        page_after_register.is_title_correct('Register Account')
+        page_after_register.is_title_correct(page_after_register.TITLE)
         check_user_not_in_db(db_connection, email)
-        page_after_register.alert.check_error_text('Warning: You must agree to the Privacy Policy!')
+        page_after_register.alert.check_error_text(page_after_register.REGISTER_PRIVACY_ERROR)
 
 
 @allure.feature('Страница редактирования аккаунта')
@@ -272,7 +271,7 @@ class TestAccountEditPage:
         account_page = AccountPage(browser, browser.current_url)
         account_page.click_edit_account()
         edit_page = EditAccountPage(browser, browser.current_url)
-        edit_page.is_title_correct('My Account Information')
+        edit_page.is_title_correct(edit_page.TITLE)
         edit_page.change_firstname(new_firstname)
         edit_page.save_changes()
         account_page_after_save = AccountPage(browser, browser.current_url)
@@ -307,7 +306,7 @@ class TestAccountEditPage:
         account_page = AccountPage(browser, browser.current_url)
         account_page.click_edit_account()
         edit_page = EditAccountPage(browser, browser.current_url)
-        edit_page.is_title_correct('My Account Information')
+        edit_page.is_title_correct(edit_page.TITLE)
         edit_page.change_firstname(new_firstname)
         edit_page.press_back()
         account_page_after_back = AccountPage(browser, browser.current_url)
@@ -343,7 +342,7 @@ class TestAccountWishlist:
         page.login_user(email)
         wishlist_page = WishlistPage(browser, browser.current_url)
         wishlist_page.open_wishlist()
-        wishlist_page.is_title_correct('My Wish List')
+        wishlist_page.is_title_correct(wishlist_page.TITLE)
         wishlist_page.check_empty_wish_list()
 
     @allure.story('Редактирование вишлиста')

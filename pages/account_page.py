@@ -3,7 +3,6 @@
 import allure
 
 from helpers import allure_helper
-from helpers.datas import AccountTexts
 from helpers.locators import (
      AccountPageLocators, EditAccountPageLocators, LoginPageLocators,
      LogoutPageLocators, RegisterPageLocators, WishlistPageLocators)
@@ -12,6 +11,9 @@ from pages.base_page import BasePage
 
 class AccountPage(BasePage):
     """Класс с методами для страницы Аккаунта пользователя."""
+
+    TITLE = 'My Account'
+    SUCCESS_CREATE_ACCOUNT = 'Your Account Has Been Created!'
 
     @allure.step('Открыть виш-лист')
     def open_wishlist(self):
@@ -36,6 +38,10 @@ class AccountPage(BasePage):
 
 class WishlistPage(AccountPage):
     """Класс с методами для страницы Вишлиста Аккаунта пользователя."""
+
+    WISHLIST_CHANGE = 'Success: You have modified your wish list!'
+    EMPTY_WISHLIST = 'Your wish list is empty.'
+    TITLE = 'My Wish List'
 
     @allure.step('Проверить, что товары в виш-листе')
     def check_items_in_wish_list(self, names, n):
@@ -64,9 +70,9 @@ class WishlistPage(AccountPage):
         self.is_element_visible(*WishlistPageLocators.EMPTY_WISHLIST_TEXT)
         text = self.get_text_of_element(*WishlistPageLocators.EMPTY_WISHLIST_TEXT)
         with allure.step(
-                f'Проверить что текст - {AccountTexts.EMPTY_WISHLIST}'):
+                f'Проверить что текст - {self.EMPTY_WISHLIST}'):
             allure_helper.attach(self.browser)
-            assert text == AccountTexts.EMPTY_WISHLIST, \
+            assert text == self.EMPTY_WISHLIST, \
                 f'Текст в пустом вишлисте - {text}'
 
     @allure.step('Удалить товары из вишлиста')
@@ -76,15 +82,18 @@ class WishlistPage(AccountPage):
             elements = self._element(*WishlistPageLocators.REMOVE_BUTTON, all=True)
             while len(elements) != 0:
                 self.click_on_element(*WishlistPageLocators.REMOVE_BUTTON, idx)
-                self.alert.check_success_alert(txt=AccountTexts.WISHLIST_CHANGE)
+                self.alert.check_success_alert(txt=self.WISHLIST_CHANGE)
                 elements.pop(idx)
         else:
             self.click_on_element(*WishlistPageLocators.REMOVE_BUTTON, idx)
-            self.alert.check_success_alert(txt=AccountTexts.WISHLIST_CHANGE)
+            self.alert.check_success_alert(txt=self.WISHLIST_CHANGE)
 
 
 class LogoutPage(AccountPage):
     """Класс с методами для страницы логаута из Аккаунта пользователя."""
+
+    TITLE = 'Account Logout'
+    LOGOUT = 'You have been logged off your account. It is now safe to leave the computer.'
 
     @allure.step('Проверить текст после логаута')
     def check_text_after_logout(self):
@@ -92,9 +101,9 @@ class LogoutPage(AccountPage):
         self.is_element_visible(*LogoutPageLocators.TEXT_AFTER_LOGOUT)
         text = self.get_text_of_element(*LogoutPageLocators.TEXT_AFTER_LOGOUT)
         with allure.step(
-                f'Проверить что текст после логаута  - {AccountTexts.LOGOUT}'):
+                f'Проверить что текст после логаута  - {self.LOGOUT}'):
             allure_helper.attach(self.browser)
-            assert text == AccountTexts.LOGOUT, \
+            assert text == self.LOGOUT, \
                 f'Текст после логаута {text}'
 
     @allure.step('Проверить пункты в правом блоке после логаута')
@@ -106,6 +115,8 @@ class LogoutPage(AccountPage):
 
 class LoginPage(AccountPage):
     """Класс с методами для страницы Логина."""
+
+    TITLE = 'Account Login'
 
     @allure.step('Проверить видимость элементов на странице')
     def check_elements_visibility(self):
@@ -132,6 +143,15 @@ class LoginPage(AccountPage):
 
 class RegisterPage(AccountPage):
     """Класс с методами для страницы Регистрации."""
+
+    TITLE = 'Register Account'
+    REGISTER_FIRST_NAME_ERROR = 'First Name must be between 1 and 32 characters!'
+    REGISTER_LAST_NAME_ERROR = 'Last Name must be between 1 and 32 characters!'
+    REGISTER_EMAIL_ERROR = 'E-Mail Address does not appear to be valid!'
+    REGISTER_PHONE_ERROR = 'Telephone must be between 3 and 32 characters!'
+    REGISTER_PASSW_ERROR = 'Password must be between 4 and 20 characters!'
+    REGISTER_PASSW_CONFIRM_ERROR = 'Password confirmation does not match password!'
+    REGISTER_PRIVACY_ERROR = 'Warning: You must agree to the Privacy Policy!'
 
     @allure.step('Проверить видимость элементов на странице')
     def check_elements_visibility(self):
@@ -189,9 +209,9 @@ class RegisterPage(AccountPage):
         """ Проверка отображения ошибки регистрации без firstname. """
         self.is_element_visible(*RegisterPageLocators.FIRST_NAME_ERROR)
         error_text = self.get_text_of_element(*RegisterPageLocators.FIRST_NAME_ERROR)
-        with allure.step(f'Проверить, что текст ошибки при пустом имени - {AccountTexts.REGISTER_FIRST_NAME_ERROR}'):
+        with allure.step(f'Проверить, что текст ошибки при пустом имени - {self.REGISTER_FIRST_NAME_ERROR}'):
             allure_helper.attach(self.browser)
-            assert error_text == AccountTexts.REGISTER_FIRST_NAME_ERROR, \
+            assert error_text == self.REGISTER_FIRST_NAME_ERROR, \
                 f'Текст ошибки {error_text}'
 
     @allure.step('Проверить, что выведена ошибка  - фамилия обязательна')
@@ -200,9 +220,9 @@ class RegisterPage(AccountPage):
         self.is_element_visible(*RegisterPageLocators.LAST_NAME_ERROR)
         error_text = self.get_text_of_element(*RegisterPageLocators.LAST_NAME_ERROR)
         with allure.step(
-                f'Проверить, что текст ошибки при пустом имени - {AccountTexts.REGISTER_LAST_NAME_ERROR}'):
+                f'Проверить, что текст ошибки при пустом имени - {self.REGISTER_LAST_NAME_ERROR}'):
             allure_helper.attach(self.browser)
-            assert error_text == AccountTexts.REGISTER_LAST_NAME_ERROR, \
+            assert error_text == self.REGISTER_LAST_NAME_ERROR, \
                 f'Текст ошибки {error_text}'
 
     @allure.step('Проверить, что выведена ошибка  - email обязателен')
@@ -211,9 +231,9 @@ class RegisterPage(AccountPage):
         self.is_element_visible(*RegisterPageLocators.EMAIL_ERROR)
         error_text = self.get_text_of_element(*RegisterPageLocators.EMAIL_ERROR)
         with allure.step(
-                f'Проверить, что текст ошибки при пустом имени - {AccountTexts.REGISTER_EMAIL_ERROR}'):
+                f'Проверить, что текст ошибки при пустом имени - {self.REGISTER_EMAIL_ERROR}'):
             allure_helper.attach(self.browser)
-            assert error_text == AccountTexts.REGISTER_EMAIL_ERROR, \
+            assert error_text == self.REGISTER_EMAIL_ERROR, \
                 f'Текст ошибки {error_text}'
 
     @allure.step('Проверить, что выведена ошибка  - телефон обязателен')
@@ -222,9 +242,9 @@ class RegisterPage(AccountPage):
         self.is_element_visible(*RegisterPageLocators.TEL_ERROR)
         error_text = self.get_text_of_element(*RegisterPageLocators.TEL_ERROR)
         with allure.step(
-                f'Проверить, что текст ошибки при пустом имени - {AccountTexts.REGISTER_PHONE_ERROR}'):
+                f'Проверить, что текст ошибки при пустом имени - {self.REGISTER_PHONE_ERROR}'):
             allure_helper.attach(self.browser)
-            assert error_text == AccountTexts.REGISTER_PHONE_ERROR, \
+            assert error_text == self.REGISTER_PHONE_ERROR, \
                 f'Текст ошибки {error_text}'
 
     @allure.step('Проверить, что выведена ошибка  - пароль обязателен')
@@ -233,9 +253,9 @@ class RegisterPage(AccountPage):
         self.is_element_visible(*RegisterPageLocators.PASSWORD_ERROR)
         error_text = self.get_text_of_element(*RegisterPageLocators.PASSWORD_ERROR)
         with allure.step(
-                f'Проверить, что текст ошибки при пустом имени -{AccountTexts.REGISTER_PASSW_ERROR}'):
+                f'Проверить, что текст ошибки при пустом имени -{self.REGISTER_PASSW_ERROR}'):
             allure_helper.attach(self.browser)
-            assert error_text == AccountTexts.REGISTER_PASSW_ERROR, \
+            assert error_text == self.REGISTER_PASSW_ERROR, \
                 f'Текст ошибки {error_text}'
 
     @allure.step('Проверить, что выведена ошибка  - подтверждение пароля обязательно')
@@ -244,14 +264,16 @@ class RegisterPage(AccountPage):
         self.is_element_visible(*RegisterPageLocators.CONFIRM_ERROR)
         error_text = self.get_text_of_element(*RegisterPageLocators.CONFIRM_ERROR)
         with allure.step(
-                f'Проверить, что текст ошибки при пустом имени - {AccountTexts.REGISTER_PASSW_CONFIRM_ERROR}'):
+                f'Проверить, что текст ошибки при пустом имени - {self.REGISTER_PASSW_CONFIRM_ERROR}'):
             allure_helper.attach(self.browser)
-            assert error_text == AccountTexts.REGISTER_PASSW_CONFIRM_ERROR, \
+            assert error_text == self.REGISTER_PASSW_CONFIRM_ERROR, \
                 f'Текст ошибки {error_text}'
 
 
 class EditAccountPage(AccountPage):
     """Класс с методами для страницы редактирования аккаунта."""
+
+    TITLE = 'My Account Information'
 
     @allure.step('Изменить имя на {firstname}')
     def change_firstname(self, firstname):

@@ -10,6 +10,8 @@ from pages.base_page import BasePage
 class AdminPage(BasePage):
     """Класс с методами для Административной страницы."""
 
+    TITLE = 'Dashboard'
+
     @allure.step('Проверить видимость элементов на странице')
     def check_elements_visibility(self):
         """Проверка видимости элементов."""

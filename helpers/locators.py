@@ -33,6 +33,7 @@ class HeaderPageLocators:
     DESKTOPS_IN_MENU = (By.XPATH, '//a[text()="Desktops"]')
     COMPONENTS_IN_MENU = (By.XPATH, '//a[text()="Components"]')
     LAPTOPS_IN_MENU = (By.XPATH, '//a[text()="Laptops & Notebooks"]')
+    SHOPPING_CART_TOP_LINK = (By.CSS_SELECTOR, 'a[title="Shopping Cart"]')
 
 
 class MainPageLocators:
@@ -220,7 +221,7 @@ class ComparePageLocators:
     ITEM_NAMES = (By.CSS_SELECTOR, 'h1 + table > tbody > tr > td > a > strong')
     REMOVE_BUTTON = (By.CSS_SELECTOR, 'a.btn-danger')
     TEXT_FOR_EMTY_COMPARE = (By.CSS_SELECTOR, '#content > h1 + p')
-    ADD_TO_CART_BUTTON = (By.CSS_SELECTOR,'input.btn-primary')
+    ADD_TO_CART_BUTTON = (By.CSS_SELECTOR,'input[value="Add to Cart"]')
 
 
 class CartPageLocators:

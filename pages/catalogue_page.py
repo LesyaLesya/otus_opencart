@@ -12,6 +12,10 @@ from pages.base_page import BasePage
 class CataloguePage(BasePage):
     """Класс с методами для страницы Каталога."""
 
+    SORT_A_Z = 'Name (A - Z)'
+    SORT_Z_A = 'Name (Z - A)'
+    SORT_PRICE_L_H = 'Price (Low > High)'
+
     @allure.step('Проверить видимость элементов на странице')
     def check_elements_visibility(self):
         """Проверка видимости элементов."""
@@ -194,3 +198,14 @@ class CataloguePage(BasePage):
         with allure.step(f'Проверить что {header} == {name}'):
             allure_helper.attach(self.browser)
             assert name == header, f'Заголовок (ФР) - {header}, name (ОР) - {name}'
+
+    @allure.step('Добавить продукт с индексом {index} в корзину')
+    def add_to_cart(self, index):
+        """Добавление товара в корзину. Возвращает название
+        добавленного товара.
+
+        :param index: порядковый индекс элемента
+        """
+        name = self.get_text_of_element(*CataloguePageLocators.ITEM_NAME, index)
+        self.click_on_element(*CataloguePageLocators.ADD_TO_CART_BUTTON, index)
+        return name

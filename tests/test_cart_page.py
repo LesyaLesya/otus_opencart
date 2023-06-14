@@ -7,6 +7,7 @@ from helpers.urls import URLS
 from pages.cart_page import CartPage
 from pages.main_page import MainPage
 from pages.product_page import ProductPage
+from pages.catalogue_page import CataloguePage
 
 
 @allure.feature('Страница Корзины')
@@ -29,8 +30,28 @@ class TestCartPage:
         product_page.add_to_cart()
         product_page.alert.click_link_from_alert()
         cart_page = CartPage(browser, browser.current_url)
-        cart_page.remove_product_from_cart()
+        cart_page.remove_product_from_cart(all=True)
         cart_page.check_empty_cart()
+
+    @allure.story('Удаление товара из корзины')
+    @allure.title('Удаление части товаров из корзины')
+    @allure.link('#', name='User story')
+    def test_remove_part_products_from_cart(self, browser, url):
+        """Тестовая функция для проверки удаления части товаров
+        из корзины.
+
+        :param browser: фикстура для запуска драйвера
+        :param url: фикстура с урлом тестируемого ресурса
+        """
+        catalogue_page = CataloguePage(browser, url)
+        catalogue_page.open_url(path=URLS.CATALOGUE_PAGE)
+        name = catalogue_page.add_to_cart(1)
+        catalogue_page.add_to_cart(2)
+        catalogue_page.header.go_to_cart_page()
+        cart_page = CartPage(browser, browser.current_url)
+        cart_page.check_cart_page()
+        cart_page.remove_product_from_cart(idx=1)
+        cart_page.check_item_in_cart(name, 1)
 
     @allure.story('Изменение количества товара в корзине')
     @allure.title('Обновление цены за товар при изменении количества')
@@ -67,4 +88,4 @@ class TestCartPage:
         cart_page = CartPage(browser, browser.current_url)
         cart_page.click_continue_shopping()
         main_page = MainPage(browser, browser.current_url)
-        main_page.is_title_correct('Your Store')
+        main_page.is_title_correct(main_page.TITLE)

@@ -37,7 +37,7 @@ class TestMainPage:
         """
         page = MainPage(browser, url)
         page.open_url()
-        page.is_title_correct('Your Store')
+        page.is_title_correct(page.TITLE)
 
     @allure.story('Проверка смены ротации баннеров и каруселей')
     @allure.title('Проверка смены баннеров по клику на буллеты')

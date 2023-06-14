@@ -10,6 +10,15 @@ from pages.base_page import BasePage
 class ProductPage(BasePage):
     """Класс с методами для страницы Товара."""
 
+    TAX = 'Ex Tax:'
+    AVAIL = 'Availability:'
+    REWARD = 'Reward Points:'
+    CODE = 'Product Code:'
+    BRAND = 'Brand:'
+    REVIEW_TEXT_ERROR = 'Warning: Review Text must be between 25 and 1000 characters!'
+    REVIEW_AUTHOR_ERROR = 'Warning: Review Name must be between 3 and 25 characters!'
+    REVIEW_RATING_ERROR = 'Warning: Please select a review rating!'
+
     @allure.step('Проверить видимость элементов на странице')
     def check_elements_visibility(self):
         """Проверка видимости элементов."""
@@ -122,20 +131,20 @@ class ProductPage(BasePage):
     def check_fields_in_first_info_block(self):
         """Проверить поля в первом инфоблоке."""
         brand = self.get_text_of_element(*ProductPageLocators.ELEMENTS_OF_RIGHT_BLOCK_INFO_FIRST, index=0)
-        with allure.step(f'Проверить, что бренда {brand} начинается с Brand:'):
-            assert brand.startswith('Brand:'), f'Инфа о бренде - {brand}'
+        with allure.step(f'Проверить, что бренда {brand} начинается с {self.BRAND}'):
+            assert brand.startswith(self.BRAND), f'Инфа о бренде - {brand}'
 
         product_code = self.get_text_of_element(*ProductPageLocators.ELEMENTS_OF_RIGHT_BLOCK_INFO_FIRST, index=1)
-        with allure.step(f'Проверить, что код продукта {product_code} начинается с Product Code:'):
-            assert product_code.startswith('Product Code:'), f'Инфа о коде - {product_code}'
+        with allure.step(f'Проверить, что код продукта {product_code} начинается с {self.CODE}'):
+            assert product_code.startswith(self.CODE), f'Инфа о коде - {product_code}'
 
         reward = self.get_text_of_element(*ProductPageLocators.ELEMENTS_OF_RIGHT_BLOCK_INFO_FIRST, index=2)
-        with allure.step(f'Проверить, что поле награды {reward} начинается с Reward Points:'):
-            assert reward.startswith('Reward Points:'), f'Инфа о награде - {reward}'
+        with allure.step(f'Проверить, что поле награды {reward} начинается с {self.REWARD}'):
+            assert reward.startswith(self.REWARD), f'Инфа о награде - {reward}'
 
         availability = self.get_text_of_element(*ProductPageLocators.ELEMENTS_OF_RIGHT_BLOCK_INFO_FIRST, index=3)
-        with allure.step(f'Проверить, что поле доступности {availability} начинается с Availability:'):
-            assert availability.startswith('Availability:'), f'Инфа о доступности - {availability}'
+        with allure.step(f'Проверить, что поле доступности {availability} начинается с {self.AVAIL}'):
+            assert availability.startswith(self.AVAIL), f'Инфа о доступности - {availability}'
 
     @allure.step('Проверить наличие цены')
     def check_visibility_of_price(self):
@@ -146,5 +155,5 @@ class ProductPage(BasePage):
     def check_fields_in_second_info_block(self):
         """Проверить поля в первом инфоблоке."""
         tax = self.get_text_of_element(*ProductPageLocators.ELEMENTS_OF_RIGHT_BLOCK_INFO_SECOND, index=1)
-        with allure.step(f'Проверить, что поле пошлины {tax} начинается с Ex Tax:'):
-            assert tax.startswith('Ex Tax:'), f'Инфа о пошлине - {tax}'
+        with allure.step(f'Проверить, что поле пошлины {tax} начинается с {self.TAX}'):
+            assert tax.startswith(self.TAX), f'Инфа о пошлине - {tax}'

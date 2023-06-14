@@ -10,42 +10,58 @@ from pages.base_page import BasePage
 class CartPage(BasePage):
     """Класс с методами для страницы корзины."""
 
+    EMPTY_CART = 'Your shopping cart is empty!'
+    TITLE = 'Shopping Cart'
+
+    @allure.step('Проверить, что страница корзины открыта')
+    def check_cart_page(self):
+        """Проверка, что находимся на странице корзины."""
+        self.is_title_correct(self.TITLE)
+
     @allure.step('Проверить, что товар в корзине')
-    def check_item_in_cart(self, name):
+    def check_item_in_cart(self, name, n):
         """Проверка видимости товара в корзине.
 
         :param name: название товара
+        :param n: количество товаров в корзине
         """
         elements = self._element(*CartPageLocators.ITEM_NAMES, all=True)
-        product_names = [i.text for i in elements]
-        with allure.step(f'Проверить что все товары {product_names} содержат название {name}'):
+        with allure.step(f'Проверить, что в корзине {n} товаров'):
             allure_helper.attach(self.browser)
-            assert name in product_names, f'Название {name}, названия товаров в корзине {product_names}'
-
-    @allure.step('Проверить, сколько товаров в корзине')
-    def check_quantity_of_items_in_cart(self, value):
-        """Проверка видимости товара в корзине.
-
-        :param value: количество товаров в корзине
-        """
-        elements = self._element(*CartPageLocators.ITEM_NAMES, all=True)
-        quantity = len(elements)
-        with allure.step(f'Проверить, что в корзине {value} товаров'):
-            assert quantity == value, f'Товаров в корзине {quantity}, ожидаем {value}'
+            assert len(elements) == n, f'Количество товаров - {len(elements)}'
+        product_names = [i.text for i in elements]
+        with allure.step(f'Проверить что в {product_names} есть товары {name}'):
+            if type(name) == list:
+                for i in name:
+                    allure_helper.attach(self.browser)
+                    assert i in product_names, f'Название {i}, названия продуктов в вишлисте {product_names}'
+            else:
+                allure_helper.attach(self.browser)
+                assert name in product_names, f'Название {name}, названия продуктов в вишлисте {product_names}'
 
     @allure.step('Удалить товар из корзины')
-    def remove_product_from_cart(self):
-        """Проверка удаления товаров из корзины."""
-        self.click_on_element(*CartPageLocators.REMOVE_BUTTONS)
+    def remove_product_from_cart(self, idx=0, all=False):
+        """Проверка удаления товаров из корзины.
+
+         :param idx: порядковый индекс товара
+         :param all: все ли товары удалять из корзины
+        """
+        if all:
+            elements = self._element(*CartPageLocators.REMOVE_BUTTONS, all=True)
+            while len(elements) != 0:
+                self.click_on_element(*CartPageLocators.REMOVE_BUTTONS, idx)
+                elements.pop(idx)
+        else:
+            self.click_on_element(*CartPageLocators.REMOVE_BUTTONS, idx)
 
     @allure.step('Проверить, что корзина пуста')
     def check_empty_cart(self):
         """Проверка удаления товаров из корзины."""
         text = self.get_text_of_element(*CartPageLocators.TEXT_EMPTY_CART)
         with allure.step(
-                'Проверить что текст - Your shopping cart is empty!'):
+                f'Проверить что текст - {self.EMPTY_CART}'):
             allure_helper.attach(self.browser)
-            assert text == 'Your shopping cart is empty!', f'Текст - {text}'
+            assert text == self.EMPTY_CART, f'Текст - {text}'
 
     @allure.step('Обновить цену, указав количество {value}')
     def update_price(self, value):

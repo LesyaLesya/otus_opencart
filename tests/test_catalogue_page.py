@@ -44,7 +44,7 @@ class TestCataloguePage:
         """
         page = CataloguePage(browser, url)
         page.open_url(path=URLS.CATALOGUE_PAGE)
-        page.select_by_text('Name (A - Z)')
+        page.select_by_text(page.SORT_A_Z)
         page.check_sort_by_name_a_z()
 
     @allure.story('Сортировка товаров')
@@ -59,7 +59,7 @@ class TestCataloguePage:
         """
         page = CataloguePage(browser, url)
         page.open_url(path=URLS.CATALOGUE_PAGE)
-        page.select_by_text('Name (Z - A)')
+        page.select_by_text(page.SORT_Z_A)
         page.check_sort_by_name_z_a()
 
     @allure.story('Сортировка товаров')
@@ -74,7 +74,7 @@ class TestCataloguePage:
         """
         page = CataloguePage(browser, url)
         page.open_url(path=URLS.CATALOGUE_PAGE)
-        page.select_by_text("Price (Low > High)")
+        page.select_by_text(page.SORT_PRICE_L_H)
         page.check_sort_by_price_low_high()
 
     @allure.story('Переход на другие страницы')

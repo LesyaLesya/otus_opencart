@@ -38,7 +38,7 @@ class TestAdminPage:
         page = AdminPage(browser, url)
         page.open_url(path=URLS.ADMIN_PAGE)
         page.login('user', 'bitnami')
-        page.is_title_correct('Dashboard')
+        page.is_title_correct(page.TITLE)
 
     @allure.story('Авторизация в админке')
     @allure.title('Невалидные креденшелы')

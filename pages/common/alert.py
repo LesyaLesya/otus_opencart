@@ -32,6 +32,7 @@ class Alert:
     def click_link_from_alert(self):
         """Клик по кнопке Сравнения в алерте."""
         self.success_alert.find_element(*AlertsLocators.LINK_ALERT).click()
+        self.browser.implicitly_wait(2)
 
     @allure.step('Проверить сообщение об ошибке')
     def check_error_text(self, txt):

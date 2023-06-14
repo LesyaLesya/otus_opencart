@@ -10,6 +10,8 @@ from pages.base_page import BasePage
 class MainPage(BasePage):
     """Класс с методами для Главной страницы."""
 
+    TITLE = 'Your Store'
+
     @allure.step('Проверить видимость элементов на странице')
     def check_elements_visibility(self):
         """Проверка видимости элементов."""

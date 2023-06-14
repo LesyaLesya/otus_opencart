@@ -55,7 +55,7 @@ class TestHeaderPage:
         page.open_url(path=path)
         page.header.go_to_login_page()
         login_page = LoginPage(browser, browser.current_url)
-        login_page.is_title_correct('Account Login')
+        login_page.is_title_correct(login_page.TITLE)
 
     @allure.story('Поиск по сайту из шапки')
     @allure.title('Проверка открытия страницы с результатом поиска из шапки со страницы {pages}')

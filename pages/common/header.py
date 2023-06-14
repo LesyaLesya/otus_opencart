@@ -17,6 +17,10 @@ class Header:
         return WebDriverWait(self.browser, 5).until(Element(*HeaderPageLocators.CART_BUTTON))
 
     @property
+    def cart_link(self):
+        return WebDriverWait(self.browser, 5).until(Element(*HeaderPageLocators.SHOPPING_CART_TOP_LINK))
+
+    @property
     def search_input(self):
         return WebDriverWait(self.browser, 5).until(Element(*HeaderPageLocators.SEARCH_INPUT))
 
@@ -208,6 +212,7 @@ class Header:
                 with allure.step(f'Кликнуть по значению валюты {value}'):
                     self.currency_dropdown_value(i).click()
 
+    @allure.step('Проверить выпадающие списки горизонтального меню')
     def check_dropdown_menu(self, lst):
         """Проверка выпадающих списков горизонтального меню.
 
@@ -222,3 +227,9 @@ class Header:
                 el_dropdown = WebDriverWait(self.browser, 5).until(Element(*i[1]))
                 attach(self.browser)
                 assert el_dropdown.is_displayed(), f'Элемент {i[1]} не отображается на странице'
+
+    @allure.step('Перейти на страницу корзины')
+    def go_to_cart_page(self):
+        """Проверка перехода на страницу корзины."""
+        self.cart_link.click()
+        self.browser.implicitly_wait(1)
