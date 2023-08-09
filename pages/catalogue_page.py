@@ -4,7 +4,7 @@ import time
 import allure
 
 from helpers import allure_helper
-from helpers.locators import CataloguePageLocators
+from helpers.locators import CataloguePageLocators, HeaderPageLocators
 from helpers.styles import Colors, Cursor, FontWeight
 from pages.base_page import BasePage
 
@@ -19,7 +19,7 @@ class CataloguePage(BasePage):
     @allure.step('Проверить видимость элементов на странице')
     def check_elements_visibility(self):
         """Проверка видимости элементов."""
-        lst = [CataloguePageLocators.BREADCRUMB,
+        lst = [HeaderPageLocators.BREADCRUMB,
                CataloguePageLocators.CATALOGUE_HEADER,
                CataloguePageLocators.CATALOGUE_IMAGE,
                CataloguePageLocators.LEFT_MENU,

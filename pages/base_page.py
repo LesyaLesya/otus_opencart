@@ -2,13 +2,13 @@
 
 import allure
 
-from selenium.common.exceptions import TimeoutException
+from selenium.common.exceptions import (
+    NoSuchElementException, ElementClickInterceptedException)
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import Select, WebDriverWait
 
 from helpers import allure_helper
-from helpers.waits import Element, Elements, Clickable
 
 from pages.common.alert import Alert
 from pages.common.footer import Footer
@@ -41,9 +41,9 @@ class BasePage:
         with allure.step(f'Перейти по ссылке {self.url}{path}'):
             return self.browser.get(f'{self.url}{path}')
 
-    @allure.step('Найти элемент по локатору {locator} и пути {el_path}, индекс {index}')
+    @allure.step('Дождаться видимости элемента с локатором {locator}  {el_path}, индекс {index}')
     def _element(self, locator, el_path, index=0, all=False):
-        """Возвращает результат поиска элементов после ожидания.
+        """Возвращает найденный видимый элемент после ожидания.
 
         :param locator: тип локатора
         :param el_path: путь до элемента
@@ -52,11 +52,30 @@ class BasePage:
         """
         try:
             if all:
-                return self.wait.until(Elements(locator, el_path))
-            return self.wait.until(Element(locator, el_path, index))
-        except TimeoutException:
+                return self.wait.until(EC.visibility_of_all_elements_located((locator, el_path)))
+            return self.wait.until(EC.visibility_of_all_elements_located((locator, el_path)))[index]
+        except Exception:
             allure_helper.attach(self.browser)
-            raise AssertionError(f'Нет элемента с локатором {locator} по пути {el_path} и индексом {index}')
+            raise AssertionError(
+                f'На странице не виден элемент с локатором {locator} по пути {el_path} и индексом {index}')
+
+    @allure.step('Дождаться элемента в DOM, локатор {locator} {el_path}, индекс {index}')
+    def _element_presence(self, locator, el_path, index=0, all=False):
+        """Возвращает найденный элемент после ожидания.
+
+        :param locator: тип локатора
+        :param el_path: путь до элемента
+        :param index: порядковый индекс элемента
+        :param all: маркер для поиска одного элемента или группы элементов
+        """
+        try:
+            if all:
+                return self.wait.until(EC.presence_of_all_elements_located((locator, el_path)))
+            return self.wait.until(EC.presence_of_all_elements_located((locator, el_path)))[index]
+        except Exception:
+            allure_helper.attach(self.browser)
+            raise AssertionError(
+                f'В DOM нет элемента с локатором {locator} по пути {el_path} и индексом {index}')
 
     @allure.step('Проверить что элемент {locator}, {el_path} с индексом {index} виден на странице')
     def is_element_visible(self, locator, el_path, index=0):
@@ -69,9 +88,9 @@ class BasePage:
         element = self._element(locator, el_path, index)
         try:
             assert element.is_displayed()
-        except AssertionError:
+        except NoSuchElementException:
             allure_helper.attach(self.browser)
-            f'Элемент {locator} {el_path} {index} не отображается на странице'
+            raise AssertionError(f'Элемент {locator} {el_path} {index} не отображается на странице')
 
     @allure.step('Кликнуть по элементу с локатором {locator} по пути {el_path} и индексом {index}')
     def click_on_element(self, locator, el_path, index=0):
@@ -83,9 +102,9 @@ class BasePage:
         """
         element = self._element(locator, el_path, index)
         try:
-            self.wait.until(Clickable(element))
-            return element.click()
-        except TimeoutException:
+            if element and element.is_enabled():
+                return element.click()
+        except ElementClickInterceptedException:
             allure_helper.attach(self.browser)
             raise AssertionError(f'Не получается кликнуть по элементу {locator} {el_path} {index}')
 
@@ -100,7 +119,7 @@ class BasePage:
         element = self._element(locator, el_path, index)
         try:
             return element.text
-        except TimeoutException:
+        except Exception:
             allure_helper.attach(self.browser)
             raise AssertionError(f'Не получается получить текст элемента {locator} {el_path} {index}')
 
@@ -109,7 +128,7 @@ class BasePage:
         """Проверка тайтла страницы."""
         try:
             return self.wait.until(EC.title_is(title))
-        except TimeoutException:
+        except Exception:
             allure_helper.attach(self.browser)
             raise AssertionError(f'Заголовок не совпал: {self.browser.title}, ожидаем {title}')
 
@@ -118,7 +137,7 @@ class BasePage:
         """Возвращает title страницы."""
         try:
             return self.browser.title
-        except Exception as e:
+        except Exception:
             allure_helper.attach(self.browser)
             raise AssertionError(f'Не получается получить тайтл страницы')
 
@@ -132,9 +151,10 @@ class BasePage:
         """
         try:
             return Select(self._element(locator, el_path, index))
-        except TimeoutException:
+        except Exception:
             allure_helper.attach(self.browser)
-            raise AssertionError(f'Нет выпадающего списка с локатором {locator} по пути {el_path} и индексом {index}')
+            raise AssertionError(
+                f'Нет выпадающего списка с локатором {locator} по пути {el_path} и индексом {index}')
 
     @allure.step('Получить атрибут {attr} у элемента {el_path} с индексом {index}')
     def getting_attr(self, attr, locator, el_path, index=0):
@@ -148,7 +168,7 @@ class BasePage:
         element = self._element(locator, el_path, index)
         try:
             return element.get_attribute(attr)
-        except TimeoutException:
+        except Exception:
             allure_helper.attach(self.browser)
             raise AssertionError(f'У элемента {locator} {el_path} {index} нет атрибута {attr}')
 
@@ -165,7 +185,7 @@ class BasePage:
         try:
             element.clear()
             return element.send_keys(value)
-        except TimeoutException:
+        except Exception:
             allure_helper.attach(self.browser)
             raise AssertionError(f'Не получается ввести текст {value} в элемент {locator} {el_path} {index}')
 
@@ -176,6 +196,7 @@ class BasePage:
             element = self._element(locator, el_path, index)
             return self.browser.execute_script('return arguments[0].scrollIntoView(true);', element)
         except Exception as e:
+            allure_helper.attach(self.browser)
             raise AssertionError(f'Ошибка {e}')
 
     @allure.step('Проскроллить до низа страницы')
@@ -184,6 +205,7 @@ class BasePage:
         try:
             return self.browser.execute_script('window.scrollTo(0, document.body.scrollHeight);')
         except Exception as e:
+            allure_helper.attach(self.browser)
             raise AssertionError(f'Ошибка {e}')
 
     @allure.step('Получить css свойство {css_property} элемента {locator} {el_path} с индексом {index}')
@@ -198,9 +220,10 @@ class BasePage:
         element = self._element(locator, el_path, index)
         try:
             return element.value_of_css_property(css_property)
-        except TimeoutException:
+        except Exception:
             allure_helper.attach(self.browser)
-            raise AssertionError(f'У элемента {locator} {el_path} {index} нет css свойства {css_property}')
+            raise AssertionError(
+                f'У элемента {locator} {el_path} {index} нет css свойства {css_property}')
 
     @allure.step('Навести курсор мыши на элемент {locator} {el_path} с индексом {index}')
     def mouse_move_to_element(self, locator, el_path, index=0):
@@ -213,7 +236,7 @@ class BasePage:
         element = self._element(locator, el_path, index)
         try:
             return ActionChains(self.browser).move_to_element(element).perform()
-        except TimeoutException:
+        except Exception:
             allure_helper.attach(self.browser)
             raise AssertionError(f'Не получается навести на элемент {locator} {el_path} {index}')
 

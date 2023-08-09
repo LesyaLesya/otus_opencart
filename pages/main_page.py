@@ -62,7 +62,7 @@ class MainPage(BasePage):
     def click_carousel_bullet(self):
         """Клик по кнопкам переключения карусели."""
         with allure.step('Получить все элементы из карусели'):
-            elements = self._element(*MainPageLocators.BRAND_IMAGE_IN_CAROUSEL, all=True)
+            elements = self._element_presence(*MainPageLocators.BRAND_IMAGE_IN_CAROUSEL, all=True)
         with allure.step('Кликнуть поочереди по кнопкам карусели'):
             for i in range(11):
                 with allure.step(f'Кликнуть на кнопку с индексом {i}'):

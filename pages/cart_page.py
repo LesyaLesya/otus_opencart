@@ -1,4 +1,5 @@
 """Модуль c методами для страницы Корзины."""
+import time
 
 import allure
 
@@ -53,6 +54,7 @@ class CartPage(BasePage):
                 elements.pop(idx)
         else:
             self.click_on_element(*CartPageLocators.REMOVE_BUTTONS, idx)
+            time.sleep(3)
 
     @allure.step('Проверить, что корзина пуста')
     def check_empty_cart(self):

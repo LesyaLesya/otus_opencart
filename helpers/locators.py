@@ -34,6 +34,8 @@ class HeaderPageLocators:
     COMPONENTS_IN_MENU = (By.XPATH, '//a[text()="Components"]')
     LAPTOPS_IN_MENU = (By.XPATH, '//a[text()="Laptops & Notebooks"]')
     SHOPPING_CART_TOP_LINK = (By.CSS_SELECTOR, 'a[title="Shopping Cart"]')
+    WISH_LIST_LINK = (By.CSS_SELECTOR, '#wishlist-total')
+    BREADCRUMB = (By.CLASS_NAME, 'breadcrumb')
 
 
 class MainPageLocators:
@@ -70,7 +72,6 @@ class ProductPageLocators:
     TAB_DESCRIPTION_LINK = (By.XPATH, '//a[@href="#tab-description"]')
     TAB_SPECIFICATION_LINK = (By.XPATH, '//a[@href="#tab-specification"]')
     TAB_REVIEWS_LINK = (By.XPATH, '//a[@href="#tab-review"]')
-    ITEM_TITLE = (By.CSS_SELECTOR, '.col-sm-4 > .btn-group + h1')
     WISH_LIST_BUTTON = (By.XPATH, '//button[@data-original-title="Add to Wish List"]')
     COMPARE_BUTTON = (By.XPATH, '//div[@class="btn-group"]/button[@data-original-title="Compare this Product"]')
     WRITE_REVIEW_BUTTON = (By.XPATH, '//a[text()="Write a review"]')
@@ -87,7 +88,6 @@ class ProductPageLocators:
 class CataloguePageLocators:
     """Локаторы для страницы Каталога."""
 
-    BREADCRUMB = (By.CLASS_NAME, 'breadcrumb')
     CATALOGUE_HEADER = (By.TAG_NAME, 'h2')
     CATALOGUE_IMAGE = (By.CLASS_NAME, 'img-thumbnail')
     LEFT_MENU = (By.ID, 'column-left')
@@ -120,9 +120,7 @@ class LoginPageLocators:
         By.CSS_SELECTOR, '#content > .row > .col-sm-6:first-child >.well')
     OLD_CUSTOMER_FORM = (
         By.CSS_SELECTOR, '#content > .row > .col-sm-6:last-child >.well')
-    RIGHT_LIST_MENU = (By.CLASS_NAME, 'list-group')
-    BUTTON_FOR_NEW_CUSTOMER = (By.CSS_SELECTOR, 'a.btn.btn-primary')
-    BUTTON_FOR_OLD_CUSTOMER = (By.CSS_SELECTOR, 'input.btn.btn-primary')
+    CONTINUE_BUTTON = (By.CSS_SELECTOR, 'a.btn.btn-primary')
     EMAIL_INPUT = (By.ID, 'input-email')
     PASSWORD_INPUT = (By.ID, 'input-password')
     LOGIN_BUTTON = (By.XPATH, '//input[@value="Login"]')
@@ -179,13 +177,21 @@ class SearchPageLocators:
     EMPTY_RESULT = (By.CSS_SELECTOR, 'h2 + p')
 
 
-class AccountPageLocators:
-    """Локаторы для страницы аккаунта пользователя."""
+class AccountRightBlockLocators:
+    """Локаторы для правого блока страницы аккаунта."""
 
-    WISH_LIST_LINK = (By.CSS_SELECTOR, '#wishlist-total')
+    LOGIN_RIGHT_BLOCK = (By.XPATH, '//div[@class="list-group"]/a[contains(text(), "Login")]')
+    REGISTER_RIGHT_BLOCK = (By.XPATH, '//div[@class="list-group"]/a[contains(text(), "Register")]')
     LOGOUT_RIGHT_BLOCK = (By.XPATH, '//div[@class="list-group"]/a[contains(text(), "Logout")]')
-    MY_ACCOUNT_RIGHT_BLOCK = (By.XPATH, '//div[@class="list-group"]/a[contains(text(), "My Account")]')
     EDIT_ACCOUNT_RIGHT_BLOCK = (By.XPATH, '//div[@class="list-group"]/a[contains(text(), "Edit Account")]')
+    MY_ACCOUNT_RIGHT_BLOCK = (By.XPATH, '//div[@class="list-group"]/a[contains(text(), "My Account")]')
+    RIGHT_LIST_MENU = (By.CLASS_NAME, 'list-group')
+
+
+class LogoutPageLocators:
+    """Локаторы для страницы логаута аккаунта пользователя."""
+
+    TEXT_AFTER_LOGOUT = (By.CSS_SELECTOR, 'h1 + p')
 
 
 class WishlistPageLocators:
@@ -194,14 +200,6 @@ class WishlistPageLocators:
     ITEM_NAMES = (By.CSS_SELECTOR, '#content > div > table > tbody > tr >td.text-left > a')
     EMPTY_WISHLIST_TEXT = (By.CSS_SELECTOR, 'h2 + p')
     REMOVE_BUTTON = (By.CSS_SELECTOR, 'a.btn-danger')
-
-
-class LogoutPageLocators:
-    """Локаторы для страницы логаута аккаунта пользователя."""
-
-    TEXT_AFTER_LOGOUT = (By.CSS_SELECTOR, 'h1 + p')
-    LOGIN_RIGHT_BLOCK = (By.XPATH, '//div[@class="list-group"]/a[contains(text(), "Login")]')
-    REGISTER_RIGHT_BLOCK = (By.XPATH, '//div[@class="list-group"]/a[contains(text(), "Register")]')
 
 
 class EditAccountPageLocators:
@@ -221,7 +219,7 @@ class ComparePageLocators:
     ITEM_NAMES = (By.CSS_SELECTOR, 'h1 + table > tbody > tr > td > a > strong')
     REMOVE_BUTTON = (By.CSS_SELECTOR, 'a.btn-danger')
     TEXT_FOR_EMTY_COMPARE = (By.CSS_SELECTOR, '#content > h1 + p')
-    ADD_TO_CART_BUTTON = (By.CSS_SELECTOR,'input[value="Add to Cart"]')
+    ADD_TO_CART_BUTTON = (By.CSS_SELECTOR, 'input[value="Add to Cart"]')
 
 
 class CartPageLocators:

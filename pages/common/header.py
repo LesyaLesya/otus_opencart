@@ -1,55 +1,59 @@
 import allure
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.support import expected_conditions as EC
 
 from helpers.allure_helper import attach
 from helpers.locators import HeaderPageLocators
 from helpers.styles import Border, Colors, Cursor, Gradients, SIZES
-from helpers.waits import Element, Elements
 
 
 class Header:
     def __init__(self, browser):
         self.browser = browser
+        self.wait = WebDriverWait(browser, 10)
+        self.elements = EC.visibility_of_all_elements_located
+        self.element = EC.visibility_of_element_located
+        self.presence_elements = EC.presence_of_all_elements_located
 
     @property
     def cart_button(self):
-        return WebDriverWait(self.browser, 5).until(Element(*HeaderPageLocators.CART_BUTTON))
+        return self.wait.until(self.element(HeaderPageLocators.CART_BUTTON))
 
     @property
     def cart_link(self):
-        return WebDriverWait(self.browser, 5).until(Element(*HeaderPageLocators.SHOPPING_CART_TOP_LINK))
+        return self.wait.until(self.element(HeaderPageLocators.SHOPPING_CART_TOP_LINK))
 
     @property
     def search_input(self):
-        return WebDriverWait(self.browser, 5).until(Element(*HeaderPageLocators.SEARCH_INPUT))
+        return self.wait.until(self.element(HeaderPageLocators.SEARCH_INPUT))
 
     @property
     def search_button(self):
-        return WebDriverWait(self.browser, 5).until(Element(*HeaderPageLocators.SEARCH_BUTTON))
+        return self.wait.until(self.element(HeaderPageLocators.SEARCH_BUTTON))
 
     @property
     def account_link(self):
-        return WebDriverWait(self.browser, 5).until(Element(*HeaderPageLocators.MY_ACCOUNT_LINK))
+        return self.wait.until(self.element(HeaderPageLocators.MY_ACCOUNT_LINK))
 
     @property
     def login_link(self):
-        return WebDriverWait(self.browser, 5).until(Element(*HeaderPageLocators.LOGIN_LINK))
+        return self.wait.until(self.element(HeaderPageLocators.LOGIN_LINK))
 
     @property
     def currency_dropdown_button(self):
-        return WebDriverWait(self.browser, 5).until(Element(*HeaderPageLocators.CURRENCY_DROP_DOWN_BUTTON))
+        return self.wait.until(self.element(HeaderPageLocators.CURRENCY_DROP_DOWN_BUTTON))
 
     @property
     def currency_dropdown(self):
-        return WebDriverWait(self.browser, 5).until(Element(*HeaderPageLocators.CURRENCY_DROP_DONW))
+        return self.wait.until(self.element(HeaderPageLocators.CURRENCY_DROP_DONW))
 
     @property
     def currency_dropdown_values(self):
-        return WebDriverWait(self.browser, 5).until(Elements(*HeaderPageLocators.CURRENCY_VALUES_BUTTONS))
+        return self.wait.until(self.presence_elements(HeaderPageLocators.CURRENCY_VALUES_BUTTONS))
 
     def currency_dropdown_value(self, idx):
-        return WebDriverWait(self.browser, 5).until(Element(*HeaderPageLocators.CURRENCY_VALUES_BUTTONS, idx))
+        return self.wait.until(self.presence_elements(HeaderPageLocators.CURRENCY_VALUES_BUTTONS))[idx]
 
     @allure.step('Проверить видимость элементов на странице')
     def check_elements_visibility(self):
@@ -60,7 +64,7 @@ class Header:
                HeaderPageLocators.TOP_LINKS,
                HeaderPageLocators.SEARCH_FIELD]
         for i in lst:
-            el = WebDriverWait(self.browser, 5).until(Element(*i))
+            el = self.wait.until(self.element(i))
             attach(self.browser)
             assert el.is_displayed(), f'Элемент {i} не отображается на странице'
 
@@ -219,12 +223,12 @@ class Header:
         :param lst: список локторов пунктов меню и выпадающих списков меню
         """
         for i in lst:
-            el_menu = WebDriverWait(self.browser, 5).until(Element(*i[0]))
+            el_menu = self.wait.until(self.element((i[0])))
             with allure.step(f'Навести курсок на пункт меню {i[0]}'):
                 ActionChains(self.browser).move_to_element(el_menu).perform()
                 attach(self.browser)
             with allure.step(f'Проверить выпадающее меню {i[1]}'):
-                el_dropdown = WebDriverWait(self.browser, 5).until(Element(*i[1]))
+                el_dropdown = self.wait.until(self.element(i[1]))
                 attach(self.browser)
                 assert el_dropdown.is_displayed(), f'Элемент {i[1]} не отображается на странице'
 

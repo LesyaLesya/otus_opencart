@@ -73,7 +73,7 @@ class ProductPage(BasePage):
 
         :param name: название товара
         """
-        name_on_product_page = self.get_text_of_element(*ProductPageLocators.ITEM_TITLE)
+        name_on_product_page = self.get_text_of_element(*ProductPageLocators.PRODUCT_HEADER)
         with allure.step(f'Проверить, что название в карточке {name_on_product_page} совпадает с {name}'):
             assert name == name_on_product_page,  \
                 f'Название - {name}, в карточке товара - {name_on_product_page}'
@@ -83,7 +83,7 @@ class ProductPage(BasePage):
         """Добавление товара в вишлист. Возвращает название
         добавленного товара.
         """
-        name = self.get_text_of_element(*ProductPageLocators.ITEM_TITLE)
+        name = self.get_text_of_element(*ProductPageLocators.PRODUCT_HEADER)
         item_id = self.get_item_id(*ProductPageLocators.WISH_LIST_BUTTON)
         self.click_on_element(*ProductPageLocators.WISH_LIST_BUTTON)
         return name, item_id
@@ -93,7 +93,7 @@ class ProductPage(BasePage):
         """Добавление товара в сравнение. Возвращает название
         добавленного товара.
         """
-        name = self.get_text_of_element(*ProductPageLocators.ITEM_TITLE)
+        name = self.get_text_of_element(*ProductPageLocators.PRODUCT_HEADER)
         self.click_on_element(*ProductPageLocators.COMPARE_BUTTON)
         return name
 
@@ -102,7 +102,7 @@ class ProductPage(BasePage):
         """Добавление товара в корзину. Возвращает название
         добавленного товара.
         """
-        name = self.get_text_of_element(*ProductPageLocators.ITEM_TITLE)
+        name = self.get_text_of_element(*ProductPageLocators.PRODUCT_HEADER)
         self.click_on_element(*ProductPageLocators.BUTTON_CART)
         return name
 

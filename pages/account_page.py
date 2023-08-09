@@ -4,8 +4,8 @@ import allure
 
 from helpers import allure_helper
 from helpers.locators import (
-     AccountPageLocators, EditAccountPageLocators, LoginPageLocators,
-     LogoutPageLocators, RegisterPageLocators, WishlistPageLocators)
+     HeaderPageLocators, EditAccountPageLocators, LoginPageLocators,
+     LogoutPageLocators, RegisterPageLocators, WishlistPageLocators, AccountRightBlockLocators)
 from pages.base_page import BasePage
 
 
@@ -18,22 +18,22 @@ class AccountPage(BasePage):
     @allure.step('Открыть виш-лист')
     def open_wishlist(self):
         """Открытие вишлиста."""
-        self.click_on_element(*AccountPageLocators.WISH_LIST_LINK)
+        self.click_on_element(*HeaderPageLocators.WISH_LIST_LINK)
 
     @allure.step('Сделать логаут из правого блока')
     def logout_from_right_block(self, ):
         """Логаут из правого блока."""
-        self.click_on_element(*AccountPageLocators.LOGOUT_RIGHT_BLOCK)
+        self.click_on_element(*AccountRightBlockLocators.LOGOUT_RIGHT_BLOCK)
 
     @allure.step('Зайти в аккаунт')
     def click_my_account(self):
         """Заход в аккаунт."""
-        self.click_on_element(*AccountPageLocators.MY_ACCOUNT_RIGHT_BLOCK)
+        self.click_on_element(*AccountRightBlockLocators.MY_ACCOUNT_RIGHT_BLOCK)
 
     @allure.step('Перейти на страницу редактирования аккаунта')
     def click_edit_account(self):
         """Заход на страницу редактирования аккаунта."""
-        self.click_on_element(*AccountPageLocators.EDIT_ACCOUNT_RIGHT_BLOCK)
+        self.click_on_element(*AccountRightBlockLocators.EDIT_ACCOUNT_RIGHT_BLOCK)
 
 
 class WishlistPage(AccountPage):
@@ -109,8 +109,8 @@ class LogoutPage(AccountPage):
     @allure.step('Проверить пункты в правом блоке после логаута')
     def check_right_block_after_logout(self):
         """Проверка пунктов в правом блоке после логаута."""
-        self.is_element_visible(*LogoutPageLocators.REGISTER_RIGHT_BLOCK)
-        self.is_element_visible(*LogoutPageLocators.LOGIN_RIGHT_BLOCK)
+        self.is_element_visible(*AccountRightBlockLocators.REGISTER_RIGHT_BLOCK)
+        self.is_element_visible(*AccountRightBlockLocators.LOGIN_RIGHT_BLOCK)
 
 
 class LoginPage(AccountPage):
@@ -123,9 +123,9 @@ class LoginPage(AccountPage):
         """Проверка видимости элементов."""
         lst = [LoginPageLocators.NEW_CUSTOMER_FORM,
                LoginPageLocators.OLD_CUSTOMER_FORM,
-               LoginPageLocators.RIGHT_LIST_MENU,
-               LoginPageLocators.BUTTON_FOR_NEW_CUSTOMER,
-               LoginPageLocators.BUTTON_FOR_OLD_CUSTOMER]
+               AccountRightBlockLocators.RIGHT_LIST_MENU,
+               LoginPageLocators.CONTINUE_BUTTON,
+               LoginPageLocators.LOGIN_BUTTON]
         for i in lst:
             self.is_element_visible(*i)
 

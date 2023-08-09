@@ -1,22 +1,24 @@
 import allure
 from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 from helpers.allure_helper import attach
 from helpers.locators import AlertsLocators
-from helpers.waits import Element
 
 
 class Alert:
     def __init__(self, browser):
         self.browser = browser
+        self.wait = WebDriverWait(self.browser, 5)
+        self.element = EC.visibility_of_element_located
 
     @property
     def success_alert(self):
-        return WebDriverWait(self.browser, 5).until(Element(*AlertsLocators.SUCCESS_ALERT))
+        return self.wait.until(self.element(AlertsLocators.SUCCESS_ALERT))
 
     @property
     def danger_alert(self):
-        return WebDriverWait(self.browser, 5).until(Element(*AlertsLocators.DANGER_ALERT))
+        return self.wait.until(self.element(AlertsLocators.DANGER_ALERT))
 
     @allure.step('Проверить, что выведен алерт с ошибкой')
     def check_danger_alert(self):

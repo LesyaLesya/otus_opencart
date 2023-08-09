@@ -7,6 +7,7 @@ import pytest
 import requests
 import time
 
+
 from faker import Faker
 from types import SimpleNamespace
 from selenium import webdriver
@@ -85,23 +86,39 @@ def browser(request, db_connection):
         'name': test_name,
         'selenoid:options': {
             'enableVNC': True,
-            'enableVideo': True}}
+            'enableVideo': True},
+        'acceptInsecureCerts': True}
 
     if local:
         if browser_name == 'chrome':
             options = ChOp()
-            options.headless = True
+            options.add_argument('--headless')
+            options.add_argument('--incognito')
+            options.add_argument('--ignore-certificate-errors')
+            options.add_argument('--window-size=1920,1080')
+            options.add_argument('--disable-cache')
+            options.add_argument('--disable-blink-features=AutomationControlled')
+            options.add_argument('--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) '
+                                 'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36”)')
             driver = webdriver.Chrome(options=options, executable_path=ChromeDriverManager().install())
         elif browser_name == 'firefox':
             options = FFOp()
-            options.headless = True
-            driver = webdriver.Firefox(options=options, executable_path=GeckoDriverManager().install())
+            profile = webdriver.FirefoxProfile()
+            profile.accept_untrusted_certs = True
+            profile.set_preference('general.useragent.override',
+                                   'Mozilla/5.0 (Linux; Android 8.0.0; Pixel 2 XL Build/OPD1.170816.004) '
+                                   'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.87 Mobile Safari/537.36')
+            options.add_argument('--headless')
+            options.add_argument('--private')
+            options.add_argument('--width=1920')
+            options.add_argument('--height=1080')
+            driver = webdriver.Firefox(options=options, firefox_profile=profile,
+                                       executable_path=GeckoDriverManager().install())
         else:
             raise pytest.UsageError('Для локального запуска --browser_name - chrome или firefox')
         allure_helper.attach_capabilities(driver)
         allure_helper.add_allure_env(browser_name, browser_version, local)
         request.addfinalizer(driver.quit)
-        driver.maximize_window()
         return driver
     else:
         driver = webdriver.Remote(
@@ -123,7 +140,6 @@ def browser(request, db_connection):
                 requests.delete(video)
 
         request.addfinalizer(finalizer)
-        driver.maximize_window()
         return driver
 
 
