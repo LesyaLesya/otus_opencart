@@ -14,9 +14,9 @@ pipeline {
                 sh '''
                    if [ "$MARKER" == "all" ]
                    then
-                   ${DOCKER_PATH} run --name my_container tests --url ${URL} --browser-name ${BROWSER_NAME} --browser-version ${BROWSER_VERSION} --executor ${EXECUTOR} -n ${NODES}
+                   ${DOCKER_PATH} run --name my_container tests --url ${URL} --browser-name ${BROWSER_NAME} --browser-version ${BROWSER_VERSION} --executor ${EXECUTOR} -n ${NODES} --window_size ${WINDOW_SIZE}
                    else
-                   ${DOCKER_PATH} run --name my_container tests --url ${URL} --browser-name ${BROWSER_NAME} --browser-version ${BROWSER_VERSION} --executor ${EXECUTOR} -n ${NODES} -m ${MARKER}
+                   ${DOCKER_PATH} run --name my_container tests --url ${URL} --browser-name ${BROWSER_NAME} --browser-version ${BROWSER_VERSION} --executor ${EXECUTOR} -n ${NODES} --window_size ${WINDOW_SIZE} -m ${MARKER}
                    fi
                 '''
             }

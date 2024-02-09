@@ -8,9 +8,9 @@ docker build -t tests .
 # В параметрах передаем логин, пароль, количество потоков для запуска и маркер
 if [ $5 -eq "all" ]
 then
-  docker run --name my_container tests --url $1  --browser-name $2 --browser-version $3 --executor $4 -n 2
+  docker run --name my_container tests --url $1  --browser-name $2 --browser-version $3 --executor $4 --window_size $6 -n 2
 else
-  docker run --name my_container tests --url $1  --browser-name $2 --browser-version $3 --executor $4 -m $5 -n 2
+  docker run --name my_container tests --url $1  --browser-name $2 --browser-version $3 --executor $4 -m $5 --window_size $6 -n 2
 fi
 
 # Копируем из контейнера созданный allure-report

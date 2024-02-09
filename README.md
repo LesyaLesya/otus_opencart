@@ -98,7 +98,7 @@ pip install -r requirements.txt
 В консоли (из директории проекта) выполнить команду:
 
 ```
-pytest --local  --url=your_external_ip --browser-name=(firefox/chrome)  -m marker -n 2 tests/
+pytest --local  --url=your_external_ip --browser-name=(firefox/chrome)  -m marker --window_size 800,600 -n 2 tests/
 ```
 где:
 
@@ -106,6 +106,7 @@ pytest --local  --url=your_external_ip --browser-name=(firefox/chrome)  -m marke
 - --local - запускает тесты локально
 - --url - адрес машины в сети (где запущен opencart)
 - --browser-name - какой браузер запускать
+- --window_size - размер окна (формат 800,600)
 - -m - маркер группы тестов
 
 
@@ -122,7 +123,7 @@ UI станет доступен на localhost:8080.
 2.В консоли (из директории проекта) выполнить команду:
 
 ```
-pytest  --url=your_external_ip --browser-name=(chrome/firefox/opera) --browser-version --executor=selenoid_host -m marker -n 2
+pytest  --url=your_external_ip --browser-name=(chrome/firefox/opera) --browser-version --executor=selenoid_host --window_size=1920,1080 -m marker -n 2
 ```
 где:
 
@@ -131,6 +132,7 @@ pytest  --url=your_external_ip --browser-name=(chrome/firefox/opera) --browser-v
 - --browser-name - какой браузер запускать
 - --browser-version - версия указанного браузера
 - --executor - хост selenoid-а (если на своей машине - 127.0.0.1)
+- --window_size - размер окна (формат 800,600)
 - -m - маркер группы тестов
 ____
 
@@ -155,9 +157,9 @@ git clone repository_url
 и путь до исполняемого файла allure на вашей машине:
 
 ```
-./run_test_in_docker_with_allure.sh your_external_ip browser browser_version selenoid_host(external) marker /path/to/allure/bin 
+./run_test_in_docker_with_allure.sh your_external_ip browser browser_version selenoid_host(external) marker /path/to/allure/bin window_size
 
-Пример: ./run_test_in_docker_with_allure.sh 123.123.123.123 chrome 87.0 123.123.123.123 search_page /Applications/allure/bin/allure 
+Пример: ./run_test_in_docker_with_allure.sh 123.123.123.123 chrome 87.0 123.123.123.123 search_page '800,600' /Applications/allure/bin/allure 
 ```
 Если надо запустить все тесты, то marker указать 'all'
 
@@ -180,6 +182,7 @@ git clone repository_url
   + NODES - значение по-умолчанию 1 (количество потоков)
   + DOCKER_PATH - путь до исполняемого файла Docker на машине
   + MARKER - маркер группы тестов (all - для запуска всех тестов)
+  + WINDOW_SIZE - размер окна (формат 800,600)
   
 - Выбрать Pipeline script from SCM
 

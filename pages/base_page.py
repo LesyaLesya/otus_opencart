@@ -18,17 +18,15 @@ from pages.common.header import Header
 class BasePage:
     """Класс, описывающий базовую страницу."""
 
-    def __init__(self, browser, url, db_connection=None, wait=10):
+    def __init__(self, browser, url, wait=10):
         """Конструктор класса.
 
         :param browser: фикстура для запуска драйвера
         :param url: фикстура с урлом тестируемого ресурса
-        :param db_connection: фикстура коннекта к БД
         """
         self.browser = browser
         self.url = url
         self.wait = WebDriverWait(browser, wait)
-        self.db_connection = db_connection
         self.alert = Alert(self.browser)
         self.footer = Footer(self.browser)
         self.header = Header(self.browser)

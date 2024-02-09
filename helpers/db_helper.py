@@ -50,29 +50,17 @@ def check_review_not_in_db(db_connection, author, text):
 
     time.sleep(3)
     result = db_queries.get_review(db_connection, author, text)
-    if result == 0:
-        assert True
-    else:
-        assert False, f'Записей найдено - {result}'
+    assert not result, f'Записей найдено - {result}'
 
 
 @allure.step('Проверить, что ревью появилось в БД - автор {author}, текст {text}')
 def check_review_in_db(db_connection, author, text):
     try:
-        get_review_from_db(db_connection, author, text)
+        time.sleep(3)
+        result = db_queries.get_review(db_connection, author, text)
+        assert result > 0, f'Записи не найдены - {result}'
     finally:
         db_queries.delete_review(db_connection, author, text)
-
-
-def get_review_from_db(db_connection, author, text):
-    """Проверка, сколько записей возвращается по заданному условию."""
-
-    time.sleep(3)
-    result = db_queries.get_review(db_connection, author, text)
-    if result > 0:
-        assert True
-    else:
-        assert False, f'Записи не найдены - {result}'
 
 
 @allure.step('Проверить, что товар {item_id} появился в вишлисте у юзера {user_id} в БД')

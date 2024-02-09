@@ -3,12 +3,13 @@
 import allure
 
 
-@allure.step('Создать тестового пользователя с email {email}, именем {lastname}, фамилией {lastname}')
+@allure.step('Создать тестового пользователя с email {email}, именем {fistname}, фамилией {lastname}')
 def create_test_user(connection, email, fistname, lastname, telephone):
     """Создает тестового пользователя и возвращает его email."""
 
     query = 'INSERT INTO oc_customer ' \
-            '(customer_group_id, store_id, language_id, firstname, lastname, email, telephone, fax, password, salt, newsletter, custom_field, ip, status, safe, token, code, address_id, date_added) ' \
+            '(customer_group_id, store_id, language_id, firstname, lastname, email, telephone, fax, password, salt, ' \
+            'newsletter, custom_field, ip, status, safe, token, code, address_id, date_added) ' \
             'VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)'
 
     e_mail = email
@@ -20,9 +21,7 @@ def create_test_user(connection, email, fistname, lastname, telephone):
     data = [1, 0, 1, fistname, lastname, e_mail, telephone,
             0, test_password, salt, 1, '12', '123.123.123.123',
             1, 0, '', '', 0, '2020-12-05 23:27:44']
-
-    connection.cursor().execute(query, data)
-    connection.commit()
+    connection.execute(query, data)
     allure.attach(name=email, body=email)
 
 
@@ -32,9 +31,8 @@ def get_user_id(connection, email, firstname, lastname, telephone):
 
     query = 'SELECT customer_id FROM oc_customer WHERE firstname = %s and email = %s and lastname = %s and telephone = %s'
     data = [firstname, email, lastname, telephone]
-    with connection.cursor() as cursor:
-        cursor.execute(query, data)
-        user_id = cursor.fetchall()
+    connection.execute(query, data)
+    user_id = connection.fetchall()
     return user_id[0][0]
 
 
@@ -44,8 +42,7 @@ def delete_user(connection, user_id):
 
     query = 'DELETE FROM oc_customer WHERE customer_id = %s'
     data = [user_id]
-    connection.cursor().execute(query, data)
-    connection.commit()
+    connection.execute(query, data)
 
 
 @allure.step('Получить тестовый отзыв автора {author} с текстом {text}')
@@ -55,11 +52,10 @@ def get_review(connection, author, text):
     query = 'SELECT * FROM oc_review WHERE oc_review.author = %s and oc_review.text = %s'
     result = 0
     data = [author, text]
-    with connection.cursor() as cursor:
-        cursor.execute(query, data)
-        db_data = cursor.fetchall()
-        for _ in db_data:
-            result = result + 1
+    connection.execute(query, data)
+    db_data = connection.fetchall()
+    for _ in db_data:
+        result = result + 1
     return result
 
 
@@ -69,8 +65,7 @@ def delete_review(connection, author, text):
 
     query = 'DELETE FROM oc_review WHERE oc_review.author = %s and oc_review.text = %s'
     data = [author, text]
-    connection.cursor().execute(query, data)
-    connection.commit()
+    connection.execute(query, data)
 
 
 @allure.step(
@@ -85,9 +80,8 @@ def get_new_user(connection, email=None, firstname=None, lastname=None, tel=None
     if firstname and lastname and tel:
         query = 'SELECT * FROM oc_customer WHERE oc_customer.firstname = %s and oc_customer.lastname = %s and oc_customer.telephone = %s'
         data = [firstname, lastname, tel]
-    with connection.cursor() as cursor:
-        cursor.execute(query, data)
-        db_data = cursor.fetchall()
+    connection.execute(query, data)
+    db_data = connection.fetchall()
     return db_data
 
 
@@ -97,9 +91,8 @@ def get_item_in_wishlist(connection, user_id, item_id):
 
     query = 'SELECT * FROM oc_customer_wishlist WHERE customer_id = %s and product_id = %s'
     data = [user_id, item_id]
-    with connection.cursor() as cursor:
-        cursor.execute(query, data)
-        db_data = cursor.fetchall()
+    connection.execute(query, data)
+    db_data = connection.fetchall()
     return db_data
 
 
@@ -110,9 +103,8 @@ def get_all_items_in_wishlist_for_user(connection, user_id):
     query = 'SELECT product_id FROM oc_customer_wishlist WHERE customer_id = %s'
     data = [user_id]
     result = []
-    with connection.cursor() as cursor:
-        cursor.execute(query, data)
-        db_data = cursor.fetchall()
+    connection.execute(query, data)
+    db_data = connection.fetchall()
     for i in db_data:
         result.append(i[0])
     return result
@@ -124,8 +116,7 @@ def del_item_in_wishlist_for_user(connection, user_id, item_id):
 
     query = 'DELETE FROM oc_customer_wishlist WHERE customer_id = %s and product_id = %s'
     data = [user_id, item_id]
-    connection.cursor().execute(query, data)
-    connection.commit()
+    connection.execute(query, data)
 
 
 @allure.step('Удалить все записи в БД о всех товарах в вишлисте юзера {user_id}')
@@ -134,5 +125,4 @@ def del_all_items_in_wishlist_for_user(connection, user_id):
 
     query = 'DELETE FROM oc_customer_wishlist WHERE customer_id = %s'
     data = [user_id]
-    connection.cursor().execute(query, data)
-    connection.commit()
+    connection.execute(query, data)

@@ -61,6 +61,9 @@ def pytest_addoption(parser):
     parser.addoption(
         '--executor', action='store',
         help='если local False - укажите хост selenoid, если True - не надо передавать параметр')
+    parser.addoption(
+        '--window_size', default='1920,1080', help='Укажите разрешение в формате "1920,1080"'
+    )
 
 
 @pytest.fixture
@@ -77,12 +80,15 @@ def browser(request, db_connection):
     browser_version = request.config.getoption('--browser-version')
     executor = request.config.getoption('--executor')
     local = request.config.getoption('--local')
+    window_size = request.config.getoption('--window_size')
+    window_size_for_selenoid = window_size.replace(',', 'x')
+    window_width, window_height = window_size.split(',')
     test_name = request.node.name
 
     capabilities = {
         'browserName': browser_name,
         'browserVersion': browser_version,
-        'screenResolution': '1440x900',
+        'screenResolution': window_size_for_selenoid,
         'name': test_name,
         'selenoid:options': {
             'enableVNC': True,
@@ -95,7 +101,7 @@ def browser(request, db_connection):
             options.add_argument('--headless')
             options.add_argument('--incognito')
             options.add_argument('--ignore-certificate-errors')
-            options.add_argument('--window-size=1920,1080')
+            options.add_argument(f'--window-size={window_size}')
             options.add_argument('--disable-cache')
             options.add_argument('--disable-blink-features=AutomationControlled')
             options.add_argument('--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) '
@@ -110,8 +116,8 @@ def browser(request, db_connection):
                                    'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.87 Mobile Safari/537.36')
             options.add_argument('--headless')
             options.add_argument('--private')
-            options.add_argument('--width=1920')
-            options.add_argument('--height=1080')
+            options.add_argument(f'--width={window_width}')
+            options.add_argument(f'--height={window_height}')
             driver = webdriver.Firefox(options=options, firefox_profile=profile,
                                        executable_path=GeckoDriverManager().install())
         else:
@@ -160,8 +166,11 @@ def db_connection(request):
         port=config.PORT,
         database=config.DB_NAME
     )
-    request.addfinalizer(connection.close)
-    return connection
+    cursor = connection.cursor()
+    yield cursor
+    connection.commit()
+    cursor.close()
+    connection.close()
 
 
 @pytest.fixture
