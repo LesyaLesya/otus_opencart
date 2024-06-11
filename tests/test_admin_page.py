@@ -3,87 +3,78 @@
 
 import allure
 import pytest
-
-from helpers.urls import URLS
-from pages.admin_page import AdminPage
+from base.base_test import BaseTest
 
 
 @allure.feature('Административная страница')
 @pytest.mark.admin_page
-class TestAdminPage:
+class TestAdminPage(BaseTest):
     """Тесты административной страницы."""
 
     @allure.story('Элементы страницы')
     @allure.title('Проверка видимости элементов на странице')
     @allure.link('#', name='User story')
-    def test_visibility_of_elements_on_admin_login_page(self, browser, url):
+    def test_visibility_of_elements_on_admin_login_page(self):
         """Тестовая функция для проверки видимости элементов на странице Каталога.
 
-        :param browser: фикстура для запуска драйвера
-        :param url: фикстура с урлом тестируемого ресурса
         """
-        page = AdminPage(browser, url)
-        page.open_url(path=URLS.ADMIN_PAGE)
-        page.check_elements_visibility()
+        self.admin_page.open_url()
+        self.admin_page.check_elements_visibility()
 
     @allure.story('Авторизация в админке')
     @allure.title('Валидные креденшелы')
     @allure.link('#', name='User story')
-    def test_login_valid(self, browser, url):
+    def test_login_valid(self):
         """Тестовая функция для проверки логина в админку с валидными креденшелами.
 
-        :param browser: фикстура для запуска драйвера
-        :param url: фикстура с урлом тестируемого ресурса
         """
-        page = AdminPage(browser, url)
-        page.open_url(path=URLS.ADMIN_PAGE)
-        page.login('user', 'bitnami')
-        page.is_title_correct(page.TITLE)
+        self.admin_page.open_url()
+        self.admin_page.enter_login('user')
+        self.admin_page.enter_password('bitnami')
+        self.admin_page.click_login()
+        self.admin_page.is_title_correct(self.admin_page.TITLE)
 
     @allure.story('Авторизация в админке')
     @allure.title('Невалидные креденшелы')
     @allure.link('#', name='User story')
     @pytest.mark.parametrize('login, passw',
                              [('test', 'test'), ('123', '')])
-    def test_login_failed(self, browser, url, login, passw):
+    def test_login_failed(self, login, passw):
         """Тестовая функция для проверки логина в админку с невалидными креденшелами.
 
-        :param browser: фикстура для запуска драйвера
-        :param url: фикстура с урлом тестируемого ресурса
         :param login: передаваемый логин
         :param passw: передаваемый пароль
         """
-        page = AdminPage(browser, url)
-        page.open_url(path=URLS.ADMIN_PAGE)
-        page.login(login, passw)
-        page.alert.check_danger_alert()
+        self.admin_page.open_url()
+        self.admin_page.enter_login(login)
+        self.admin_page.enter_password(passw)
+        self.admin_page.click_login()
+        self.alert.check_danger_alert()
 
     @allure.story('Выход из админки')
     @allure.title('Выход из админки')
     @allure.link('#', name='User story')
-    def test_logout(self, browser, url):
+    def test_logout(self):
         """Тестовая функция для проверки разлогина из админки.
 
-        :param browser: фикстура для запуска драйвера
-        :param url: фикстура с урлом тестируемого ресурса
         """
-        page = AdminPage(browser, url)
-        page.open_url(path=URLS.ADMIN_PAGE)
-        page.login('user', 'bitnami')
-        page.logout()
-        page.check_successful_logout_text()
+        self.admin_page.open_url()
+        self.admin_page.enter_login('user')
+        self.admin_page.enter_password('bitnami')
+        self.admin_page.click_login()
+        self.admin_page.logout()
+        self.admin_page.check_successful_logout_text()
 
     @allure.story('Элементы админки')
     @allure.title('Отображение таблицы с товарами в админке')
     @allure.link('#', name='User story')
-    def test_get_products_table(self, browser, url):
+    def test_get_products_table(self):
         """Тестовая функция для проверки отображения таблицы с товарами в админке.
 
-        :param browser: фикстура для запуска драйвера
-        :param url: фикстура с урлом тестируемого ресурса
         """
-        page = AdminPage(browser, url)
-        page.open_url(path=URLS.ADMIN_PAGE)
-        page.login('user', 'bitnami')
-        page.get_product_table()
-        page.check_products_table()
+        self.admin_page.open_url()
+        self.admin_page.enter_login('user')
+        self.admin_page.enter_password('bitnami')
+        self.admin_page.click_login()
+        self.admin_page.get_product_table()
+        self.admin_page.check_products_table()

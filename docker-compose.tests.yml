@@ -1,0 +1,18 @@
+version: '3.7'
+
+services:
+  tests:
+    image: python:3.6
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./:/otus_opencart
+    command: /bin/bash -c "pytest -sv --alluredir=allure-results"
+    working_dir: /otus_opencart
+    environment:
+      - HOST=${HOST}
+      - BROWSER_NAME=${BROWSER_NAME}
+      - BROWSER_VERSION=${BROWSER_VERSION}
+      - EXECUTOR=${EXECUTOR}
+      - WINDOW_SIZE=${WINDOW_SIZE}

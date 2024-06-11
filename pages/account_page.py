@@ -2,15 +2,18 @@
 
 import allure
 
-from helpers import allure_helper
-from helpers.locators import (
+from utils.allure_helper import attach
+from utils.locators import (
      HeaderPageLocators, EditAccountPageLocators, LoginPageLocators,
      LogoutPageLocators, RegisterPageLocators, WishlistPageLocators, AccountRightBlockLocators)
-from pages.base_page import BasePage
+from base.base_page import BasePage
+from config.links import Links
 
 
 class AccountPage(BasePage):
     """Класс с методами для страницы Аккаунта пользователя."""
+
+    PAGE_URL = Links.SEARCH_PAGE
 
     TITLE = 'My Account'
     SUCCESS_CREATE_ACCOUNT = 'Your Account Has Been Created!'
@@ -52,16 +55,16 @@ class WishlistPage(AccountPage):
         """
         elements = self._element(*WishlistPageLocators.ITEM_NAMES, all=True)
         with allure.step(f'Проверить, что в вишлисте {n} товаров'):
-            allure_helper.attach(self.browser)
+            attach(self.browser)
             assert len(elements) == n, f'Количество товаров - {len(elements)}'
         product_names = [i.text for i in elements]
         with allure.step(f'Проверить что в {product_names} есть товары {names}'):
             if type(names) == list:
                 for i in names:
-                    allure_helper.attach(self.browser)
+                    attach(self.browser)
                     assert i in product_names, f'Название {i}, названия продуктов в вишлисте {product_names}'
             else:
-                allure_helper.attach(self.browser)
+                attach(self.browser)
                 assert names in product_names, f'Название {names}, названия продуктов в вишлисте {product_names}'
 
     @allure.step('Проверить, что вишлист пустой')
@@ -71,7 +74,7 @@ class WishlistPage(AccountPage):
         text = self.get_text_of_element(*WishlistPageLocators.EMPTY_WISHLIST_TEXT)
         with allure.step(
                 f'Проверить что текст - {self.EMPTY_WISHLIST}'):
-            allure_helper.attach(self.browser)
+            attach(self.browser)
             assert text == self.EMPTY_WISHLIST, \
                 f'Текст в пустом вишлисте - {text}'
 
@@ -82,15 +85,15 @@ class WishlistPage(AccountPage):
             elements = self._element(*WishlistPageLocators.REMOVE_BUTTON, all=True)
             while len(elements) != 0:
                 self.click_on_element(*WishlistPageLocators.REMOVE_BUTTON, idx)
-                self.alert.check_success_alert(txt=self.WISHLIST_CHANGE)
                 elements.pop(idx)
         else:
             self.click_on_element(*WishlistPageLocators.REMOVE_BUTTON, idx)
-            self.alert.check_success_alert(txt=self.WISHLIST_CHANGE)
 
 
 class LogoutPage(AccountPage):
     """Класс с методами для страницы логаута из Аккаунта пользователя."""
+
+    PAGE_URL = Links.LOGOUT_PAGE
 
     TITLE = 'Account Logout'
     LOGOUT = 'You have been logged off your account. It is now safe to leave the computer.'
@@ -102,7 +105,7 @@ class LogoutPage(AccountPage):
         text = self.get_text_of_element(*LogoutPageLocators.TEXT_AFTER_LOGOUT)
         with allure.step(
                 f'Проверить что текст после логаута  - {self.LOGOUT}'):
-            allure_helper.attach(self.browser)
+            attach(self.browser)
             assert text == self.LOGOUT, \
                 f'Текст после логаута {text}'
 
@@ -115,6 +118,8 @@ class LogoutPage(AccountPage):
 
 class LoginPage(AccountPage):
     """Класс с методами для страницы Логина."""
+
+    PAGE_URL = Links.LOGIN_PAGE
 
     TITLE = 'Account Login'
 
@@ -143,6 +148,8 @@ class LoginPage(AccountPage):
 
 class RegisterPage(AccountPage):
     """Класс с методами для страницы Регистрации."""
+
+    PAGE_URL = Links.REGISTER_PAGE
 
     TITLE = 'Register Account'
     REGISTER_FIRST_NAME_ERROR = 'First Name must be between 1 and 32 characters!'
@@ -210,7 +217,7 @@ class RegisterPage(AccountPage):
         self.is_element_visible(*RegisterPageLocators.FIRST_NAME_ERROR)
         error_text = self.get_text_of_element(*RegisterPageLocators.FIRST_NAME_ERROR)
         with allure.step(f'Проверить, что текст ошибки при пустом имени - {self.REGISTER_FIRST_NAME_ERROR}'):
-            allure_helper.attach(self.browser)
+            attach(self.browser)
             assert error_text == self.REGISTER_FIRST_NAME_ERROR, \
                 f'Текст ошибки {error_text}'
 
@@ -221,7 +228,7 @@ class RegisterPage(AccountPage):
         error_text = self.get_text_of_element(*RegisterPageLocators.LAST_NAME_ERROR)
         with allure.step(
                 f'Проверить, что текст ошибки при пустом имени - {self.REGISTER_LAST_NAME_ERROR}'):
-            allure_helper.attach(self.browser)
+            attach(self.browser)
             assert error_text == self.REGISTER_LAST_NAME_ERROR, \
                 f'Текст ошибки {error_text}'
 
@@ -232,7 +239,7 @@ class RegisterPage(AccountPage):
         error_text = self.get_text_of_element(*RegisterPageLocators.EMAIL_ERROR)
         with allure.step(
                 f'Проверить, что текст ошибки при пустом имени - {self.REGISTER_EMAIL_ERROR}'):
-            allure_helper.attach(self.browser)
+            attach(self.browser)
             assert error_text == self.REGISTER_EMAIL_ERROR, \
                 f'Текст ошибки {error_text}'
 
@@ -243,7 +250,7 @@ class RegisterPage(AccountPage):
         error_text = self.get_text_of_element(*RegisterPageLocators.TEL_ERROR)
         with allure.step(
                 f'Проверить, что текст ошибки при пустом имени - {self.REGISTER_PHONE_ERROR}'):
-            allure_helper.attach(self.browser)
+            attach(self.browser)
             assert error_text == self.REGISTER_PHONE_ERROR, \
                 f'Текст ошибки {error_text}'
 
@@ -254,7 +261,7 @@ class RegisterPage(AccountPage):
         error_text = self.get_text_of_element(*RegisterPageLocators.PASSWORD_ERROR)
         with allure.step(
                 f'Проверить, что текст ошибки при пустом имени -{self.REGISTER_PASSW_ERROR}'):
-            allure_helper.attach(self.browser)
+            attach(self.browser)
             assert error_text == self.REGISTER_PASSW_ERROR, \
                 f'Текст ошибки {error_text}'
 
@@ -265,13 +272,15 @@ class RegisterPage(AccountPage):
         error_text = self.get_text_of_element(*RegisterPageLocators.CONFIRM_ERROR)
         with allure.step(
                 f'Проверить, что текст ошибки при пустом имени - {self.REGISTER_PASSW_CONFIRM_ERROR}'):
-            allure_helper.attach(self.browser)
+            attach(self.browser)
             assert error_text == self.REGISTER_PASSW_CONFIRM_ERROR, \
                 f'Текст ошибки {error_text}'
 
 
 class EditAccountPage(AccountPage):
     """Класс с методами для страницы редактирования аккаунта."""
+
+    PAGE_URL = Links.EDIT_ACCOUNT_PAGE
 
     TITLE = 'My Account Information'
 
@@ -292,28 +301,28 @@ class EditAccountPage(AccountPage):
         """Получение имени пользователя из инупта."""
         firstname_in_input = self.getting_attr('value', *EditAccountPageLocators.FIRSTNAME_FIELD)
         with allure.step(f'Проверить, что имя в инпуте {firstname_in_input} == {firstname}'):
-            allure_helper.attach(self.browser)
+            attach(self.browser)
             assert firstname_in_input == firstname, f'Имя в инпуте {firstname_in_input}, ОР {firstname}'
 
     def check_lastname(self, lastname):
         """Получение фамилии пользователя из инупта."""
         lastname_in_input = self.getting_attr('value', *EditAccountPageLocators.LASTNAME_FIELD)
         with allure.step(f'Проверить, что фамилия в инпуте {lastname_in_input} == {lastname}'):
-            allure_helper.attach(self.browser)
+            attach(self.browser)
             assert lastname_in_input == lastname, f'Фамилия в инпуте {lastname_in_input}, ОР {lastname}'
 
     def check_email(self, email):
         """Получение email пользователя из инупта."""
         email_in_input = self.getting_attr('value', *EditAccountPageLocators.EMAIL_INPUT)
         with allure.step(f'Проверить, что email в инпуте {email_in_input} == {email}'):
-            allure_helper.attach(self.browser)
+            attach(self.browser)
             assert email_in_input == email, f'email в инпуте {email_in_input}, ОР {email}'
 
     def check_phone(self, phone):
         """Получение телефона пользователя из инупта."""
         phone_in_input = self.getting_attr('value', *EditAccountPageLocators.TELEPHONE_INPUT)
         with allure.step(f'Проверить, что телефон в инпуте {phone_in_input} == {phone}'):
-            allure_helper.attach(self.browser)
+            attach(self.browser)
             assert phone_in_input == phone, f'Телефон в инпуте {phone_in_input}, ОР {phone}'
 
     @allure.step('Нажать на кнопку назад')

@@ -1,45 +1,34 @@
 import allure
-from selenium.webdriver.support.wait import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
 
-from helpers.allure_helper import attach
-from helpers.locators import AlertsLocators
+from utils.allure_helper import attach
+from utils.locators import AlertsLocators
+from base.base_page import BasePage
 
 
-class Alert:
-    def __init__(self, browser):
-        self.browser = browser
-        self.wait = WebDriverWait(self.browser, 5)
-        self.element = EC.visibility_of_element_located
-
-    @property
-    def success_alert(self):
-        return self.wait.until(self.element(AlertsLocators.SUCCESS_ALERT))
-
-    @property
-    def danger_alert(self):
-        return self.wait.until(self.element(AlertsLocators.DANGER_ALERT))
+class Alert(BasePage):
 
     @allure.step('Проверить, что выведен алерт с ошибкой')
     def check_danger_alert(self):
         """Проверка видимости алерта."""
-        assert self.danger_alert.is_displayed()
+        self.is_element_visible(*AlertsLocators.DANGER_ALERT)
 
     @allure.step('Кликнуть на кнопку Логина в алерте')
     def click_login_from_alert(self):
         """Клик по кнопке Логина в алерте."""
-        self.success_alert.find_element(*AlertsLocators.LINK_LOGIN_ALERT).click()
+        self.click_on_element(*AlertsLocators.LINK_LOGIN_ALERT)
 
     @allure.step('Кликнуть на кнопку в алерте')
     def click_link_from_alert(self):
         """Клик по кнопке Сравнения в алерте."""
-        self.success_alert.find_element(*AlertsLocators.LINK_ALERT).click()
+        el = self._element(*AlertsLocators.SUCCESS_ALERT)
+        el.find_element(*AlertsLocators.LINK_ALERT).click()
+        # self.click_on_element(*AlertsLocators.LINK_ALERT)
         self.browser.implicitly_wait(2)
 
     @allure.step('Проверить сообщение об ошибке')
     def check_error_text(self, txt):
         """Проверить сообщение об ошибке."""
-        error_text = self.danger_alert.text
+        error_text = self.get_text_of_element(*AlertsLocators.DANGER_ALERT)
         with allure.step(f'Проверить, что текст ошибки - {txt}'):
             attach(self.browser)
             assert error_text == txt, \
@@ -48,9 +37,9 @@ class Alert:
     @allure.step('Проверить видимость успешного алерта')
     def check_success_alert(self, txt=None):
         """Вывод успешного алерта."""
-        assert self.success_alert.is_displayed()
+        self.is_element_visible(*AlertsLocators.SUCCESS_ALERT)
         if txt:
-            success_text = self.success_alert.text
+            success_text = self.get_text_of_element(*AlertsLocators.SUCCESS_ALERT)
             res = success_text.replace('×', '').strip()
             with allure.step(f'Проверить, что текст - {txt}'):
                 attach(self.browser)

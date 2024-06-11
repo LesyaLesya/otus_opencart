@@ -2,13 +2,16 @@
 
 import allure
 
-from helpers import allure_helper
-from helpers.locators import MainPageLocators
-from pages.base_page import BasePage
+from utils.allure_helper import attach
+from utils.locators import MainPageLocators
+from base.base_page import BasePage
+from config.links import Links
 
 
 class MainPage(BasePage):
     """Класс с методами для Главной страницы."""
+
+    PAGE_URL = Links.HOST
 
     TITLE = 'Your Store'
 
@@ -75,7 +78,7 @@ class MainPage(BasePage):
                                     with allure.step('Получить список атрибутов класса элемента'):
                                         actual_class = k.get_attribute('class').split()
                                         with allure.step(f'Проверить, что классы swiper-slide-active или swiper-slide-duplicate-active есть в {actual_class}'):
-                                            allure_helper.attach(self.browser)
+                                            attach(self.browser)
                                             assert 'swiper-slide-active' or 'swiper-slide-duplicate-active' \
                                                    in actual_class, f'Класс - {actual_class}'
                                         break

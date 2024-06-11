@@ -2,9 +2,9 @@
 
 import allure
 
-from helpers import allure_helper
-from helpers.locators import ComparePageLocators
-from pages.base_page import BasePage
+from utils.allure_helper import attach
+from utils.locators import ComparePageLocators
+from base.base_page import BasePage
 
 
 class ComparisonPage(BasePage):
@@ -21,12 +21,12 @@ class ComparisonPage(BasePage):
         elements = self._element(*ComparePageLocators.ITEM_NAMES, all=True)
         product_names = [i.text for i in elements]
         with allure.step(f'Проверить что все товар {name} есть в спсике {product_names}'):
-            allure_helper.attach(self.browser)
+            attach(self.browser)
             assert name in product_names, \
                 f'Название {name}, названия в сравнении {product_names}'
 
     @allure.step('Удалить товары из сравнения')
-    def del_from_compare(self, all=True, idx=0):
+    def delete_from_compare(self, all=True, idx=0):
         """Удаление товаров из сравнения."""
         if all:
             elements = self._element(*ComparePageLocators.REMOVE_BUTTON, all=True)
@@ -41,7 +41,7 @@ class ComparisonPage(BasePage):
         """Проверка текста при отсутсвии товаров в сравнении."""
         txt = self.get_text_of_element(*ComparePageLocators.TEXT_FOR_EMTY_COMPARE)
         with allure.step(f'Проверить, что текст - {self.EMPTY_COMPARE}'):
-            allure_helper.attach(self.browser)
+            attach(self.browser)
             assert txt == self.EMPTY_COMPARE, f'Текст - {txt}'
 
     @allure.step('Добавить товар в корзину из сравнения')

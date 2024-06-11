@@ -3,12 +3,15 @@
 
 import allure
 
-from helpers.locators import AdminPageLocators
-from pages.base_page import BasePage
+from utils.locators import AdminPageLocators
+from base.base_page import BasePage
+from config.links import Links
 
 
 class AdminPage(BasePage):
     """Класс с методами для Административной страницы."""
+
+    PAGE_URL = Links.ADMIN_PAGE
 
     TITLE = 'Dashboard'
 
@@ -23,15 +26,25 @@ class AdminPage(BasePage):
         for i in lst:
             self.is_element_visible(*i)
 
-    @allure.step('Залогиниться в админку с логином {name} и паролем {passw}')
-    def login(self, name, passw):
-        """Логин в админку.
+    @allure.step('Ввести логин {name}')
+    def enter_login(self, name):
+        """Ввод логина.
 
         :param name: имя пользователя
-        :param passw: пароль пользователя
         """
         self.input_text(*AdminPageLocators.USERNAME_INPUT, name)
+
+    @allure.step('Ввести пароль {passw}')
+    def enter_password(self, passw):
+        """Ввод пароля.
+
+        :param passw: пароль пользователя
+        """
         self.input_text(*AdminPageLocators.PASSWORD_INPUT, passw)
+
+    @allure.step('Залогиниться в админку')
+    def click_login(self):
+        """Клик на кнопку логина."""
         self.click_on_element(*AdminPageLocators.LOGIN_BUTTON)
 
     @allure.step('Нажать на кнопку разлогина')

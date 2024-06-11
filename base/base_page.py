@@ -8,36 +8,28 @@ from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import Select, WebDriverWait
 
-from helpers import allure_helper
-
-from pages.common.alert import Alert
-from pages.common.footer import Footer
-from pages.common.header import Header
+from utils import allure_helper
 
 
 class BasePage:
     """Класс, описывающий базовую страницу."""
 
-    def __init__(self, browser, url, wait=10):
+    def __init__(self, browser):
         """Конструктор класса.
 
         :param browser: фикстура для запуска драйвера
-        :param url: фикстура с урлом тестируемого ресурса
         """
         self.browser = browser
-        self.url = url
-        self.wait = WebDriverWait(browser, wait)
-        self.alert = Alert(self.browser)
-        self.footer = Footer(self.browser)
-        self.header = Header(self.browser)
+        self.wait = WebDriverWait(browser, 10, poll_frequency=1)
 
-    def open_url(self, path='/'):
-        """Открытие url.
+    def open_url(self):
+        """Открытие url."""
+        with allure.step(f'Перейти по ссылке {self.PAGE_URL}'):
+            self.browser.get(self.PAGE_URL)
 
-        :param path: путь
-        """
-        with allure.step(f'Перейти по ссылке {self.url}{path}'):
-            return self.browser.get(f'{self.url}{path}')
+    def is_opened(self):
+        with allure.step(f"Проверить, что открыта страница {self.PAGE_URL}"):
+            self.wait.until(EC.url_to_be(self.PAGE_URL))
 
     @allure.step('Дождаться видимости элемента с локатором {locator}  {el_path}, индекс {index}')
     def _element(self, locator, el_path, index=0, all=False):

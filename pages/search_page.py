@@ -3,13 +3,16 @@
 
 import allure
 
-from helpers import allure_helper
-from helpers.locators import SearchPageLocators
-from pages.base_page import BasePage
+from utils.allure_helper import attach
+from utils.locators import SearchPageLocators
+from base.base_page import BasePage
+from config.links import Links
 
 
 class SearchPage(BasePage):
     """Класс с методами для страницы Поиска."""
+
+    PAGE_URL = Links.SEARCH_PAGE
 
     EMPTY_SEARCH = 'There is no product that matches the search criteria.'
 
@@ -24,13 +27,17 @@ class SearchPage(BasePage):
         for i in lst:
             self.is_element_visible(*i)
 
-    @allure.step('Осуществить поиск по значению {value}')
-    def search(self, value):
-        """Ввод текста в поле поиска и нажатие на кнопку поиска.
+    @allure.step('Ввести в поиск значение {value}')
+    def search_input(self, value):
+        """Ввод текста в поле поиска.
 
         :param value: искомое значение
         """
         self.input_text(*SearchPageLocators.SEARCH_INPUT, value)
+
+    @allure.step('Нажать на кнопку поиска')
+    def search_start(self):
+        """Нажатие на кнопку поиска."""
         self.click_on_element(*SearchPageLocators.SEARCH_BUTTON)
 
     @allure.step('Проверить искомое значение {value} в названиях товаров')
@@ -44,15 +51,15 @@ class SearchPage(BasePage):
         names = [i.text for i in elements]
         for i in names:
             with allure.step(f'Проверить, что значение {value} есть в результатах поиска {i.lower()}'):
-                allure_helper.attach(self.browser)
+                attach(self.browser)
                 assert value in i.lower(), f'Название товара {i.lower()}'
 
     @allure.step('Проверить, что поиск выдал 0 результатов.')
     def check_empty_search_result(self):
-        """Получение пустого результата поиска."""
+        """Проверка пустого результата поиска."""
         result = self.get_text_of_element(*SearchPageLocators.EMPTY_RESULT)
         with allure.step(f'Проверить, что текст - {self.EMPTY_SEARCH}'):
-            allure_helper.attach(self.browser)
+            attach(self.browser)
             assert result == self.EMPTY_SEARCH, 'Найдены товары'
 
     @allure.step('В выпадающем списке выбрать значение {value}')

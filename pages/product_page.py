@@ -3,12 +3,15 @@
 
 import allure
 
-from helpers.locators import ProductPageLocators
-from pages.base_page import BasePage
+from utils.locators import ProductPageLocators
+from base.base_page import BasePage
+from config.links import Links
 
 
 class ProductPage(BasePage):
     """Класс с методами для страницы Товара."""
+
+    PAGE_URL = Links().PRODUCT_PAGE()
 
     TAX = 'Ex Tax:'
     AVAIL = 'Availability:'
@@ -18,6 +21,10 @@ class ProductPage(BasePage):
     REVIEW_TEXT_ERROR = 'Warning: Review Text must be between 25 and 1000 characters!'
     REVIEW_AUTHOR_ERROR = 'Warning: Review Name must be between 3 and 25 characters!'
     REVIEW_RATING_ERROR = 'Warning: Please select a review rating!'
+
+    @classmethod
+    def change_link_path(cls, path):
+        cls.PAGE_URL = Links().PRODUCT_PAGE(path)
 
     @allure.step('Проверить видимость элементов на странице')
     def check_elements_visibility(self):
@@ -44,27 +51,34 @@ class ProductPage(BasePage):
     def click_on_tab_specification(self):
         """Клик по табу Specification."""
         self.click_on_element(*ProductPageLocators.TAB_SPECIFICATION_LINK)
-        with allure.step('Проверить, что таб Specification активирован'):
-            assert self.getting_attr(
-                'class', *ProductPageLocators.TAB_CLASS, 1) == 'active',\
-                'Таб Specification не активирован'
+
+    @allure.step('Проверить, что таб Specification ативен')
+    def check_tab_specification_active(self):
+        """Проверка активности таба Specification."""
+        assert self.getting_attr('class', *ProductPageLocators.TAB_CLASS, 1) == 'active', \
+            'Таб Specification не активирован'
 
     @allure.step('Перейти на таб Reviews')
     def click_on_tab_reviews(self):
         """Клик по табу Reviews."""
         self.click_on_element(*ProductPageLocators.TAB_REVIEWS_LINK)
-        with allure.step('Проверить, что таб Reviews активирован'):
-            assert self.getting_attr('class', *ProductPageLocators.TAB_CLASS, 2) == 'active',\
-                'Таб Reviews не активирован'
+
+    @allure.step('Проверить, что таб Reviews активен')
+    def check_tab_reviews_active(self):
+        """Проверка активности таба Reviews."""
+        assert self.getting_attr('class', *ProductPageLocators.TAB_CLASS, 2) == 'active', \
+            'Таб Reviews не активирован'
 
     @allure.step('Перейти на таб Description')
     def click_on_tab_description(self):
         """Клик по табу Description."""
         self.click_on_element(*ProductPageLocators.TAB_DESCRIPTION_LINK)
-        with allure.step('Проверить, что таб Description активирован'):
-            assert self.getting_attr(
-                'class', *ProductPageLocators.TAB_CLASS, 0) == 'active',\
-                'Таб Description не активирован'
+
+    @allure.step('Проверить, что таб Description активен')
+    def check_tab_description_active(self):
+        """Проверка активности таба Description."""
+        assert self.getting_attr('class', *ProductPageLocators.TAB_CLASS, 0) == 'active', \
+            'Таб Description не активирован'
 
     @allure.step('Проверить заголовок товара - {name}')
     def compare_item_title_on_pages(self, name):

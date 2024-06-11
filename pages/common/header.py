@@ -1,59 +1,12 @@
 import allure
-from selenium.webdriver.support.wait import WebDriverWait
-from selenium.webdriver.common.action_chains import ActionChains
-from selenium.webdriver.support import expected_conditions as EC
 
-from helpers.allure_helper import attach
-from helpers.locators import HeaderPageLocators
-from helpers.styles import Border, Colors, Cursor, Gradients, SIZES
+from utils.allure_helper import attach
+from utils.locators import HeaderPageLocators
+from utils.styles import Border, Colors, Cursor, Gradients, SIZES
+from base.base_page import BasePage
 
 
-class Header:
-    def __init__(self, browser):
-        self.browser = browser
-        self.wait = WebDriverWait(browser, 10)
-        self.elements = EC.visibility_of_all_elements_located
-        self.element = EC.visibility_of_element_located
-        self.presence_elements = EC.presence_of_all_elements_located
-
-    @property
-    def cart_button(self):
-        return self.wait.until(self.element(HeaderPageLocators.CART_BUTTON))
-
-    @property
-    def cart_link(self):
-        return self.wait.until(self.element(HeaderPageLocators.SHOPPING_CART_TOP_LINK))
-
-    @property
-    def search_input(self):
-        return self.wait.until(self.element(HeaderPageLocators.SEARCH_INPUT))
-
-    @property
-    def search_button(self):
-        return self.wait.until(self.element(HeaderPageLocators.SEARCH_BUTTON))
-
-    @property
-    def account_link(self):
-        return self.wait.until(self.element(HeaderPageLocators.MY_ACCOUNT_LINK))
-
-    @property
-    def login_link(self):
-        return self.wait.until(self.element(HeaderPageLocators.LOGIN_LINK))
-
-    @property
-    def currency_dropdown_button(self):
-        return self.wait.until(self.element(HeaderPageLocators.CURRENCY_DROP_DOWN_BUTTON))
-
-    @property
-    def currency_dropdown(self):
-        return self.wait.until(self.element(HeaderPageLocators.CURRENCY_DROP_DONW))
-
-    @property
-    def currency_dropdown_values(self):
-        return self.wait.until(self.presence_elements(HeaderPageLocators.CURRENCY_VALUES_BUTTONS))
-
-    def currency_dropdown_value(self, idx):
-        return self.wait.until(self.presence_elements(HeaderPageLocators.CURRENCY_VALUES_BUTTONS))[idx]
+class Header(BasePage):
 
     @allure.step('Проверить видимость элементов на странице')
     def check_elements_visibility(self):
@@ -64,25 +17,26 @@ class Header:
                HeaderPageLocators.TOP_LINKS,
                HeaderPageLocators.SEARCH_FIELD]
         for i in lst:
-            el = self.wait.until(self.element(i))
-            attach(self.browser)
-            assert el.is_displayed(), f'Элемент {i} не отображается на странице'
+            self.is_element_visible(*i)
 
-    @allure.step('Осуществить поиск по значению {value}')
-    def search(self, value):
+    @allure.step('Ввести в поиск значение {value}')
+    def search_input(self, value):
         """Ввод текста в поле поиска.
 
         :param value: искомое значение
         """
-        self.search_input.clear()
-        self.search_input.send_keys(value)
-        self.search_button.click()
+        self.input_text(*HeaderPageLocators.SEARCH_INPUT, value)
+
+    @allure.step('Нажать кнопку поиска')
+    def search_start(self):
+        """Нажать кнопку поиска поиска."""
+        self.click_on_element(*HeaderPageLocators.SEARCH_BUTTON)
 
     @allure.step('Перейти на страницу логина')
     def go_to_login_page(self):
         """Проверка перехода на страницу Логина."""
-        self.account_link.click()
-        self.login_link.click()
+        self.click_on_element(*HeaderPageLocators.MY_ACCOUNT_LINK)
+        self.click_on_element(*HeaderPageLocators.LOGIN_LINK)
 
     @allure.step('Проверить стили кнопки корзины')
     def check_cart_button_css(self):
@@ -92,7 +46,7 @@ class Header:
             for prop in ['font-size', 'line-height', 'color', 'background-color', 'background-image',
                          'border-top-color', 'border-right-color', 'border-bottom-color',
                          'border-left-color', 'border-radius', 'cursor']:
-                lst.append(self.cart_button.value_of_css_property(prop))
+                lst.append(self.get_css_property(*HeaderPageLocators.CART_BUTTON, prop))
         with allure.step(f'Проверить, что шрифт {SIZES.SIZE_12}'):
             assert lst[0] == SIZES.SIZE_12, f'Размер текста - {lst[0]}'
         with allure.step(f'Проверить межстрочный интервал {SIZES.SIZE_18}'):
@@ -119,13 +73,14 @@ class Header:
     @allure.step('Проверить стили кнопки корзины при наведении')
     def check_cart_button_css_hover(self):
         """Проверка стилей кнопки корзины при наведении."""
-        ActionChains(self.browser).move_to_element(self.cart_button).perform()
+
+        self.mouse_move_to_element(*HeaderPageLocators.CART_BUTTON)
         lst = []
         with allure.step('Получить стили элемента'):
             for prop in ['font-size', 'line-height', 'color', 'background-color', 'background-image',
                          'border-top-color', 'border-right-color', 'border-bottom-color',
                          'border-left-color', 'border-radius', 'cursor']:
-                lst.append(self.cart_button.value_of_css_property(prop))
+                lst.append(self.get_css_property(*HeaderPageLocators.CART_BUTTON, prop))
         with allure.step(f'Проверить, что шрифт {SIZES.SIZE_12}'):
             assert lst[0] == SIZES.SIZE_12, f'Размер текста - {lst[0]}'
         with allure.step(f'Проверить межстрочный интервал {SIZES.SIZE_18}'):
@@ -152,12 +107,12 @@ class Header:
     @allure.step('Проверить стили кнопки корзины при клике')
     def check_cart_button_css_click(self):
         """Проверка стилей кнопки корзины при клике."""
-        self.cart_button.click()
+        self.click_on_element(*HeaderPageLocators.CART_BUTTON)
         lst = []
         with allure.step('Получить стили элемента'):
             for prop in ['font-size', 'line-height', 'color', 'background-color', 'background-image',
                          'border', 'border-radius', 'cursor']:
-                lst.append(self.cart_button.value_of_css_property(prop))
+                lst.append(self.get_css_property(*HeaderPageLocators.CART_BUTTON, prop))
         with allure.step(f'Проверить, что шрифт {SIZES.SIZE_12}'):
             assert lst[0] == SIZES.SIZE_12, f'Размер текста - {lst[0]}'
         with allure.step(f'Проверить межстрочный интервал {SIZES.SIZE_18}'):
@@ -180,13 +135,13 @@ class Header:
 
     def check_cart_button_dropdown_open(self):
         """Прверка отображения выпадашки у кнопки корзины."""
-        return self.cart_button.get_attribute('aria-expanded')
+        return self.getting_attr('aria-expanded', *HeaderPageLocators.CART_BUTTON)
 
     @allure.step('Кликнуть на выпадающий список валют')
     def click_on_currency_drop_down(self):
         """Клик по списку валют и проверка, что список раскрыт."""
-        self.currency_dropdown_button.click()
-        display_css = self.currency_dropdown.value_of_css_property('display')
+        self.click_on_element(*HeaderPageLocators.CURRENCY_DROP_DOWN_BUTTON)
+        display_css = self.get_css_property(*HeaderPageLocators.CURRENCY_DROP_DONW, 'display')
         with allure.step(f'Проверить, что значение атрибута {display_css} - block'):
             attach(self.browser)
             assert display_css == 'block', f'Значение атрибута - {display_css}'
@@ -197,7 +152,8 @@ class Header:
 
         :param lst: список названий валют
         """
-        names = [i.text for i in self.currency_dropdown_values]
+        elements = self._element_presence(*HeaderPageLocators.CURRENCY_VALUES_BUTTONS, all=True)
+        names = [i.text for i in elements]
         for i in names:
             with allure.step(f'Проверить, что название {i} есть в {lst}'):
                 attach(self.browser)
@@ -210,11 +166,12 @@ class Header:
         :param value: значение валюты
         """
         self.click_on_currency_drop_down()
-        for i in range(len(self.currency_dropdown_values)):
-            element = self.currency_dropdown_value(i).text
+        elements = self._element_presence(*HeaderPageLocators.CURRENCY_VALUES_BUTTONS, all=True)
+        for i in range(len(elements)):
+            element = self._element_presence(*HeaderPageLocators.CURRENCY_VALUES_BUTTONS, i).text
             if element == value:
                 with allure.step(f'Кликнуть по значению валюты {value}'):
-                    self.currency_dropdown_value(i).click()
+                    self.click_on_element(*HeaderPageLocators.CURRENCY_VALUES_BUTTONS, i)
 
     @allure.step('Проверить выпадающие списки горизонтального меню')
     def check_dropdown_menu(self, lst):
@@ -223,17 +180,15 @@ class Header:
         :param lst: список локторов пунктов меню и выпадающих списков меню
         """
         for i in lst:
-            el_menu = self.wait.until(self.element((i[0])))
             with allure.step(f'Навести курсок на пункт меню {i[0]}'):
-                ActionChains(self.browser).move_to_element(el_menu).perform()
+                self.mouse_move_to_element(*i[0])
                 attach(self.browser)
             with allure.step(f'Проверить выпадающее меню {i[1]}'):
-                el_dropdown = self.wait.until(self.element(i[1]))
                 attach(self.browser)
-                assert el_dropdown.is_displayed(), f'Элемент {i[1]} не отображается на странице'
+                self.is_element_visible(*i[1])
 
     @allure.step('Перейти на страницу корзины')
     def go_to_cart_page(self):
         """Проверка перехода на страницу корзины."""
-        self.cart_link.click()
+        self.click_on_element(*HeaderPageLocators.SHOPPING_CART_TOP_LINK)
         self.browser.implicitly_wait(1)

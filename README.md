@@ -1,11 +1,7 @@
 ## Описание проекта
 
-Проект по автоматизации тестирования cms Opencart на selenium + pytest.
+Проект по автоматизации тестирования UI cms Opencart на selenium + pytest.
 
-
-+ В директории tests/ находятся файлы с тестами для отдельных страниц.
-+ В директории pages/ находятся файлы с вспомогательными методами по каждой странице.
-+ В файле conftest описана фикстура для запуска драйвера.
 ____
 
 ## Список необходимых предустановленных приложений и утилит
@@ -23,23 +19,23 @@ ____
 (Должен быть всегда запущен для прогона тестов)
 
 1. Запустить Docker
-2. Приложение собирается из docker-compose.yml
+2. Приложение собирается из docker-compose.opencart.yml
 Значение для OPENCART_HOST передается в командной строке через переменную local_ip - адрес вашей машины в сети
 (узнать через ifconfig).
 Выполнить команду:
 
 ```
-local_ip=123.123.123.123 docker-compose up -d
+local_ip=123.123.123.123 docker-compose -f docker-compose.opencart.yml up -d
 ```
 После этого станут доступны: 
 - приложение local_ip:80,
 - админка local_i:8888,
-- БД local_i:3306.
+- БД local_ip:3306.
 
 
 Подсказка - как применить сделанные в docker-compose.yml изменения:
 ```
-docker-compose down 
+docker-compose -f docker-compose.opencart.yml down
 
 Удалить все контейнеры:
 docker rm -f $(docker ps -a -q)
@@ -84,6 +80,25 @@ pip install -r requirements.txt
 
 - Запустить Opencart
 
+- Создать в корне проекта файл .env в формате:
+
+Для запуска в selenoid:
+```
+HOST=x.x.x.x
+BROWSER_NAME=chrome
+BROWSER_VERSION=100.0
+EXECUTOR=x.x.x.x #selenoid host
+WINDOW_SIZE=1920,1080
+LOCAL=''
+```
+Для локального запуска:
+```
+HOST=x.x.x.x
+BROWSER_NAME=firefox
+WINDOW_SIZE=1920,1080
+LOCAL=1
+```
+
 - После запуска тестов одним из вариантов представленных ниже получить Allure отчет:
 В консоли выполнить команду, в качестве параметра указав путь до исполняемого файла allure на вашей машине:
 
@@ -98,15 +113,11 @@ pip install -r requirements.txt
 В консоли (из директории проекта) выполнить команду:
 
 ```
-pytest --local  --url=your_external_ip --browser-name=(firefox/chrome)  -m marker --window_size 800,600 -n 2 tests/
+pytest -m marker  -n 2 tests/
 ```
 где:
 
 - -n - во сколько потоков запускать тесты, если не указывать параметр при запуске - тесты будут запущены в 1 поток.
-- --local - запускает тесты локально
-- --url - адрес машины в сети (где запущен opencart)
-- --browser-name - какой браузер запускать
-- --window_size - размер окна (формат 800,600)
 - -m - маркер группы тестов
 
 
@@ -123,22 +134,17 @@ UI станет доступен на localhost:8080.
 2.В консоли (из директории проекта) выполнить команду:
 
 ```
-pytest  --url=your_external_ip --browser-name=(chrome/firefox/opera) --browser-version --executor=selenoid_host --window_size=1920,1080 -m marker -n 2
+pytest -m marker -n 2 tests/
 ```
 где:
 
 - -n - во сколько потоков запускать тесты, если не указывать параметр при запуске - тесты будут запущены в 1 поток.
-- --url - адрес машины в сети (где запущен opencart)
-- --browser-name - какой браузер запускать
-- --browser-version - версия указанного браузера
-- --executor - хост selenoid-а (если на своей машине - 127.0.0.1)
-- --window_size - размер окна (формат 800,600)
 - -m - маркер группы тестов
 ____
 
 
 ## Запуск тестов в Docker + Selenoid
-Установить - Docker, Allure, Selenoid (+образы браузеров)
+Установить - Docker, Selenoid (+образы браузеров)
 
 - Скачать репозиторий на свою машину:
 
@@ -151,48 +157,11 @@ git clone repository_url
 
 - Запустить Docker + приложение opencart
 
-- Запустить тесты и получить отчет командой в консоли, в качестве параметров указав 
-адрес машины в сети (где запущен opencart), 
-браузер, версия браузера, хост selenoid-а (внешний)
-и путь до исполняемого файла allure на вашей машине:
+- Запустить тесты:
 
 ```
-./run_test_in_docker_with_allure.sh your_external_ip browser browser_version selenoid_host(external) marker /path/to/allure/bin window_size
-
-Пример: ./run_test_in_docker_with_allure.sh 123.123.123.123 chrome 87.0 123.123.123.123 search_page '800,600' /Applications/allure/bin/allure 
+docker-compose -f docker-compose.tests.yml up --build
 ```
 Если надо запустить все тесты, то marker указать 'all'
 
-## Запуск тестов в Jenkins + Docker + Selenoid
-Установить - Docker, Selenoid (+образы браузеров), Jenkins, плагин Allure для Jenkins
-
-- Запустить Docker + приложение Opencart
-
-- Запустить Selenoid (Jenkins в нем будет запускать тесты)
-
-- Запустить Jenkins
-
-- В Jenkins создать PipeLine
-
-- Добавить в сборку параметры:
-  + URL - хост с opencart
-  + BROWSER_NAME  - в каком браузере запускать
-  + BROWSER_VERSION - в какой версии браузера запускать
-  + EXECUTOR - хост selenoid-а
-  + NODES - значение по-умолчанию 1 (количество потоков)
-  + DOCKER_PATH - путь до исполняемого файла Docker на машине
-  + MARKER - маркер группы тестов (all - для запуска всех тестов)
-  + WINDOW_SIZE - размер окна (формат 800,600)
-  
-- Выбрать Pipeline script from SCM
-
-- Выбрать SCM - Git
-
-- Указать ссылку на репозиторий на Github
-
-- Проверить название ветки - */main
-
-- Сохранить пайплайн
-
-- Собрать с необходимыми параметрами 
 ____
