@@ -5,7 +5,7 @@ pipeline {
         stage('TestRun') {
             steps {
                 echo 'Run tests via docker-compose'
-                sh '${DOCKER_PATH} compose -f docker-compose.tests.yml up'
+                sh '${DOCKER_PATH} -f docker-compose.tests.yml up'
             }
         }
 
@@ -15,7 +15,7 @@ pipeline {
 
         always {
             echo 'Copying allure report from container'
-            sh '${DOCKER_PATH} compose -f docker-compose.tests.yml run tests /bin/sh -c "allure generate allure-results --clean -o allure-report"'
+            sh '${DOCKER_PATH} -f docker-compose.tests.yml run tests /bin/sh -c "allure generate allure-results --clean -o allure-report"'
 
             script {
                 allure([
