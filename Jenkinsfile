@@ -33,8 +33,6 @@ environment {
             }
             echo 'Deleting container and image'
             sh 'docker system prune -f'
-            sh 'docker image rm tests'
-
 
             cleanWs()
         }
