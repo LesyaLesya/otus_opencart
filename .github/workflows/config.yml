@@ -23,7 +23,7 @@ jobs:
           EXECUTOR: ${{ secrets.EXECUTOR }}
           WINDOW_SIZE: ${{ secrets.WINDOW_SIZE }}
         run: |
-           docker-compose -f docker-compose.tests.yml up --build --exit-code-from regression || true
+           docker-compose -f docker-compose.tests.yml up --build --exit-code-from tests || true
 
       - name: Copy history from gh-pages to allure-results
         run: |
