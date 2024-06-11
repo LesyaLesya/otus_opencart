@@ -2,32 +2,20 @@ pipeline {
     agent any
 
     stages {
-        stage('DockerBuild') {
-            steps {
-                echo 'Building docker image with tag tests'
-                sh '${DOCKER_PATH} build -t tests .'
-            }
-        }
         stage('TestRun') {
             steps {
-                echo 'Running tests in container'
-                sh '''
-                   if [ "$MARKER" == "all" ]
-                   then
-                   ${DOCKER_PATH} run --name my_container tests --url ${URL} --browser-name ${BROWSER_NAME} --browser-version ${BROWSER_VERSION} --executor ${EXECUTOR} -n ${NODES} --window_size ${WINDOW_SIZE}
-                   else
-                   ${DOCKER_PATH} run --name my_container tests --url ${URL} --browser-name ${BROWSER_NAME} --browser-version ${BROWSER_VERSION} --executor ${EXECUTOR} -n ${NODES} --window_size ${WINDOW_SIZE} -m ${MARKER}
-                   fi
-                '''
+                echo 'Building docker image with tag tests'
+                sh '${DOCKER_PATH} -f docker-compose.tests.yml up'
             }
         }
+
     }
 
     post {
 
         always {
             echo 'Copying allure report from container'
-            sh '${DOCKER_PATH} cp my_container:/otus_opencart/allure-results .'
+            sh '$sudo {DOCKER_PATH} -f docker-compose.tests.yml run tests /bin/sh -c "allure generate allure-results --clean -o allure-report"'
 
             script {
                 allure([
