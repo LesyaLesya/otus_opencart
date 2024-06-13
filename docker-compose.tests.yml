@@ -8,7 +8,7 @@ services:
       dockerfile: Dockerfile
     volumes:
       - ./:/otus_opencart
-    command: /bin/bash -c "pytest -sv -m=search_page --alluredir=allure-results"
+    command: "pytest -sv -m=product_page --alluredir=allure-results"
     working_dir: /otus_opencart
     environment:
       - HOST=${HOST}
