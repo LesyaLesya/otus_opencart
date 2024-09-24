@@ -163,5 +163,4 @@ git clone repository_url
 docker-compose -f docker-compose.tests.yml up --build
 ```
 Если надо запустить все тесты, то marker указать 'all'
-
 ____
